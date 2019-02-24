@@ -1,0 +1,29 @@
+<ul class="container-list">
+  <li data-fmt-if="useLimitation">
+    <strong>{{useLimitationLabel}}</strong>
+    <ul class="md-value-list">
+      <li>{{useLimitation}}</li>
+    </ul>
+  </li>
+  <li data-fmt-if="accessConstraints">
+    <strong>{{accessConstraintsLabel}}</strong>
+    <ul class="md-value-list">
+      <li>{{accessConstraints}}</li>
+    </ul>
+  </li>
+  <li data-fmt-if="useConstraints">
+    <strong>{{useConstraintsLabel}}</strong>
+    <ul class="md-value-list">
+      <li>{{useConstraints}}</li>
+    </ul>
+  </li>
+
+  <li fmt-repeat="oc in otherConstraints">
+    <span data-fmt-if="oc">
+      <strong>{{otherConstraintsLabel}}</strong>
+      <ul class="md-value-list">
+        <li>{{oc}}</li>
+      </ul>
+    </span>
+  </li>
+</ul>

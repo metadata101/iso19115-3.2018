@@ -1,0 +1,121 @@
+<div class="container gn-metadata-view gn-metadata-view-groovy">
+
+  <script type="application/javascript" fmt-if="isHTML">
+    //<![CDATA[
+    document.title="{{pageTitle}}";
+    var headEl = $("head");
+    var iconLink = headEl.children("link[rel='shortcut icon']");
+    if (iconLink.length > 0) {
+      iconLink.attr("href", "{{logo}}");
+    } else {
+      headEl.append("<link rel='shortcut icon' type='image/x-icon' href='{{logo}}'></link>");
+    }
+    //]]>
+  </script>
+
+  <ul fmt-if="!isPDF" class="view-outline nav nav-tabs">
+    <li fmt-if="addOverviewNavItem"><a href="" rel=".overview" fmt-translate="">overview</a></li>
+    <li fmt-if="addCompleteNavItem"><a fmt-translate="" href="" rel=".container > .entry:not(.overview)">complete</a></li>
+    <li fmt-repeat="item in navBar" title="{{item.name | escapeXmlAttrs}}">
+      <a fmt-if="item.href" href="{{item.href | escapeXmlAttrs}}" target="_blank">{{item.abbrName | escapeXmlContent}}</a>
+      <a fmt-if="item.rel" rel="{{item.rel | escapeXmlAttrs}}">{{item.abbrName | escapeXmlContent}}</a>
+    </li>
+    <li fmt-if="showNavOverflow" class="dropdown">
+      <a class="dropdown-toggle" data-toggle="dropdown" title="More information"><i class="fa fa-ellipsis-h"></i><b class="caret"></b></a>
+      <ul class="dropdown-menu">
+        <li fmt-repeat="item in navBarOverflow">
+          <a fmt-if="item.href" href="{{item.href | escapeXmlAttrs}}" target="_blank">{{item.abbrName | escapeXmlContent}}</a>
+          <a fmt-if="item.rel" rel="{{item.rel | escapeXmlAttrs}}">{{item.abbrName | escapeXmlContent}}</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="entry overview">
+
+    <div class="gn-metadata-display">
+
+      <div class="col-md-9 gn-record">
+
+        <dl class="dl-horizontal">
+
+          <dt data-fmt-if="abstract" translate="">abstract</dt>
+          <dd data-fmt-if="abstract" class="md-abstract"><p>{{abstract}}</p>
+          </dd>
+
+          <dt data-fmt-if="dates" translate="">Date(s)</dt>
+          <dd data-fmt-if="dates">
+            {{dates}}
+          </dd>
+
+          <dt data-fmt-if="contacts" translate="">Contacts</dt>
+          <dd data-fmt-if="contacts">{{contacts}}</dd>
+
+          <dt data-fmt-if="keywords" translate="">keywords</dt>
+          <dd data-fmt-if="keywords">{{keywords}}</dd>
+
+          <dt data-fmt-if="formats" translate="">statements</dt>
+          <dd data-fmt-if="formats">{{formats}}</dd>
+
+          <dt data-fmt-if="constraints" translate="">constraints</dt>
+          <dd data-fmt-if="constraints">{{constraints}}</dd>
+
+          <div fmt-include="html/sxt-associated.html" fmt-include-replace="true"/>
+        </dl>
+
+        {{citation}}
+
+      </div>
+
+      <div class="col-md-3 gn-md-side">
+
+        <section class="links" ng-show="downloads.length > 0 || links.length > 0 || layers.length > 0 || hasRelations">
+          <h3 translate="">accessData</h3>
+          <div gn-related="md" types="parent|children|sources|hassources"
+               has-results="hasRelations"
+               template="../../catalog/views/sextant/templates/related.html">
+          </div><sxt-links-btn></sxt-links-btn>
+        </section>
+
+        <section>
+          <p>
+            <img gn-img-modal="md" fmt-if="thumbnail" class="gn-img-thumbnail img-thumbnail graphic-overview" src="{{thumbnail | escapeXmlAttrs}}"></img>
+          </p>
+        </section>
+
+        <section >
+          <!-- TODO: use map config -->
+          <p>
+            {{extents}}
+          </p>
+        </section>
+
+
+
+        <section class="sxt-social links">
+          <h3 fmt-translate="">socialTitle</h3>
+          <sxt-social></sxt-social>
+<!--
+          <a
+            href="https://plus.google.com/share?url={{socialMediaLink}}"
+            target="_blank"
+            class="btn  btn-default"><i class="fa fa-fw fa-google-plus"></i></a>
+          <a href="https://twitter.com/share?url={{socialMediaLink}}"
+             target="_blank"
+             class="btn  btn-default"><i class="fa fa-fw fa-twitter"></i></a>
+          <a
+            href="https://www.facebook.com/sharer.php?u={{socialMediaLink}}"
+            target="_blank"
+            class="btn  btn-default"><i class="fa fa-fw fa-facebook"></i></a>
+          <a
+            href="mailto:?subject={{title}}&amp;body={{socialMediaLink}}"
+            target="_blank"
+            class="btn  btn-default"><i class="fa fa-fw fa-envelope-o"></i></a>
+-->
+        </section>
+
+      </div>
+    </div>
+  </div>
+  {{content}}
+</div>

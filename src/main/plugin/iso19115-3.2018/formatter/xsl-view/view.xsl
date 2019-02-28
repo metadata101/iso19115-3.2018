@@ -68,24 +68,6 @@
 
   <xsl:variable name="langId" select="gn-fn-iso19115-3.2018:getLangId($metadata, $language)"/>
 
-  <!-- Checkpoint resource type -->
-  <xsl:variable name="isDps"
-                select="count(
-                            /root/mdb:MD_Metadata/mdb:metadataStandard/*/cit:title/*[text() =
-                              'ISO 19115-3 - Emodnet Checkpoint - Data Product Specification']
-                          ) = 1"/>
-
-  <xsl:variable name="isTdp"
-                select="count(
-                            /root/mdb:MD_Metadata/mdb:metadataStandard/*/cit:title/*[text() =
-                              'ISO 19115-3 - Emodnet Checkpoint - Targeted Data Product']
-                          ) = 1"/>
-
-  <xsl:variable name="isUd"
-                select="count(
-                            /root/mdb:MD_Metadata/mdb:metadataStandard/*/cit:title/*[text() =
-                              'ISO 19115-3 - Emodnet Checkpoint - Upstream Data']
-                          ) = 1"/>
 
   <!-- Ignore some fields displayed in header or in right column -->
   <xsl:template mode="render-field"
@@ -115,6 +97,13 @@
   </xsl:template>
 
   <xsl:template mode="getOverviews" match="mdb:MD_Metadata">
+    <h4>
+      <i class="fa fa-fw fa-image">&#160;</i>&#160;
+      <span>
+        <xsl:value-of select="$schemaStrings/overviews"/>
+      </span>
+    </h4>
+
     <xsl:for-each select="mdb:identificationInfo/*/mri:graphicOverview/*">
       <img class="gn-img-thumbnail img-thumbnail center-block"
            src="{mcc:fileName/*}"/>
@@ -144,221 +133,81 @@
       </xsl:for-each>
     </div>
 
-    <xsl:choose>
-      <xsl:when test="$css = 'checkpoint'">
-        <xsl:variable name="value"
-                      select="mdb:identificationInfo/*/mri:citation/*/cit:title"/>
 
-        <link rel="stylesheet" type="text/css"
-              href="{$baseUrl}../../apps/sextant/css/schema/default.css"></link>
+    <!-- Citation -->
+    <table class="table">
+      <tr class="active">
+        <td>
+          <div class="pull-left text-muted">
+            <i class="fa fa-quote-left fa-4x">&#160;</i>
+          </div>
+        </td>
+        <td>
+          <em title="{$schemaStrings/citationProposal-help}">
+            <xsl:value-of select="$schemaStrings/citationProposal"/>
+          </em><br/>
 
-        <link rel="stylesheet" type="text/css"
-              href="{$baseUrl}../../apps/sextant/css/metadata-view.css"></link>
+          <!-- Custodians -->
+          <xsl:for-each select="mdb:identificationInfo/*/mri:pointOfContact/
+                              *[cit:role/*/@codeListValue = ('custodian', 'author')]">
+            <xsl:variable name="name"
+                          select="normalize-space(.//cit:individual/*/cit:name[1])"/>
 
-
-
-        <xsl:choose>
-          <xsl:when test="$isTdp">
-            <div data-gn-related="md"
-                 data-types="siblings|associated"
-                 data-filter="initiativeType:specification"
-                 data-title="Links">&#160;</div>
-          </xsl:when>
-          <xsl:when test="$isDps">
-            <div data-gn-related="md"
-                 data-types="siblings|associated"
-                 data-title="Links">&#160;</div>
-          </xsl:when>
-          <xsl:when test="$isUd">
-            <!--<div data-gn-related="md"
-                 data-types="siblings|associated"
-                 data-title="Links"></div>-->
-          </xsl:when>
-        </xsl:choose>
-
-        <div class="ui-layout-content mdshow-tabpanel">
-          <a class="file-link"
-             title="Export HTML"
-             target="_blank"
-             style="display: block;float: right; text-decoration: none;"
-             href="{$baseUrl}md.format.html?id={$metadataId}&amp;xsl=xsl-view&amp;view=medsea&amp;css=sextant">&#160;</a>
-          <a class="file-xml"
-             title="Export XML"
-             target="_blank"
-             style="display: block;float: right; text-decoration: none;"
-             href="{$baseUrl}xml.metadata.get?id={$metadataId}">&#160;</a>
-        </div>
-
-      </xsl:when>
-      <xsl:otherwise>
-
-
-
-        <!-- Citation -->
-        <table class="table">
-          <tr class="active">
-            <td>
-              <div class="pull-left text-muted">
-                <i class="fa fa-quote-left fa-4x">&#160;</i>
-              </div>
-            </td>
-            <td>
-              <em title="{$schemaStrings/citationProposal-help}">
-                <xsl:value-of select="$schemaStrings/citationProposal"/>
-              </em><br/>
-
-              <!-- Custodians -->
-              <xsl:for-each select="mdb:identificationInfo/*/mri:pointOfContact/
-                                  *[cit:role/*/@codeListValue = ('custodian', 'author')]">
-                <xsl:variable name="name"
-                              select="normalize-space(.//cit:individual/*/cit:name[1])"/>
-
-                <xsl:value-of select="$name"/>
-                <xsl:if test="$name != ''">&#160;(</xsl:if>
-                <xsl:value-of select="cit:party/*/cit:name/*"/>
-                <xsl:if test="$name">)</xsl:if>
-                <xsl:if test="position() != last()">&#160;-&#160;</xsl:if>
-              </xsl:for-each>
-
-              <!-- Publication year -->
-              <xsl:variable name="publicationDate"
-                            select="mri:identificationInfo/*/mri:citation/*/cit:date/*[
-                                    cit:dateType/*/@codeListValue = 'publication']/
-                                      cit:date/gco:*"/>
-
-              <xsl:if test="$publicationDate != ''">
-                (<xsl:value-of select="substring($publicationDate, 1, 4)"/>)
-              </xsl:if>
-
-              <xsl:text>. </xsl:text>
-
-              <!-- Title -->
-              <xsl:for-each select="mri:identificationInfo/*/cit:citation/*/cit:title">
-                <xsl:call-template name="get-iso19115-3.2018-localised">
-                  <xsl:with-param name="langId" select="$langId"/>
-                </xsl:call-template>
-              </xsl:for-each>
-
-              <xsl:text>. </xsl:text>
-
-              <!-- Publishers -->
-              <xsl:for-each select="mri:identificationInfo/*/mri:pointOfContact/
-                                  *[cit:role/*/@codeListValue = 'publisher']">
-                <xsl:value-of select="cit:party/*/cit:name/*"/>
-                <xsl:if test="position() != last()">&#160;-&#160;</xsl:if>
-              </xsl:for-each>
-
-              <!-- Link -->
-              <xsl:variable name="url"
-                            select="concat($nodeUrl, 'api/records/', $metadataUuid)"/>
-              <a href="{url}">
-                <xsl:value-of select="$url"/>&#160;
-              </a>
-            </td>
-          </tr>
-        </table>
-
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-
-
-
-
-
-
-
-  <!-- Display links after INSPIRE theme. If there is no INSPIRE
-  themes in the record, the link section will not be displayed. -->
-  <xsl:template mode="render-field"
-                priority="999"
-                match="mri:descriptiveKeywords[*/mri:thesaurusName/*/cit:title/* = 'GEMET - INSPIRE themes, version 1.0']">
-    <xsl:param name="fieldName"/>
-
-    <xsl:apply-templates mode="render-field" select="mri:MD_Keywords">
-      <xsl:with-param name="fieldName" select="$fieldName"/>
-    </xsl:apply-templates>
-
-    <xsl:if test="$isTdp">
-      <div data-gn-related="md"
-           data-types="siblings|associated"
-           data-filter="initiativeType:upstreamData"
-           data-title="Upstream data">&#160;</div>
-    </xsl:if>
-  </xsl:template>
-
-  <!-- MedSea data quality section is rendered in a table -->
-  <xsl:template mode="render-field"
-                match="mdb:dataQualityInfo"
-                priority="9999">
-    <!-- Only render quality section for a component, not for errors
-    that are in the index and rendered by the directive. -->
-    <xsl:if test="*/@uuid[not(ends-with(., '#QE'))]">
-      <xsl:variable name="cptId" select="*/@uuid"/>
-      <div>
-        <h3 style="width:100%">
-          <xsl:value-of select="util:getIndexField('',
-                                string(tokenize($cptId, '/')[3]), '_defaultTitle', 'eng')"/>
-          <!--<xsl:text> - </xsl:text>
-          <xsl:value-of select="*/mdq:scope/*/mcc:levelDescription[1]/*/mcc:other/*"/>-->
-          <xsl:if test="*/mdq:scope/*/mcc:levelDescription[2]/*/mcc:other/* != ''">
-            <xsl:text> - </xsl:text>
-            <xsl:value-of select="*/mdq:scope/*/mcc:levelDescription[2]/*/mcc:other/*"/>
-          </xsl:if>
-        </h3>
-
-        <xsl:variable name="sqr"
-                      select=".//mdq:standaloneQualityReport/*"/>
-        <xsl:variable name="isCovered"
-                      select="not(contains($sqr/mdq:reportReference/*/cit:title, 'Component is not covered'))"/>
-
-        <xsl:if test="not($isCovered)">
-          <xsl:apply-templates select="$sqr/mdq:reportReference/*/cit:title"
-                               mode="render-field">
-            <xsl:with-param name="fieldName" select="'&#160;'"/>
-          </xsl:apply-templates>
-          <xsl:apply-templates select="$sqr/mdq:abstract"
-                               mode="render-field">
-            <xsl:with-param name="fieldName" select="'&#160;'"/>
-          </xsl:apply-templates>
-        </xsl:if>
-
-        <xsl:for-each select="*/mdq:scope/*/mcc:extent/*">
-            <xsl:for-each select="gex:geographicElement/*[
-                number(gex:westBoundLongitude/gco:Decimal)
-                and number(gex:southBoundLatitude/gco:Decimal)
-                and number(gex:eastBoundLongitude/gco:Decimal)
-                and number(gex:northBoundLatitude/gco:Decimal)
-                and normalize-space(gex:westBoundLongitude/gco:Decimal) != ''
-                and normalize-space(gex:southBoundLatitude/gco:Decimal) != ''
-                and normalize-space(gex:eastBoundLongitude/gco:Decimal) != ''
-                and normalize-space(gex:northBoundLatitude/gco:Decimal) != '']">
-              <xsl:copy-of select="gn-fn-render:bbox(
-                                    xs:double(gex:westBoundLongitude/gco:Decimal),
-                                    xs:double(gex:southBoundLatitude/gco:Decimal),
-                                    xs:double(gex:eastBoundLongitude/gco:Decimal),
-                                    xs:double(gex:northBoundLatitude/gco:Decimal))"/>
-
+            <xsl:value-of select="$name"/>
+            <xsl:if test="$name != ''">&#160;(</xsl:if>
+            <xsl:value-of select="cit:party/*/cit:name/*"/>
+            <xsl:if test="$name">)</xsl:if>
+            <xsl:if test="position() != last()">&#160;-&#160;</xsl:if>
           </xsl:for-each>
 
-          <xsl:apply-templates select="gex:temporalElement/*/gex:extent/gml:*/gml:beginPosition"
-                               mode="render-field"/>
-          <xsl:apply-templates select="gex:temporalElement/*/gex:extent/gml:*/gml:endPosition"
-                               mode="render-field"/>
+          <!-- Publication year -->
+          <xsl:variable name="publicationDate"
+                        select="mri:identificationInfo/*/mri:citation/*/cit:date/*[
+                                cit:dateType/*/@codeListValue = 'publication']/
+                                  cit:date/gco:*"/>
 
-          <xsl:apply-templates select="gex:verticalElement"
-                               mode="render-field"/>
-        </xsl:for-each>
+          <xsl:if test="$publicationDate != ''">
+            (<xsl:value-of select="substring($publicationDate, 1, 4)"/>)
+          </xsl:if>
 
-        <xsl:if test="$isCovered">
-          <div data-gn-data-quality-measure-renderer="{$metadataId}"
-               data-cpt-id="{$cptId}">&#160;</div>
-        </xsl:if>
-      </div>
-    </xsl:if>
+          <xsl:text>. </xsl:text>
+
+          <!-- Title -->
+          <xsl:for-each select="mri:identificationInfo/*/cit:citation/*/cit:title">
+            <xsl:call-template name="get-iso19115-3.2018-localised">
+              <xsl:with-param name="langId" select="$langId"/>
+            </xsl:call-template>
+          </xsl:for-each>
+
+          <xsl:text>. </xsl:text>
+
+          <!-- Publishers -->
+          <xsl:for-each select="mri:identificationInfo/*/mri:pointOfContact/
+                              *[cit:role/*/@codeListValue = 'publisher']">
+            <xsl:value-of select="cit:party/*/cit:name/*"/>
+            <xsl:if test="position() != last()">&#160;-&#160;</xsl:if>
+          </xsl:for-each>
+
+          <!-- Link -->
+          <xsl:variable name="url"
+                        select="concat($nodeUrl, 'api/records/', $metadataUuid)"/>
+          <a itemprop="url"
+              itemscope="itemscope"
+              itemtype="http://schema.org/url" href="{url}">
+            <xsl:value-of select="$url"/>
+          </a>
+        </td>
+      </tr>
+    </table>
   </xsl:template>
-<!--
+
+  <!-- Data quality section is rendered in a table / Disabled
+  <xsl:template mode="render-field"
+                match="mdb:dataQualityInfo[1]"
+                priority="9999">
+    <div data-gn-data-quality-measure-renderer="{$metadataId}"/>
+  </xsl:template>
+
   <xsl:template mode="render-field"
                 match="mdb:dataQualityInfo[position() > 1]"
                 priority="9999"/>-->
@@ -382,7 +231,7 @@
     <dl>
       <dt>
         <xsl:value-of select="if ($fieldName)
-                                then replace($fieldName, '\*', '')
+                                then $fieldName
                                 else tr:node-label(tr:create($schema), $elementName, null)"/>
       </dt>
       <dd>
@@ -477,7 +326,6 @@
   <xsl:template mode="render-field"
                 match="*[cit:CI_Responsibility]"
                 priority="100">
-
     <xsl:variable name="email">
       <xsl:for-each select="*/cit:party/*/cit:contactInfo/
                                       */cit:address/*/cit:electronicMailAddress[not(gco:nilReason)]">
@@ -677,47 +525,42 @@
   </xsl:template>
 
 
+
   <!-- Display thesaurus name and the list of keywords -->
   <xsl:template mode="render-field"
-                match="mri:descriptiveKeywords/*[count(mri:keyword) = 0]" priority="200"/>
+                match="mri:descriptiveKeywords[count(*/mri:keyword) = 0]" priority="200"/>
   <xsl:template mode="render-field"
-                match="mri:descriptiveKeywords/*[mri:thesaurusName/cit:CI_Citation/cit:title]"
+                match="mri:descriptiveKeywords[
+                        */mri:thesaurusName/cit:CI_Citation/cit:title]"
                 priority="100">
     <xsl:param name="fieldName"/>
 
-    <xsl:choose>
-      <xsl:when test="$isUd and
-                    mri:thesaurusName/cit:CI_Citation/cit:title/gco:CharacterString = 'Used by challenges'">
-      </xsl:when>
-      <xsl:otherwise>
-        <dl class="gn-keyword">
-          <dt>
-            <xsl:choose>
-              <xsl:when test="$fieldName != ''"><xsl:value-of select="replace($fieldName, '\*', '')"/></xsl:when>
-              <xsl:otherwise>
-                <xsl:apply-templates mode="render-value"
-                                     select="mri:thesaurusName/cit:CI_Citation/cit:title/*"/>
-              </xsl:otherwise>
-            </xsl:choose>
+    <dl class="gn-keyword">
+      <dt>
+        <xsl:choose>
+          <xsl:when test="$fieldName != ''"><xsl:value-of select="$fieldName"/></xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates mode="render-value"
+                                 select="*/mri:thesaurusName/cit:CI_Citation/cit:title/*"/>
+          </xsl:otherwise>
+        </xsl:choose>
 
-            <!--<xsl:if test="*/mri:type/*[@codeListValue != '']">
-              (<xsl:apply-templates mode="render-value"
-                                    select="*/mri:type/*/@codeListValue"/>)
-            </xsl:if>-->
-          </dt>
-          <dd>
-            <div>
-              <ul>
-                <li>
-                  <xsl:apply-templates mode="render-value"
-                                       select="mri:keyword/*"/>
-                </li>
-              </ul>
-            </div>
-          </dd>
-        </dl>
-      </xsl:otherwise>
-    </xsl:choose>
+        <!--<xsl:if test="*/mri:type/*[@codeListValue != '']">
+          (<xsl:apply-templates mode="render-value"
+                                select="*/mri:type/*/@codeListValue"/>)
+        </xsl:if>-->
+      </dt>
+      <dd>
+        <div>
+          <ul>
+            <li>
+              <xsl:apply-templates mode="render-value"
+                                   select="*/mri:keyword/*"/>
+            </li>
+          </ul>
+        </div>
+      </dd>
+    </dl>
   </xsl:template>
 
 

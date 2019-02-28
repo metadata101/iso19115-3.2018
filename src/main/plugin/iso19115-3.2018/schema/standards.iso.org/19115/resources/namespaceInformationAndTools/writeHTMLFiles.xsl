@@ -7,21 +7,21 @@
       </xd:p>
       <xd:p><xd:b>Version:</xd:b>0.1</xd:p>
       <xd:p><xd:b>Created on:</xd:b>February 27, 2013</xd:p>
-      <xd:p><xd:b>Modified on:</xd:b> January 4, 2014, 2014</xd:p>
-      <xd:p><xd:b>Author:</xd:b>thabermann@hdfgroup.org</xd:p>
+      <xd:p><xd:b>Modified on:</xd:b> January 4, 2014</xd:p>
+      <xd:p><xd:b>Modified on:</xd:b> January 4, 2019 for migration of schemas to schemas.isotc211.org</xd:p>
+      <xd:p><xd:b>Author:</xd:b>ted.habermann@gmail.com</xd:p>
       <xd:p>This stylesheets reads ISONamespaceInformation.xml and writes standard namespace description files into a filesystem with the ISO namespace structure.</xd:p>
-      <xd:p>It assumes a schema directory hierarchy like schemaRootDirectory/namespace/version/namespace.xsd</xd:p>
-      <xd:p>and writes index.html files into the namespace directories (schemaRootDirectory/namespace/version/index.html)</xd:p>
+      <xd:p>It assumes a schema directory hierarchy like schemaRootDirectory/standard/version/namespace/version/namespace.xsd</xd:p>
+      <xd:p>and writes index.html files into the namespace directories (schemaRootDirectory/standard/version/namespace/version/index.html)</xd:p>
     </xd:desc>
   </xd:doc>
   <!-- Parameter schemaRootDirectory:
-    This is the root of the schema directories. 
-    Example: /Users/tedhabermann/GitRepositories/ISOTC211-XML/XML/standards.iso.org
- 
+    This is the root of the schema directories.
+    Example: /Users/tedhabermann/GitRepositories/ISOTC211-XML/XML/schemas.isotc211.org
   -->
   <xsl:param name="schemaRootDirectory"/>
   <!-- Parameter standard:
-    This is a space delimited list of the schemaStandardNumbers to be included in the output. 
+    This is a space delimited list of the schemaStandardNumbers to be included in the output.
     Namespaces whose schemaStandardNumber is in this list will be included in the output.
     Example: 19115-3 19157-2 19110 19111 19135
   -->
@@ -33,7 +33,7 @@
   -->
   <xsl:param name="workingVersionDate"/>
   <xsl:variable name="TransformName" select="'writeHTMLFiles'"/>
-  <xsl:variable name="TransformVersion" select="'2015-06-06'"/>
+  <xsl:variable name="TransformVersion" select="'2019-01-04'"/>
   <xsl:key name="namespaceTitleLookup" match="namespace" use="prefix"/>
   <xsl:output method="html"/>
   <xsl:strip-space elements="*"/>
@@ -67,8 +67,8 @@
             </xsl:element>
             <h2>Description</h2>
             <p><xsl:value-of select="$namespaceVersionTitle"/> is an XML Schema implementation derived from ISO <xsl:value-of select="concat('ISO ',conceptualStandardNumber,', ',conceptualStandardTitle, if (exists(paragraphNumber)) then concat(', Clause ',paragraphNumber) else '')"/>. <xsl:if test="scope!=''"> It includes <xsl:value-of
-                  select="concat(lower-case(substring(scope,1,1)),substring(scope,2))"/>
-              </xsl:if> The XML schema was encoded using the rules described in <xsl:value-of select="encodingRules"/>.</p>
+                    select="concat(lower-case(substring(scope,1,1)),substring(scope,2))"/>
+            </xsl:if> The XML schema was encoded using the rules described in <xsl:value-of select="encodingRules"/>.</p>
             <xsl:if test="count(collection(iri-to-uri($xmlFilesSelect)))">
               <h2>Sample XML files for <xsl:value-of select="$namespaceVersion"/></h2>
               <xsl:for-each select="collection(iri-to-uri($xmlFilesSelect))">
@@ -97,14 +97,14 @@
             <p>The namespace URI for <xsl:value-of select="$namespaceVersion"/> is <b><xsl:value-of select="$namespaceURL"/></b>.</p>
             <h2>XML Schema for <xsl:value-of select="$namespaceVersion"/></h2>
             <p><b><xsl:element name="a">
-                  <xsl:attribute name="href" select="concat(prefix,'.xsd')"/>
-                  <xsl:value-of select="concat(prefix,'.xsd')"/>
-                </xsl:element></b> is the XML Schema document to be referenced by XML documents containing XML elements in the <xsl:value-of select="$namespaceVersion"/> namespace or by XML Schema documents importing the <xsl:value-of select="$namespaceVersion"/> namespace. This XML schema includes (indirectly) all the implemented concepts of the <xsl:value-of select="prefix"/> namespace, but it
+              <xsl:attribute name="href" select="concat(prefix,'.xsd')"/>
+              <xsl:value-of select="concat(prefix,'.xsd')"/>
+            </xsl:element></b> is the XML Schema document to be referenced by XML documents containing XML elements in the <xsl:value-of select="$namespaceVersion"/> namespace or by XML Schema documents importing the <xsl:value-of select="$namespaceVersion"/> namespace. This XML schema includes (indirectly) all the implemented concepts of the <xsl:value-of select="prefix"/> namespace, but it
               does not contain the declaration of any types.</p>
             <p>
               <i>NOTE: The XML Schema for <xsl:value-of select="$namespaceVersion"/> are available <xsl:element name="a">
                 <xsl:attribute name="href" select="concat(prefix,'.zip')"/>here</xsl:element>. A zip archive including all the XML Schema Implementations defined in ISO/TS 19115-3 and related standards is also <xsl:element name="a">
-                <xsl:attribute name="href" select="'http://standards.iso.org/iso/19115/19115AllNamespaces.zip'"/>available</xsl:element>.</i>
+                <xsl:attribute name="href" select="'http://schemas.isotc211.org/19115/19115AllNamespaces.zip'"/>available</xsl:element>.</i>
             </p>
             <xsl:variable name="otherSchemaList" as="xs:string*">
               <xsl:for-each select="document($schemaFile)/*/xs:include">
@@ -116,9 +116,9 @@
               <xsl:variable name="currentRoot" select="/"/>
               <xsl:for-each select="$otherSchemaList">
                 <p><b><xsl:element name="a">
-                      <xsl:attribute name="href" select="."/>
-                      <xsl:value-of select="."/>
-                    </xsl:element></b> implements the UML conceptual schema defined in <xsl:value-of select="concat('ISO ',$currentNamespace/conceptualStandardNumber,', ',$currentNamespace/conceptualStandardTitle, if (exists($currentNamespace/paragraphNumber)) then concat(', Clause ',$currentNamespace/paragraphNumber) else '')"/>. It was created using the encoding rules defined in ISO 19118, ISO
+                  <xsl:attribute name="href" select="."/>
+                  <xsl:value-of select="."/>
+                </xsl:element></b> implements the UML conceptual schema defined in <xsl:value-of select="concat('ISO ',$currentNamespace/conceptualStandardNumber,', ',$currentNamespace/conceptualStandardTitle, if (exists($currentNamespace/paragraphNumber)) then concat(', Clause ',$currentNamespace/paragraphNumber) else '')"/>. It was created using the encoding rules defined in ISO 19118, ISO
                   19139, and the implementation approach described in ISO 19115-3 and contains the following classes (codeLists are bold): <xsl:variable name="otherSchemaFile" select="concat($schemaRootDirectory,'/',replace($currentNamespace/schemaStandardNumber,'-','/-'),'/',$currentNamespace/prefix,'/',$currentNamespace/version,'/',$workingVersionDate,'/',.)"/>
                   <xsl:for-each select="document($otherSchemaFile)/*/xs:element">
                     <xsl:if test="position()!=1"><xsl:text>, </xsl:text></xsl:if>
@@ -188,9 +188,9 @@
                       <td><xsl:value-of select="key('namespaceTitleLookup',.,$currentRoot)/title"/></td>
                       <td><xsl:value-of select="."/></td>
                       <td><xsl:element name="a">
-                          <xsl:attribute name="href" select="subsequence($otherNamespaceList,$sequencePosition,1)"/>
-                          <xsl:value-of select="subsequence($otherNamespaceList,$sequencePosition,1)"/>
-                        </xsl:element></td>
+                        <xsl:attribute name="href" select="subsequence($otherNamespaceList,$sequencePosition,1)"/>
+                        <xsl:value-of select="subsequence($otherNamespaceList,$sequencePosition,1)"/>
+                      </xsl:element></td>
                       <td><xsl:value-of select="subsequence($otherNamespaceLocationList,$sequencePosition,1)"/></td>
                     </tr>
                   </xsl:for-each>

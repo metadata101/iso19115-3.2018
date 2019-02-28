@@ -777,69 +777,6 @@
 
 
 
-   <!-- TODO: Multilingual support -->
-
-    <xsl:variable name="isDps"
-                  select="count(
-                            $metadata/mdb:metadataStandard/*/cit:title/*[text() =
-                              'ISO 19115-3 - Emodnet Checkpoint - Data Product Specification']
-                          ) = 1"/>
-
-
-    <xsl:for-each select="$metadata/mdb:dataQualityInfo">
-      <!-- Checpoint / Index component id.
-        If not set, then index by dq section position. -->
-      <xsl:variable name="cptId" select="*/@uuid"/>
-      <xsl:variable name="cptName" select="*/mdq:scope/*/mcc:levelDescription[1]/*/mcc:other/*/text()"/>
-      <xsl:variable name="dqId" select="if ($cptId != '') then $cptId else position()"/>
-
-      <Field name="dqCpt" index="true" store="true"
-             string="{$dqId}"/>
-
-
-      <xsl:for-each select="*/mdq:standaloneQualityReport/*[
-                              mdq:reportReference/*/cit:title/*/text() != ''
-                            ]">
-        <Field name="dqSReport" index="false" store="true"
-               string="{normalize-space(concat(
-                          mdq:reportReference/*/cit:title/*/text(), '|', mdq:abstract/*/text()))}"/>
-      </xsl:for-each>
-
-      <xsl:for-each select="*/mdq:report/*[
-                            mdq:measure/*/mdq:measureIdentification/*/mcc:code/*/text() != ''
-                          ]">
-
-        <xsl:variable name="qmId" select="mdq:measure/*/mdq:measureIdentification/*/mcc:code/*/text()"/>
-        <xsl:variable name="qmName" select="mdq:measure/*/mdq:nameOfMeasure/*/text()"/>
-        <xsl:variable name="qmDefinition" select="mdq:measure/*/mdq:measureDescription/*/text()"/>
-
-        <!-- Search record by measure id or measure name. -->
-        <Field name="dqMeasure" index="true" store="false"
-               string="{$qmId}"/>
-        <Field name="dqMeasureName" index="true" store="false"
-               string="{$qmName}"/>
-
-
-        <xsl:for-each select="mdq:result/mdq:DQ_QuantitativeResult">
-          <xsl:variable name="qmDate" select="mdq:dateTime/gco:Date/text()"/>
-          <xsl:variable name="qmValue" select="normalize-space(mdq:value/gco:Record/text())"/>
-          <xsl:variable name="qmStatement" select="normalize-space(../../mdq:result/mdq:DQ_DescriptiveResult/mdq:statement/gco:CharacterString/text())"/>
-          <xsl:variable name="qmUnit" select="mdq:valueUnit/*/gml:identifier/text()"/>
-
-          <xsl:choose>
-            <xsl:when test="$isDps and $qmId = 'AP.5.1'"></xsl:when>
-            <xsl:otherwise>
-              <Field name="dqValues" index="true" store="true"
-                     string="{concat($dqId, '|', $cptName, '|', $qmId, '|', $qmName, '|', $qmDate, '|', $qmValue, '|', $qmUnit, '|', $qmDefinition, '|', $qmStatement)}"/>
-            </xsl:otherwise>
-          </xsl:choose>
-
-        </xsl:for-each>
-      </xsl:for-each>
-    </xsl:for-each>
-
-
-
     <xsl:for-each select="$metadata/mdb:resourceLineage/*/mrl:source[@uuidref]">
       <Field  name="hassource" string="{string(@uuidref)}" store="false" index="true"/>
     </xsl:for-each>

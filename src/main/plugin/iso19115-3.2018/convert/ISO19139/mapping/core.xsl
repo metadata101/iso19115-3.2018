@@ -385,7 +385,7 @@
               </xsl:element>
             </xsl:element>
             <!-- This loop goes back out to convert each gmd:contentInfo section into a separate mrc:AttributeGroup -->
-            <xsl:for-each select="/*/gmd:contentInfo/gmd:MD_CoverageDescription | /*/gmd:contentInfo/gmi:MI_CoverageDescription">
+            <xsl:for-each select="//gmd:contentInfo/gmd:MD_CoverageDescription | //gmd:contentInfo/gmi:MI_CoverageDescription">
               <xsl:element name="mrc:attributeGroup">
                 <xsl:element name="mrc:MD_AttributeGroup">
                   <xsl:apply-templates mode="from19139to19115-3"/>

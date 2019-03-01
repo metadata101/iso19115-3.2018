@@ -3856,20 +3856,55 @@
     <label>Protocol</label>
     <description>Connection protocol to be used</description>
     <helper>
-      <option value="WWW:LINK">Web link (URL)</option>
-      <option value="WWW:LINK-1.0-http--publication-URL">Main publication link</option>
-      <option value="WWW:LINK-1.0-http--metadata-URL">Point of truth URL of this metadata record</option>
+      <!--<option value="WWW:LINK">Web link (URL)</option>
+      <option value="WWW:LINK-1.0-http&#45;&#45;publication-URL">Main publication link</option>
+      <option value="WWW:LINK-1.0-http&#45;&#45;metadata-URL">Point of truth URL of this metadata record</option>
       <option value="FILE">Download (file)</option>
       <option value="COPYFILE">Download (copy)</option>
       <option value="DB">Download (database)</option>
-      <option value="WWW:DOWNLOAD-1.0-link--download">Download (link)</option>
+      <option value="WWW:DOWNLOAD-1.0-link&#45;&#45;download">Download (link)</option>
       <option value="NETWORK:LINK">Download (visible path)</option>
       <option value="OGC:WFS">Download (WFS)</option>
       <option value="OGC:WCS">Download (WCS)</option>
       <option value="OGC:WMS">View (WMS)</option>
       <option value="OGC:WMTS">View (WMTS)</option>
       <option value="OGC:WPS">OGC-WPS Web Processing Service</option>
-      <option value="OGC:OWS-C">View (OWS Context)</option>
+      <option value="OGC:OWS-C">View (OWS Context)</option>-->
+
+      <option value="OGC:CSW">OGC-CSW Catalogue Service for the Web
+      </option>
+      <option value="OGC:KML">OGC-KML Keyhole Markup Language
+      </option>
+      <option value="OGC:GML">OGC-GML Geography Markup Language
+      </option>
+      <option value="OGC:ODS">OGC-ODS OpenLS Directory Service
+      </option>
+      <option value="OGC:OGS">OGC-ODS OpenLS Gateway Service</option>
+      <option value="OGC:OUS">OGC-ODS OpenLS Utility Service</option>
+      <option value="OGC:OPS">OGC-ODS OpenLS Presentation Service</option>
+      <option value="OGC:ORS">OGC-ODS OpenLS Route Service</option>
+      <option value="OGC:SOS">OGC-SOS Sensor Observation Service</option>
+      <option value="OGC:SPS">OGC-SPS Sensor Planning Service</option>
+      <option value="OGC:SAS">OGC-SAS Sensor Alert Service</option>
+      <option value="OGC:WCS">OGC-WCS Web Coverage Service</option>
+      <option value="OGC:WCTS">OGC-WCTS Web Coordinate Transformation Service</option>
+      <option value="OGC:WFS">OGC-WFS Web Feature Service</option>
+      <option value="OGC:WMS">OGC-WMS Web Map Service</option>
+      <option value="OGC:WMTS">OGC-WMS Web Map Tile Service</option>
+      <option value="OGC:WNS">OGC-WNS Web Notification Service</option>
+      <option value="OGC:WPS">OGC-WPS Web Processing Service</option>
+      <option value="WWW:DOWNLOAD-1.0-ftp--download">File for download through FTP</option>
+      <option value="WWW:DOWNLOAD-1.0-http--download">File for download</option>
+      <option value="ESRI:REST">ESRI REST Service</option>
+      <option value="FILE:GEO">GIS file</option>
+      <option value="FILE:RASTER">GIS RASTER file</option>
+      <option value="WWW:LINK-1.0-http--link" default="">Web address (URL)</option>
+      <option value="WWW:LINK-1.0-http--rss">RSS News feed (URL)</option>
+      <option value="DB:POSTGIS">PostGIS database table</option>
+      <option value="DB:ORACLE">ORACLE database table</option>
+      <option value="WWW:LINK-1.0-http--opendap">OPeNDAP URL</option>
+      <option value="RBNB:DATATURBINE">Data Turbine</option>
+      <option value="UKST">Unknown Service Type</option>
     </helper>
   </element>
   <element name="mri:purpose" id="26.0">
@@ -4535,14 +4570,6 @@
     <label>Value</label>
     <description>Quantitative value or values, content determined by the evaluation procedure
             used</description>
-    <helper displayIf="ancestor::node()[
-              name()='mdq:DQ_DomainConsistency' and
-              contains(mdq:measure/mdq:DQ_MeasureReference/mdq:nameOfMeasure/gco:CharacterString, 'Responsiveness')]">
-      <option value="No information is found on response time">No information is found on response time</option>
-      <option value="More than 1 week for release">More than 1 week for release</option>
-      <option value="Less or equal to 1 week for release">Less or equal to 1 week for release</option>
-      <option value="Online downloading (i.e. a few hours or less) for release">Online downloading (i.e. a few hours or less) for release</option>
-    </helper>
   </element>
   <element name="mdq:value">
     <label>Value</label>
@@ -4828,16 +4855,22 @@
       nameSpace and name attributes of GeneralName may be 'OGC' and 'catalogue'
     </description>
     <helper>
-      <option value="OGC:WMS">OGC Web Map Service (OGC:WMS)</option>
-      <option value="OGC:WFS">OGC Web Feature Service (OGC:WFS)</option>
-      <option value="OGC:WCS">OGC Web Coverage Service (OGC:WCS)</option>
-      <option value="W3C:HTML:DOWNLOAD">Download (W3C:HTML:DOWNLOAD)</option>
-      <option value="W3C:HTML:LINK">Information (W3C:HTML:LINK)</option>
+      <option value="OGC:WMS">OGC Web Map Service</option>
+      <option value="OGC:WMTS">OGC Web Map Tile Service</option>
+      <option value="OGC:WFS">OGC Web Feature Service</option>
+      <option value="OGC:WCS">OGC Web Coverage Service</option>
+      <option value="OGC:WPS">OGC Web Processing Service</option>
+      <option value="atom:feed">ATOM feed</option>
       <!--INSPIRE Service type defined in MD IR / 1.3.1 Spatial data service
         type <option value="discovery">Discovery Service (discovery)</option> <option
         value="view">View Service (view)</option> <option value="download">Download
         Service (download)</option> <option value="transformation">Transformation
         Service (transformation)</option> <option value="other">Other Services (other)</option> -->
+      <!--<option value="OGC:WMS">OGC Web Map Service (OGC:WMS)</option>
+      <option value="OGC:WFS">OGC Web Feature Service (OGC:WFS)</option>
+      <option value="OGC:WCS">OGC Web Coverage Service (OGC:WCS)</option>
+      <option value="W3C:HTML:DOWNLOAD">Download (W3C:HTML:DOWNLOAD)</option>
+      <option value="W3C:HTML:LINK">Information (W3C:HTML:LINK)</option>-->
     </helper>
   </element>
   <element name="srv:serviceTypeVersion">

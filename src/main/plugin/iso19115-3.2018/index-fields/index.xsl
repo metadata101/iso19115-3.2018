@@ -108,6 +108,10 @@
     <xsl:variable name="identifier" as="xs:string"
                   select="mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code/gco:CharacterString[. != '']"/>
 
+    <xsl:variable name="lastRevisionDate" as="xs:string?"
+                  select="mdb:dateInfo/*[
+                              cit:dateType/*/@codeListValue = 'revision'
+                            ]/cit:date/gco:DateTime[. != '']"/>
 
     <xsl:variable name="mainLanguage" as="xs:string?"
                   select="mdb:defaultLocale/lan:PT_Locale/
@@ -506,14 +510,14 @@
                 <xsl:value-of select="normalize-space(.)"/>
               </xsl:element>
 
-              <xsl:if test="$thesaurusField = 'thesaurus_geonetworkthesauruslocalthemesextanttheme'">
+              <!--<xsl:if test="$thesaurusField = 'thesaurus_geonetworkthesauruslocalthemesextanttheme'">
                 <xsl:variable name="theme"
                               select="index:analyzeField('synSextantThemes', normalize-space(.))"/>
                 <xsl:if test="$theme != ''">
                   <sextantTheme><xsl:value-of select="$theme"/></sextantTheme>
                   <sextantThemePath><xsl:value-of select="$theme"/></sextantThemePath>
                 </xsl:if>
-              </xsl:if>
+              </xsl:if>-->
             </xsl:for-each>
           </xsl:if>
         </xsl:for-each>

@@ -56,7 +56,7 @@
 
   <!-- Load INSPIRE theme thesaurus if available -->
   <xsl:variable name="inspire-thesaurus"
-                select="document(concat('file:///', $thesauriDir, '/external/thesauri/theme/inspire-theme.rdf'))"/>
+                select="document(concat('file:///', $thesauriDir, '/external/thesauri/theme/httpinspireeceuropaeutheme-theme.rdf'))"/>
 
   <xsl:variable name="inspire-theme"
                 select="if ($inspire-thesaurus//skos:Concept)
@@ -416,16 +416,6 @@
                       select="//mri:MD_Keywords[
                                 not(mri:thesaurusName) or mri:thesaurusName/*/cit:title/*/text() = '']/
                                   mri:keyword[*/text() != '']"/>
-        <xsl:if test="count($keywordWithNoThesaurus) > 0">
-          'other': [
-          <xsl:for-each select="$keywordWithNoThesaurus/(gco:CharacterString|gcx:Anchor)">
-            {'value': <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>,
-            'link': '<xsl:value-of select="@xlink:href"/>'}
-            <xsl:if test="position() != last()">,</xsl:if>
-          </xsl:for-each>
-          ]
-          <xsl:if test="//mri:MD_Keywords[mri:thesaurusName]">,</xsl:if>
-        </xsl:if>
         <xsl:for-each-group select="//mri:MD_Keywords[mri:thesaurusName/*/cit:title/*/text() != '']"
                             group-by="mri:thesaurusName/*/cit:title/*/text()">
           '<xsl:value-of select="replace(current-grouping-key(), '''', '\\''')"/>' :[
@@ -437,6 +427,16 @@
           ]
           <xsl:if test="position() != last()">,</xsl:if>
         </xsl:for-each-group>
+        <xsl:if test="count(//mri:MD_Keywords[mri:thesaurusName/*/cit:title/*/text() != '']) > 0">
+          <xsl:if test="//mri:MD_Keywords[mri:thesaurusName]">,</xsl:if>
+          'otherKeywords': [
+          <xsl:for-each select="$keywordWithNoThesaurus/(gco:CharacterString|gcx:Anchor)">
+            {'value': <xsl:value-of select="concat('''', replace(., '''', '\\'''), '''')"/>,
+            'link': '<xsl:value-of select="@xlink:href"/>'}
+            <xsl:if test="position() != last()">,</xsl:if>
+          </xsl:for-each>
+          ]
+        </xsl:if>
         }
       </xsl:variable>
 
@@ -731,7 +731,8 @@
         <Field name="specificationDateType" string="{string(.)}" store="true" index="true"/>
       </xsl:for-each>
     </xsl:for-each>
-    <xsl:for-each select="mdb:dataQualityInfo/*/dqm:lineage/*/dqm:statement">
+
+    <xsl:for-each select="$metadata/mdb:resourceLineage/*/mrl:statement">
       <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('lineage', ., $langId)"/>
     </xsl:for-each>
 
@@ -774,6 +775,51 @@
            string="{count($metadata/mdb:dataQualityInfo/*/mdq:report/*[
                             mdq:measure/*/mdq:measureIdentification/*/mcc:code/*/text() != ''
                           ]/mdq:result/mdq:DQ_QuantitativeResult[mdq:value/gco:Record/text() != '']) > 0}"/>
+
+   <!-- TODO: Multilingual support -->
+    <xsl:for-each select="$metadata/mdb:dataQualityInfo">
+      <!-- Checpoint / Index component id.
+        If not set, then index by dq section position. -->
+      <xsl:variable name="cptId" select="*/@uuid"/>
+      <xsl:variable name="cptName" select="*/mdq:scope/*/mcc:levelDescription[1]/*/mcc:other/*/text()"/>
+      <xsl:variable name="dqId" select="if ($cptId != '') then $cptId else position()"/>
+
+      <Field name="dqCpt" index="true" store="true"
+             string="{$dqId}"/>
+
+
+      <xsl:for-each select="*/mdq:standaloneQualityReport/*[
+                              mdq:reportReference/*/cit:title/*/text() != ''
+                            ]">
+        <Field name="dqSReport" index="false" store="true"
+               string="{normalize-space(concat(
+                          mdq:reportReference/*/cit:title/*/text(), '|', mdq:abstract/*/text()))}"/>
+      </xsl:for-each>
+
+      <xsl:for-each select="*/mdq:report/*[
+                            mdq:measure/*/mdq:measureIdentification/*/mcc:code/*/text() != ''
+                          ]">
+
+        <xsl:variable name="qmId" select="mdq:measure/*/mdq:measureIdentification/*/mcc:code/*/text()"/>
+        <xsl:variable name="qmName" select="mdq:measure/*/mdq:nameOfMeasure/*/text()"/>
+
+        <!-- Search record by measure id or measure name. -->
+        <Field name="dqMeasure" index="true" store="false"
+               string="{$qmId}"/>
+        <Field name="dqMeasureName" index="true" store="false"
+               string="{$qmName}"/>
+
+
+        <xsl:for-each select="mdq:result/mdq:DQ_QuantitativeResult">
+          <xsl:variable name="qmDate" select="mdq:dateTime/gco:Date/text()"/>
+          <xsl:variable name="qmValue" select="mdq:value/gco:Record/text()"/>
+          <xsl:variable name="qmUnit" select="mdq:valueUnit/*/gml:identifier/text()"/>
+          <Field name="dqValues" index="true" store="true"
+                 string="{concat($dqId, '|', $cptName, '|', $qmId, '|', $qmName, '|', $qmDate, '|', $qmValue, '|', $qmUnit)}"/>
+
+        </xsl:for-each>
+      </xsl:for-each>
+    </xsl:for-each>
 
 
 
@@ -970,7 +1016,6 @@
                               '|', $positionName, '|',
                               $address, '|', string-join($phones, ','))}"
            store="true" index="false"/>
-
 
     <xsl:for-each select="$email">
       <Field name="{$fieldPrefix}Email" string="{string(.)}" store="true" index="true"/>

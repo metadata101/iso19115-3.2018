@@ -251,16 +251,6 @@
         <xsl:apply-templates mode="render-value" select="@*"/>
       </dd>
     </dl>
-
-
-
-    <!-- Put the list of the links towards the products making use
-    of the input data after the field "intended use" -->
-    <xsl:if test="name() = 'mri:environmentDescription' and $isUd">
-        <div data-gn-related="md"
-             data-types="siblings|associated"
-             data-title="Links">&#160;</div>
-    </xsl:if>
   </xsl:template>
 
 
@@ -881,9 +871,5 @@
   </xsl:template>
   <xsl:template mode="render-value"
                 match="@*"/>
-
-  <!-- MedSea specific -->
-  <!--<xsl:template mode="render-field" match="mdq:report"/>-->
-  <xsl:template mode="render-view" match="tab[@id='medsea-dq']" priority="2"/>
 
 </xsl:stylesheet>

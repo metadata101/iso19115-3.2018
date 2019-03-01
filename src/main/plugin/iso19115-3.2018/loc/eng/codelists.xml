@@ -1231,53 +1231,6 @@
       <label>Biennially</label>
       <description>Resource is updated every 2 years</description>
     </entry>
-    <!-- Added in Sextant -->
-    <entry>
-      <code>lessThan6Hours</code>
-      <label>Less than 6 hours</label>
-      <description></description>
-    </entry>
-    <entry>
-      <code>lessThan12Hours</code>
-      <label>Less than 12 hours</label>
-      <description></description>
-    </entry>
-    <entry>
-      <code>lessThan24Hours</code>
-      <label>Less than 24 hours</label>
-      <description></description>
-    </entry>
-    <entry>
-      <code>lessThan48Hours</code>
-      <label>Less than 48 hours</label>
-      <description></description>
-    </entry>
-    <entry>
-      <code>lessThan3days</code>
-      <label>Less than 3 days</label>
-      <description></description>
-    </entry>
-    <entry>
-      <code>lessThan1month</code>
-      <label>Less than 1 month</label>
-      <description></description>
-    </entry>
-    <entry>
-      <code>lessThan4months</code>
-      <label>Less than 4 months</label>
-      <description></description>
-    </entry>
-    <entry>
-      <code>every12hours</code>
-      <label>~ 12 hours</label>
-      <description></description>
-    </entry>
-    <entry>
-      <code>historical</code>
-      <label>Historical</label>
-      <description></description>
-    </entry>
-
   </codelist>
   <codelist name="mrd:MD_MediumFormatCode">
     <entry>

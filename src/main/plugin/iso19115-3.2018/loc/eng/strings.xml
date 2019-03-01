@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings>
+
+  <!-- XSD error translation -->
+  <invalidElement>Invalid content found at element </invalidElement>
+  <onElementOf>One of the following elements </onElementOf>
+  <isExpected> is expected.</isExpected>
+  <isNotComplete> is not complete.</isNotComplete>
+  <elementLocated> Parent element is </elementLocated>
+  <missingElement>Missing element in </missingElement>
+  <invalidValue>Invalid or missing value.</invalidValue>
+  <notValidFor> is not a valid value for </notValidFor>
+  <xsdErrorIs>XSD error is: </xsdErrorIs>
+  <inElement> in element </inElement>
+  <enum1>Value </enum1>
+  <enum2> is not valid for the field </enum2>
+  <enum3>Potential values are: </enum3>
+
+
   <understandResource>Information about the dataset</understandResource>
   <relatedResources>Related services and linked data</relatedResources>
   <techInfo>Technical information</techInfo>
@@ -48,24 +65,15 @@
   <citationProposal-help>This proposal was automatically generated, check if the metadata authors did not specified custom citation requirements.</citationProposal-help>
   <associatedResources>Associated resources</associatedResources>
 
+
   <add-resource-id>Compute resource identifier</add-resource-id>
-  <add-resource-idHelp>Compose the resource identifier using the catalog URL and the metadata identifier (eg. http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).</add-resource-idHelp>
-  <add-extent-from-geokeywords>Compute extent from keyword</add-extent-from-geokeywords>
-  <add-extent-from-geokeywordsHelp>Analyze each keyword of type place and add matching extent.</add-extent-from-geokeywordsHelp>
-
-  <!-- XSD error translation -->
-  <invalidElement>Invalid content found at element </invalidElement>
-  <onElementOf>One of the following elements </onElementOf>
-  <isExpected> is expected.</isExpected>
-  <isNotComplete> is not complete.</isNotComplete>
-  <elementLocated> Parent element is </elementLocated>
-  <missingElement>Missing element in </missingElement>
-  <invalidValue>Invalid or missing value.</invalidValue>
-  <notValidFor> is not a valid value for </notValidFor>
-  <xsdErrorIs>XSD error is: </xsdErrorIs>
-  <inElement> in element </inElement>
-  <enum1>Value </enum1>
-  <enum2> is not valid for the field </enum2>
-  <enum3>Potential values are: </enum3>
-
+  <add-resource-idHelp>Compose the resource identifier using the catalog URL and
+    the metadata identifier (eg.
+    http://www.organization.org/catalogue/5391bf69-44bc-4ea0-8cc0-6cf6c3bc81ae).
+  </add-resource-idHelp>
+  <add-extent-from-geokeywords>Compute extent from keyword
+  </add-extent-from-geokeywords>
+  <add-extent-from-geokeywordsHelp>Analyze each keyword of type place and add
+    matching extent.
+  </add-extent-from-geokeywordsHelp>
 </strings>

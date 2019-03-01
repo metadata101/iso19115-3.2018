@@ -358,6 +358,10 @@
     </description>
     <condition></condition>
   </element>
+  <element name="mdb:metadataProfile">
+    <label>Profil des métadonnées</label>
+    <description>Citation du/des profil(s) de la norme de métadonnées</description>
+  </element>
   <element name="mdb:MD_MetadataScoperd" id="39.0">
     <label>Domaine d’application des métadonnées</label>
     <description iso="true">Informations concernant le domaine d’application de
@@ -902,11 +906,16 @@
     </description>
   </element>
   <element name="mdq:explanation">
-    <label>Explanation</label>
-    <description></description>
+    <label>Explication</label>
+    <description>Explication de la signification de conformance pour ces résultats</description>
   </element>
   <element name="mdq:pass">
-    <label>Taux de revisite</label>
+    <label>Degré de conformité</label>
+    <description>Indication sur le résultat de conformité à la spécification où 0 = non conforme et 1= conforme</description>
+    <help for="inspire"><![CDATA[<b>Exigence INSPIRE :</b>
+    Degré de conformité de la ressource par rapport à la spécification citée ci-dessus.
+    ]]>
+    </help>
     <description></description>
   </element>
   <element name="mdq:specification">
@@ -6255,20 +6264,58 @@ la non-évaluation</b>, dans le cadre de métadonnées INSPIRE
     <help>Protocole de connexion utilisé, par exemple FTP.</help>
     <condition/>
     <helper>
-      <option value="WWW:LINK">Adresse internet (URL)</option>
-      <option value="WWW:LINK-1.0-http--publication-URL">Lien vers une publication principale</option>
-      <option value="WWW:LINK-1.0-http--metadata-URL">Adresse internet vers la métadonnée</option>
+      <option value="OGC:CSW">OGC-CSW Catalogue Service for the Web</option>
+      <option value="OGC:KML">OGC-KML Keyhole Markup Language</option>
+      <option value="OGC:GML">OGC-GML Geography Markup Language</option>
+      <option value="OGC:ODS">OGC-ODS OpenLS Directory Service</option>
+      <option value="OGC:OGS">OGC-ODS OpenLS Gateway Service</option>
+      <option value="OGC:OUS">OGC-ODS OpenLS Utility Service</option>
+      <option value="OGC:OPS">OGC-ODS OpenLS Presentation Service</option>
+      <option value="OGC:ORS">OGC-ODS OpenLS Route Service</option>
+      <option value="OGC:SOS">OGC-SOS Sensor Observation Service</option>
+      <option value="OGC:SPS">OGC-SPS Sensor Planning Service</option>
+      <option value="OGC:SAS">OGC-SAS Sensor Alert Service</option>
+      <option value="OGC:WCS">OGC-WCS Web Coverage Service</option>
+      <option value="OGC:WCTS">OGC-WCTS Web Coordinate Transformation Service
+      </option>
+      <option value="OGC:WFS">OGC-WFS Web Feature Service</option>
+      <option value="OGC:WFS-G">OGC-WFS-G Gazzetteer Service</option>
+      <option value="OGC:WMC">OGC-WMC Web Map Context</option>
+      <option value="OGC:WMS">OGC-WMS Web Map Service</option>
+      <option value="OGC:WMTS">OGC-WMS Web Map Tile Service</option>
+      <option value="OGC:WNS">OGC-WNS Web Notification Service</option>
+      <option value="OGC:WPS">OGC-WPS Web Processing Service</option>
+      <option value="WWW:DOWNLOAD-1.0-ftp--download">Fichier à télécharger
+        (FTP)
+      </option>
+      <option value="WWW:DOWNLOAD-1.0-http--download">Fichier à télécharger
+      </option>
+      <option value="ESRI:REST">ESRI Service REST</option>
+      <option value="FILE:GEO">Fichier SIG</option>
+      <option value="FILE:RASTER">Fichier SIG RASTER</option>
+      <option value="WWW:LINK-1.0-http--link" default="">Adresse Internet
+        (URL)
+      </option>
+      <option value="WWW:LINK-1.0-http--rss">Fil RSS (URL)</option>
+      <option value="DB:POSTGIS">Base de données / Table PostGIS</option>
+      <option value="DB:ORACLE">Base de données / ORACLE</option>
+      <option value="WWW:LINK-1.0-http--opendap">OPeNDAP URL</option>
+      <option value="RBNB:DATATURBINE">Data Turbine</option>
+      <option value="UKST">Unknown Service Type</option>
+      <!--<option value="WWW:LINK">Adresse internet (URL)</option>
+      <option value="WWW:LINK-1.0-http&#45;&#45;publication-URL">Lien vers une publication principale</option>
+      <option value="WWW:LINK-1.0-http&#45;&#45;metadata-URL">Adresse internet vers la métadonnée</option>
       <option value="OGC:WMS">Visualiser (WMS)</option>
       <option value="OGC:WMTS">Visualiser (WMTS)</option>
       <option value="OGC:OWS-C">Visualiser (OWS Context)</option>
       <option value="FILE">Télécharger (fichier)</option>
       <option value="COPYFILE">Télécharger (copie)</option>
       <option value="DB">Télécharger (base de données)</option>
-      <option value="WWW:DOWNLOAD-1.0-link--download">Télécharger (lien)</option>
+      <option value="WWW:DOWNLOAD-1.0-link&#45;&#45;download">Télécharger (lien)</option>
       <option value="NETWORK:LINK">Télécharger (chemin visible)</option>
       <option value="OGC:WFS">Télécharger (WFS)</option>
       <option value="OGC:WCS">Télécharger (WCS)</option>
-      <option value="OGC:WPS">Traitement en ligne (WPS)</option>
+      <option value="OGC:WPS">Traitement en ligne (WPS)</option>-->
     </helper>
   </element>
   <element name="mri:purpose" id="45.0">
@@ -7533,17 +7580,6 @@ l’IGN (WPS)
     <ul>
     ]]></help>
     <condition/>
-    <helper displayIf="ancestor::node()[
-              name()='mdb:MD_Metadata' and
-              contains(mdb:metadataStandard/*/cit:title/*:CharacterString, 'Emodnet Checkpoint')]"
-            editorMode="radio">
-      <option value="Not or not well documented">Not or not well documented</option>
-      <option value="Commercial charge">Commercial charge</option>
-      <option value="Distribution charge">Distribution charge</option>
-      <option value="Collection charge">Collection charge</option>
-      <option value="Free of charge for academic institutions and uses">Free of charge for academic institutions and uses</option>
-      <option value="Open and Free. No charge">Open and Free. No charge</option>
-    </helper>
     <helper>
       <option value="Aucune condition ne s’applique">Aucune condition ne
         s’applique
@@ -7616,14 +7652,6 @@ l’IGN (WPS)
     </description>
     <help>Valeurs quantitatives définies par le processus d'exploitation.</help>
     <condition/>
-    <helper displayIf="ancestor::node()[
-              name()='mdq:DQ_DomainConsistency' and
-              contains(mdq:measure/mdq:DQ_MeasureReference/mdq:nameOfMeasure/gco:CharacterString, 'Responsiveness')]">
-      <option value="No information is found on response time">No information is found on response time</option>
-      <option value="More than 1 week for release">More than 1 week for release</option>
-      <option value="Less or equal to 1 week for release">Less or equal to 1 week for release</option>
-      <option value="Online downloading (i.e. a few hours or less) for release">Online downloading (i.e. a few hours or less) for release</option>
-    </helper>
   </element>
   <element name="cit:value">
     <label>Valeur</label>

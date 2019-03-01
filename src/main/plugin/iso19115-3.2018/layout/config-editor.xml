@@ -97,17 +97,16 @@
               data-search-action="false"
               data-popup-action="true"
               data-template-type="contact"
-              data-filter='{"_root": "gmd:CI_ResponsibleParty"}'
-              data-variables="gmd:role/gmd:CI_RoleCode/@codeListValue~{role}"
-              data-transformation="contact-from-iso19139-to-iso19115-3.2018"/>
+              data-filter='{"_root": "cit:CI_Responsibility"}'
+              data-variables="cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>
     </for>
     <for name="mri:pointOfContact" addDirective="data-gn-directory-entry-selector">
       <!--<directiveAttributes
               data-template-add-action="true"
               data-template-type="contact"
-              data-filter='{"_root": "gmd:CI_ResponsibleParty"}'
+              data-filter='{"_root": "cit:CI_Responsibility"}'
               data-variables="cit:role/cit:CI_RoleCode/@codeListValue~{role}"/>-->
-      <!-- To use an ISO19139 contact directory in an iso19115-3.2018 record
+      <!-- To use an ISO19139 contact directory in an ISO19115-3 record
       use the following configuration: -->
       <directiveAttributes
               data-template-add-action="true"
@@ -207,6 +206,7 @@
     <name>mdb:dataQualityInfo</name>
     <name>mdq:result</name>
     <name>mdq:report</name>
+    <name>mri:spatialResolution</name>
     <name>mdb:resourceLineage</name>
     <name>cit:citedResponsibleParty</name>
     <name>cit:party</name>
@@ -342,8 +342,13 @@
 
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
+        <directive gn-geo-publisher=""
+                   data-ng-if="gnCurrentEdit.geoPublisherConfig"
+                   data-config="{{gnCurrentEdit.geoPublisherConfig}}"
+                   data-lang="lang"/>
         <directive data-gn-validation-report=""/>
         <directive data-gn-suggestion-list=""/>
+        <directive data-gn-need-help="user-guide/describing-information/creating-metadata.html"/>
       </sidePanel>
 
       <tab id="default" default="true" mode="flat">
@@ -390,8 +395,13 @@
     <view name="advanced">
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
+        <directive gn-geo-publisher=""
+                   data-ng-if="gnCurrentEdit.geoPublisherConfig"
+                   data-config="{{gnCurrentEdit.geoPublisherConfig}}"
+                   data-lang="lang"/>
         <directive data-gn-validation-report=""/>
         <directive data-gn-suggestion-list=""/>
+        <directive data-gn-need-help="user-guide/describing-information/creating-metadata.html"/>
       </sidePanel>
 
       <tab id="identificationInfo" default="true">
@@ -480,8 +490,13 @@
     <view name="xml">
       <sidePanel>
         <directive data-gn-onlinesrc-list=""/>
+        <directive gn-geo-publisher=""
+                   data-ng-if="gnCurrentEdit.geoPublisherConfig"
+                   data-config="{{gnCurrentEdit.geoPublisherConfig}}"
+                   data-lang="lang"/>
         <directive data-gn-validation-report=""/>
         <directive data-gn-suggestion-list=""/>
+        <directive data-gn-need-help="user-guide/describing-information/creating-metadata.html"/>
       </sidePanel>
 
       <tab id="xml" default="true"/>

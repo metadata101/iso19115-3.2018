@@ -123,36 +123,62 @@
   </element>
   <element name="mac:averageAirTemperature">
     <label>Air temperature average</label>
-    <description></description>
+    <description>Average air temperature along the flight pass during the photo flight.</description>
     <condition></condition>
   </element>
   <element name="mac:maxRelativeHumidity">
     <label>Maximum of relative humidity</label>
-    <description></description>
+    <description>Maximum relative humidity along the flight pass during the photo flight.</description>
     <condition></condition>
   </element>
   <element name="mac:maxAltitude">
     <label>Maximum altitude</label>
-    <description></description>
+    <description>Maximum altitude during the photo flight.</description>
     <condition></condition>
   </element>
   <element name="mac:meterologicalConditions">
     <label>Meterological conditions</label>
-    <description></description>
+    <description>Meteorological conditions in the photo flight area, in particular clouds, snow and wind.</description>
     <condition></condition>
   </element>
   <element name="mac:MI_Instrument">
     <label>Instrument</label>
-    <description></description>
+    <description>Characteristics of the measuring instrument</description>
     <condition></condition>
   </element>
   <element name="mac:MI_Operation">
     <label>Operation</label>
-    <description></description>
+    <description>Designations for the operation used to acquire the dataset
+    </description>
     <condition></condition>
   </element>
   <element name="mac:status">
     <label>Status</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:childOperation">
+    <label>Child operation</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:parentOperation">
+    <label>Parent operation</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:plan">
+    <label>Plan</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:significantEvent">
+    <label>Significant event</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:satisfiedRequirement">
+    <label>Satisfied requirement</label>
     <description></description>
     <condition></condition>
   </element>
@@ -183,7 +209,8 @@
   </element>
   <element name="mac:MI_Requirement">
     <label>Requirement</label>
-    <description></description>
+    <description>Requirement to be satisfied by the planned data acquisition
+    </description>
     <condition></condition>
   </element>
   <element name="mac:recipient">
@@ -203,7 +230,7 @@
   </element>
   <element name="mac:requestedDate">
     <label>Requested date</label>
-    <description></description>
+    <description>Range of date validity</description>
     <condition></condition>
   </element>
   <element name="mac:MI_RequestedDate">
@@ -1257,6 +1284,10 @@
     <description iso="true">Class of information about the party and their
       role
     </description>
+  </element>
+  <element name="cit:partyIdentifier">
+    <label>Identifier for the party</label>
+    <description/>
   </element>
   <element name="cit:role" id="377.0" context="cit:CI_Responsibility">
     <label>Role</label>
@@ -5386,6 +5417,22 @@
     <label>Date</label>
     <description>Catalogue date</description>
   </element>
+  <element name="cat:name">
+    <label>Name</label>
+    <description>Feature catalogue name</description>
+  </element>
+  <element name="cat:scope">
+    <label>Scope</label>
+    <description>Scope definition</description>
+  </element>
+  <element name="cat:versionNumber">
+    <label>Version</label>
+    <description>Catalogue version</description>
+  </element>
+  <element name="cat:versionDate">
+    <label>Date</label>
+    <description>Catalogue date</description>
+  </element>
   <element name="gfc:producer">
     <label>Catalogue producer</label>
     <description>Catalogue responsible</description>
@@ -5406,6 +5453,18 @@
     <label>Property name</label>
     <description></description>
   </element>
+  <element name="cat:characterSet">
+    <label>Character set</label>
+    <description></description>
+  </element>
+  <element name="cat:language">
+    <label>Language</label>
+    <description></description>
+  </element>
+  <element name="cat:locale">
+    <label>Language (locale)</label>
+    <description></description>
+  </element>
   <element name="gfc:carrierOfCharacteristics">
     <label>Elements</label>
     <description>Association, attribute, operation, ...</description>
@@ -5415,6 +5474,10 @@
     <description>Property definition</description>
   </element>
   <element name="gfc:fieldOfApplication">
+    <label>Field of application</label>
+    <description>Field of application</description>
+  </element>
+  <element name="cat:fieldOfApplication">
     <label>Field of application</label>
     <description>Field of application</description>
   </element>
@@ -5668,5 +5731,187 @@
   </element>
   <element name="gml:UnitDefinition">
     <label>Unit definition</label>
+  </element>
+  <element name="mrc:MI_CoverageDescription">
+    <label>Coverage description (with range elements)</label>
+    <description>information about the content of a coverage, including the description of specific range elements</description>
+  </element>
+  <element name="mrc:MI_RangeElementDescription">
+    <label>Range element description</label>
+    <description>eg. storage_meth</description>
+  </element>
+  <element name="mrc:definition">
+    <label>Definition</label>
+    <description>Designation associated with a set of range elements. eg. "Indicates the sample storage method used."</description>
+  </element>
+  <element name="mrc:rangeElement">
+    <label>Range element</label>
+    <description>Specific range elements, i.e. range elements associated with a name and their definition. eg. "frozen: Samples are kept frozen.", "room temperature, dry: Samples are kept at room temperature, unsealed."</description>
+  </element>
+  <element name="mac:MI_EnvironmentalRecord">
+    <label>Environmental record</label>
+    <description>Information about the environmental conditions during the acquisition</description>
+  </element>
+  <element name="mac:solarAzimuth">
+    <label>Solar azimuth</label>
+    <description>Clockwise angle in degrees from north to the centre of the sun’s disc.
+      Note: This angle is calculated from the nadir point of the sensor, not at the centre point of the image</description>
+  </element>
+  <element name="mac:solarElevation">
+    <label>Solar elevation</label>
+    <description>Angle between the horizon and the centre of the Sun’s disk</description>
+  </element>
+  <element name="mac:MI_Objective">
+    <label>Objective</label>
+    <description>Describes the characteristics, spatial and temporal extent of the intended object to be observed
+    </description>
+  </element>
+  <element name="mac:function">
+    <label>Function</label>
+    <description></description>
+  </element>
+  <element name="mac:extent">
+    <label>Extent</label>
+    <description></description>
+  </element>
+  <element name="mac:sensingInstrument">
+    <label>Sensing instrument</label>
+    <description></description>
+  </element>
+  <element name="mac:pass">
+    <label>Pass</label>
+    <description></description>
+  </element>
+  <element name="mac:content">
+    <label>Content</label>
+    <description></description>
+  </element>
+  <element name="mac:context">
+    <label>Context</label>
+    <description>Meaning of the event</description>
+  </element>
+  <element name="mac:MI_PlatformPass">
+    <label>Platform pass</label>
+    <description>Identification of collection coverage.</description>
+  </element>
+  <element name="mac:MI_Platform">
+    <label>Platform</label>
+    <description>Designations for the platform used to acquire the dataset
+    </description>
+  </element>
+  <element name="mac:MI_Plan">
+    <label>Plan</label>
+    <description>Designations for the planning information related to meeting the data acquisition requirements
+    </description>
+  </element>
+  <element name="mac:sponsor">
+    <label>Sponsor</label>
+    <description></description>
+  </element>
+  <element name="mac:MI_InstrumentationEventList">
+    <label>Instrumentation event list</label>
+    <description>List of events related to platform/ instrument/sensor
+    </description>
+  </element>
+  <element name="mac:relatedEvent">
+    <label>Related event</label>
+    <description></description>
+  </element>
+  <element name="mac:revisionHistory">
+    <label>Revision history</label>
+    <description></description>
+  </element>
+  <element name="mac:MI_Revision">
+    <label>Revision</label>
+    <description>History of the revision of an event</description>
+  </element>
+  <element name="mac:author">
+    <label>Author</label>
+    <description></description>
+  </element>
+  <element name="mac:locale">
+    <label>Language (locale)</label>
+    <description></description>
+  </element>
+  <element name="mac:metadataConstraints">
+    <label>Metadata constraints</label>
+    <description></description>
+  </element>
+  <element name="mac:instrumentationEvent">
+    <label>Instrumentation event</label>
+    <description>An event related to a platform/instrument/sensor</description>
+  </element>
+  <element name="mac:MI_InstrumentationEvent">
+    <label>Instrumentation event</label>
+    <description></description>
+  </element>
+  <element name="mac:otherPropertyType">
+    <label>Other property type</label>
+    <description></description>
+  </element>
+  <element name="mac:otherProperty">
+    <label>Other property</label>
+    <description></description>
+  </element>
+  <element name="mac:sensor">
+    <label>Sensor</label>
+    <description></description>
+  </element>
+  <element name="mac:history">
+    <label>History</label>
+    <description></description>
+  </element>
+  <element name="mac:hosted">
+    <label>Hosted</label>
+    <description></description>
+  </element>
+  <element name="mac:objectiveOccurence">
+    <label>Objective occurence</label>
+    <description></description>
+  </element>
+  <element name="mac:trigger">
+    <label>Trigger</label>
+    <description></description>
+  </element>
+  <element name="mac:sequence">
+    <label>Sequence</label>
+    <description>Relative time ordering of the event</description>
+  </element>
+  <element name="mac:time">
+    <label>Time</label>
+    <description></description>
+  </element>
+  <element name="mac:relatedPass">
+    <label>Related pass</label>
+    <description></description>
+  </element>
+  <element name="mac:relatedSensor">
+    <label>Related sensor</label>
+    <description></description>
+  </element>
+  <element name="mac:expectedObjective">
+    <label>Expected objective</label>
+    <description></description>
+  </element>
+  <element name="mac:MI_Event">
+    <label>Event</label>
+    <description>Identification of a significant collection point within an operation
+    </description>
+  </element>
+  <element name="mac:MI_Sensor">
+    <label>Sensor</label>
+    <description>Specific type of instrument </description>
+  </element>
+  <element name="mac:priority">
+    <label>Priority</label>
+    <description>Priority applied to the target</description>
+  </element>
+  <element name="msr:scope">
+    <label>Scope</label>
+    <description></description>
+  </element>
+  <element name="mac:scope">
+    <label>Scope</label>
+    <description>The specific data to which the acquisition information applies</description>
   </element>
 </labels>

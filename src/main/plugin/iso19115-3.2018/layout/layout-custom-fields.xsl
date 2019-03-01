@@ -121,7 +121,7 @@
                   select="gn-fn-metadata:getLabel($schema, name(gco:*), $labels, name(), '', '')"/>
     <xsl:variable name="isRequired" select="gn:element/@min = 1 and gn:element/@max = 1"/>
 
-    <xsl:variable name="parentEditInfo" select="if (exists($refToDelete)) then $refToDelete else gn:element"/>
+    <xsl:variable name="parentEditInfo" select="if ($refToDelete) then $refToDelete else gn:element"/>
 
     <div class="form-group gn-field gn-title {if ($isRequired) then 'gn-required' else ''}"
          id="gn-el-{*/gn:element/@ref}"

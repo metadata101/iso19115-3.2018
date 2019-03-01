@@ -146,6 +146,37 @@
     <description></description>
     <condition></condition>
   </element>
+  <element name="mac:MI_Operation">
+    <label>Opération</label>
+    <description>Designations for the operation used to acquire the dataset
+    </description>
+    <condition></condition>
+  </element>
+  <element name="mac:status">
+    <label>Status</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:childOperation">
+    <label>Child operation</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:parentOperation">
+    <label>Parent operation</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:plan">
+    <label>Plan</label>
+    <description></description>
+    <condition></condition>
+  </element>
+  <element name="mac:significantEvent">
+    <label>Significant event</label>
+    <description></description>
+    <condition></condition>
+  </element>
   <element name="mac:citation">
     <label>Citation</label>
     <description></description>
@@ -1264,6 +1295,10 @@
     <description iso="true">Type de données pour l'informations concernant
       l’acteur et son rôle
     </description>
+  </element>
+  <element name="cit:partyIdentifier">
+    <label>Identifier for the party</label>
+    <description/>
   </element>
   <element name="cit:number" id="418.0">
     <label>Numéro</label>
@@ -8653,6 +8688,30 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
     <label>Date du catalogue</label>
     <description>Date du catalogue</description>
   </element>
+  <element name="cat:name">
+    <label>Nom du catalogue attributaire</label>
+    <description>Nom général attribué au catalogue</description>
+  </element>
+  <element name="cat:language">
+    <label>Langue</label>
+    <description></description>
+  </element>
+  <element name="cat:scope">
+    <label>Contenu du catalogue attributaire</label>
+    <description>Contenu du catalogue attributaire</description>
+  </element>
+  <element name="cat:language">
+    <label>Langue</label>
+    <description></description>
+  </element>
+  <element name="cat:versionNumber">
+    <label>Version du catalogue</label>
+    <description>Version du catalogue</description>
+  </element>
+  <element name="cat:versionDate">
+    <label>Date du catalogue</label>
+    <description>Date du catalogue</description>
+  </element>
   <element name="gfc:producer">
     <label>Responsable du catalogue</label>
     <description>Responsable du catalogue</description>
@@ -8675,6 +8734,14 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
     <label>Nom de la propriété</label>
     <description>Nom de la propriété, c’est-à-dire de la table</description>
   </element>
+  <element name="cat:characterSet">
+    <label>Character set</label>
+    <description></description>
+  </element>
+  <element name="cat:locale">
+    <label>Langue (locale)</label>
+    <description></description>
+  </element>
   <element name="gfc:carrierOfCharacteristics">
     <label>Caractéristiques des attributs</label>
     <description>Caractéristiques des attributs</description>
@@ -8686,6 +8753,10 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
   <element name="gfc:fieldOfApplication">
     <label>Domaine d'application</label>
     <description>Domaine d'application</description>
+  </element>
+  <element name="cat:fieldOfApplication">
+    <label>Domaine d'application</label>
+    <description>Domaine d'application</description>team
   </element>
   <element name="gco:lower">
     <label>Cardinalité min</label>
@@ -8948,4 +9019,182 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
    <element name="mcc:MD_ProgressCode">
      <label>Statut</label>
    </element>
+  <element name="mrc:MI_RangeElementDescription">
+    <label>Range element description</label>
+    <description>eg. storage_meth</description>
+  </element>
+  <element name="mrc:definition">
+    <label>Definition</label>
+    <description>Designation associated with a set of range elements. eg. "Indicates the sample storage method used."</description>
+  </element>
+  <element name="mrc:rangeElement">
+    <label>Range element</label>
+    <description>Specific range elements, i.e. range elements associated with a name and their definition. eg. "frozen: Samples are kept frozen.", "room temperature, dry: Samples are kept at room temperature, unsealed."</description>
+  </element>
+  <element name="mac:MI_EnvironmentalRecord">
+    <label>Environmental record</label>
+    <description>Information about the environmental conditions during the acquisition</description>
+  </element>
+  <element name="mac:solarAzimuth">
+    <label>Solar azimuth</label>
+    <description>Clockwise angle in degrees from north to the centre of the sun’s disc.
+      Note: This angle is calculated from the nadir point of the sensor, not at the centre point of the image</description>
+  </element>
+  <element name="mac:solarElevation">
+    <label>Solar elevation</label>
+    <description>Angle between the horizon and the centre of the Sun’s disk</description>
+  </element>
+  <element name="mac:MI_Objective">
+    <label>Objective</label>
+    <description>Describes the characteristics, spatial and temporal extent of the intended object to be observed
+    </description>
+  </element>
+  <element name="mac:function">
+    <label>Function</label>
+    <description></description>
+  </element>
+  <element name="mac:extent">
+    <label>Extent</label>
+    <description></description>
+  </element>
+  <element name="mac:sensingInstrument">
+    <label>Sensing instrument</label>
+    <description></description>
+  </element>
+  <element name="mac:pass">
+    <label>Pass</label>
+    <description></description>
+  </element>
+  <element name="mac:content">
+    <label>Content</label>
+    <description></description>
+  </element>
+  <element name="mac:context">
+    <label>Context</label>
+    <description>Meaning of the event</description>
+  </element>
+  <element name="mac:MI_PlatformPass">
+    <label>Platform pass</label>
+    <description>Identification of collection coverage.</description>
+  </element>
+  <element name="mac:MI_Platform">
+    <label>Platform</label>
+    <description>Designations for the platform used to acquire the dataset
+    </description>
+  </element>
+  <element name="mac:MI_Plan">
+    <label>Plan</label>
+    <description>Designations for the planning information related to meeting the data acquisition requirements
+    </description>
+  </element>
+  <element name="mac:sponsor">
+    <label>Sponsor</label>
+    <description></description>
+  </element>
+  <element name="mac:MI_InstrumentationEventList">
+    <label>Instrumentation event list</label>
+    <description>List of events related to platform/ instrument/sensor
+    </description>
+  </element>
+  <element name="mac:relatedEvent">
+    <label>Related event</label>
+    <description></description>
+  </element>
+  <element name="mac:revisionHistory">
+    <label>Revision history</label>
+    <description></description>
+  </element>
+  <element name="mac:MI_Revision">
+    <label>Revision</label>
+    <description>History of the revision of an event</description>
+  </element>
+  <element name="mac:author">
+    <label>Author</label>
+    <description></description>
+  </element>
+  <element name="mac:locale">
+    <label>Language (locale)</label>
+    <description></description>
+  </element>
+  <element name="mac:metadataConstraints">
+    <label>Metadata constraints</label>
+    <description></description>
+  </element>
+  <element name="mac:instrumentationEvent">
+    <label>Instrumentation event</label>
+    <description>An event related to a platform/instrument/sensor</description>
+  </element>
+  <element name="mac:MI_InstrumentationEvent">
+    <label>Instrumentation event</label>
+    <description></description>
+  </element>
+  <element name="mac:otherPropertyType">
+    <label>Other property type</label>
+    <description></description>
+  </element>
+  <element name="mac:otherProperty">
+    <label>Other property</label>
+    <description></description>
+  </element>
+  <element name="mac:sensor">
+    <label>Sensor</label>
+    <description></description>
+  </element>
+  <element name="mac:history">
+    <label>History</label>
+    <description></description>
+  </element>
+  <element name="mac:hosted">
+    <label>Hosted</label>
+    <description></description>
+  </element>
+  <element name="mac:objectiveOccurence">
+    <label>Objective occurence</label>
+    <description></description>
+  </element>
+  <element name="mac:trigger">
+    <label>Trigger</label>
+    <description></description>
+  </element>
+  <element name="mac:sequence">
+    <label>Sequence</label>
+    <description>Relative time ordering of the event</description>
+  </element>
+  <element name="mac:time">
+    <label>Time</label>
+    <description></description>
+  </element>
+  <element name="mac:relatedPass">
+    <label>Related pass</label>
+    <description></description>
+  </element>
+  <element name="mac:relatedSensor">
+    <label>Related sensor</label>
+    <description></description>
+  </element>
+  <element name="mac:expectedObjective">
+    <label>Expected objective</label>
+    <description></description>
+  </element>
+  <element name="mac:MI_Event">
+    <label>Event</label>
+    <description>Identification of a significant collection point within an operation
+    </description>
+  </element>
+  <element name="mac:MI_Sensor">
+    <label>Sensor</label>
+    <description>Specific type of instrument </description>
+  </element>
+  <element name="mac:priority">
+    <label>Priority</label>
+    <description>Priority applied to the target</description>
+  </element>
+  <element name="msr:scope">
+    <label>Scope</label>
+    <description></description>
+  </element>
+  <element name="mac:scope">
+    <label>Scope</label>
+    <description>The specific data to which the acquisition information applies</description>
+  </element>
 </labels>

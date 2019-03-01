@@ -43,7 +43,7 @@
     <for name="gmd:explanation" use="textarea"/>
     <for name="gmd:handlingDescription" use="textarea"/>
     <for name="mdq:measureDescription" use="textarea"/>
-    <for name="gmd:purpose" use="textarea"/>
+    <for name="mri:purpose" use="textarea"/>
     <for name="gmd:orderingInstructions" use="textarea"/>
     <for name="mco:otherConstraints" use="textarea"/>
     <for name="mri:statement" use="textarea"/>
@@ -64,6 +64,7 @@
     <for name="mri:response" use="textarea"/>
     <for name="mri:specificUsage" use="textarea"/>
     <for name="mrd:orderOptions" use="textarea"/>
+    <for name="mrc:rangeElement" use="textarea"/>
 
     <for name="gco:Distance" use="number"/>
     <for name="gco:Decimal" use="number"/>
@@ -229,6 +230,18 @@
     <name>mdb:metadataConstraints</name>
     <name>mdb:portrayalCatalogueInfo</name>
     <name>mri:associatedResource</name>
+    <name>mac:acquisitionRequirement</name>
+    <name>mac:sensingInstrument</name>
+    <name>mac:acquisitionInformation</name>
+    <name>mac:history</name>
+    <name>mac:relatedEvent</name>
+    <name>mac:relatedPass</name>
+    <name>mac:objective</name>
+    <name>mac:objectiveOccurence</name>
+    <name>mac:relatedSensor</name>
+    <name>mac:expectedObjective</name>
+    <name>mac:requestedDate</name>
+    <name>mac:environmentalConditions</name>
   </fieldsWithFieldset>
 
   <multilingualFields>
@@ -356,7 +369,14 @@
         <section xpath="/mdb:MD_Metadata/mdb:contentInfo"/>
         <section xpath="/mdb:MD_Metadata/mdb:distributionInfo"/>
         <section xpath="/mdb:MD_Metadata/mdb:dataQualityInfo"/>
+        <section xpath="/mdb:MD_Metadata/mdb:resourceLineage"/>
+        <section xpath="/mdb:MD_Metadata/mdb:spatialRepresentationInfo"/>
+        <section xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo"/>
+        <section xpath="/mdb:MD_Metadata/mdb:acquisitionInformation"/>
         <section xpath="/mdb:MD_Metadata/mdb:portrayalCatalogueInfo"/>
+        <section xpath="/mdb:MD_Metadata/mdb:metadataConstraints"/>
+        <section xpath="/mdb:MD_Metadata/mdb:metadataMaintenance"/>
+        <section xpath="/mdb:MD_Metadata/mdb:applicationSchemaInfo"/>
         <section name="mdb:MD_Metadata">
           <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier"/>
           <field xpath="/mdb:MD_Metadata/mdb:defaultLocale" or="defaultLocale"
@@ -443,7 +463,7 @@
         <section xpath="/mdb:MD_Metadata/mdb:referenceSystemInfo" or="referenceSystemInfo"
                  in="/mdb:MD_Metadata"/>
       </tab>
-      <tab id="acquisitionInformation" toggle="true">
+      <tab id="acquisitionInformation">
         <section xpath="/mdb:MD_Metadata/mdb:acquisitionInformation" or="acquisitionInformation"
                  in="/mdb:MD_Metadata"/>
       </tab>

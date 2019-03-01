@@ -3,7 +3,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	queryBinding="xslt2">
 
-	<sch:title xmlns="http://www.w3.org/2001/XMLSchema">INSPIRE metadata implementing rule validation</sch:title>
+	<sch:title xmlns="http://www.w3.org/2001/XMLSchema">INSPIRE rules</sch:title>
 	<sch:ns prefix="gml" uri="http://www.opengis.net/gml"/>
 	<sch:ns prefix="gmd" uri="http://standards.iso.org/iso/19115/-3/gmd"/>
     <sch:ns prefix="gmx" uri="http://standards.iso.org/iso/19115/-3/gmx"/>

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <sch:schema xmlns:sch="http://purl.oclc.org/dsdl/schematron">
-  <sch:title xmlns="http://www.w3.org/2001/XMLSchema" xml:lang="en">Schematron
-    validation for ISO 19115-1:2014 standard
-  </sch:title>
-  <sch:title xmlns="http://www.w3.org/2001/XMLSchema" xml:lang="fr">Règles de
-    validation pour le standard ISO 19115-1:2014
-  </sch:title>
+  <sch:title xmlns="http://www.w3.org/2001/XMLSchema" xml:lang="en">ISO rules</sch:title>
+  <sch:title xmlns="http://www.w3.org/2001/XMLSchema" xml:lang="fr">Règles ISO</sch:title>
   <sch:ns prefix="gml" uri="http://www.opengis.net/gml/3.2"/>
   <sch:ns prefix="srv" uri="http://standards.iso.org/iso/19115/-3/srv/2.0"/>
   <sch:ns prefix="cit" uri="http://standards.iso.org/iso/19115/-3/cit/2.0"/>

@@ -249,11 +249,13 @@
               <xsl:with-param name="parentElement" select="gmd:name"/>
             </xsl:call-template>
           </cit:title>
-          <cit:alternateTitle>
-            <xsl:call-template name="characterStringSubstitutions">
-              <xsl:with-param name="parentElement" select="gmd:specification"/>
-            </xsl:call-template>
-          </cit:alternateTitle>
+          <xsl:if test="normalize-space(gmd:specification) != ''">
+            <cit:alternateTitle>
+              <xsl:call-template name="characterStringSubstitutions">
+                <xsl:with-param name="parentElement" select="gmd:specification"/>
+              </xsl:call-template>
+            </cit:alternateTitle>
+          </xsl:if>
           <!-- 19115(2006) does not have concept of a format specification date -->
           <cit:date gco:nilReason="unknown"/>
           <cit:edition>
@@ -261,7 +263,7 @@
               <xsl:with-param name="parentElement" select="gmd:version"/>
             </xsl:call-template>
           </cit:edition>
-          <cit:identifier>
+          <!--<cit:identifier>
             <mcc:MD_Identifier>
               <mcc:code>
                 <xsl:call-template name="characterStringSubstitutions">
@@ -269,7 +271,7 @@
                 </xsl:call-template>
               </mcc:code>
             </mcc:MD_Identifier>
-          </cit:identifier>
+          </cit:identifier>-->
         </xsl:element>
       </xsl:element>
       <xsl:apply-templates mode="from19139to19115-3"/>

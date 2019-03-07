@@ -137,7 +137,7 @@
   <xsl:function name="gn-fn-iso19115-3.2018:index-field" as="node()?">
     <xsl:param name="fieldName" as="xs:string"/>
     <xsl:param name="element" as="node()"/>
-    <xsl:param name="langId" as="xs:string"/>
+    <xsl:param name="langId" as="xs:string?"/>
 
     <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field($fieldName,
                   $element, $langId, true(), true())"/>
@@ -145,7 +145,7 @@
   <xsl:function name="gn-fn-iso19115-3.2018:index-field" as="node()?">
     <xsl:param name="fieldName" as="xs:string"/>
     <xsl:param name="element" as="node()"/>
-    <xsl:param name="langId" as="xs:string"/>
+    <xsl:param name="langId" as="xs:string?"/>
     <xsl:param name="store" as="xs:boolean"/>
     <xsl:param name="index" as="xs:boolean"/>
 

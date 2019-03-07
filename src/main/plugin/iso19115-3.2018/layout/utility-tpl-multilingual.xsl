@@ -34,7 +34,7 @@
                           select="$metadata/*/lan:PT_Locale[
                                   lan:language/lan:LanguageCode/@codeListValue = $mainLanguage]/@id"/>
 
-            <lang><xsl:value-of select="concat('&quot;', $mainLanguage, '&quot;:&quot;#', $mainLanguageId, '&quot;')"/></lang>
+            <lang><xsl:value-of select="concat('&quot;', $mainLanguage, '&quot;:&quot;#', $mainLanguageId[1], '&quot;')"/></lang>
           </xsl:if>
 
           <xsl:for-each select="$metadata/mdb:otherLocale/lan:PT_Locale[
@@ -49,6 +49,10 @@
 
   <!-- Get the list of other languages -->
   <xsl:template name="get-iso19115-3.2018-other-languages">
+    <xsl:variable name="mainLanguage">
+      <xsl:call-template name="get-iso19115-3.2018-language"/>
+    </xsl:variable>
+    
     <xsl:choose>
       <xsl:when test="$metadata/gn:info[position() = last()]/isTemplate = 's'">
         <xsl:for-each select="distinct-values($metadata//lan:LocalisedCharacterString/@locale)">
@@ -58,7 +62,8 @@
         </xsl:for-each>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:for-each select="$metadata/mdb:otherLocale/lan:PT_Locale">
+        <xsl:for-each select="$metadata/mdb:otherLocale/lan:PT_Locale[
+                                  lan:language/lan:LanguageCode/@codeListValue != $mainLanguage]">
           <lang id="{@id}" code="{lan:language/lan:LanguageCode/@codeListValue}"/>
         </xsl:for-each>
       </xsl:otherwise>

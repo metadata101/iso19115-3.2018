@@ -482,10 +482,10 @@
   </xsl:template>
 
   <!-- Ignore the following topic categories and the gn:child to add new ones -->
-  <xsl:template mode="mode-iso19115-3"
+  <xsl:template mode="mode-iso19115-3.2018"
                 match="mri:topicCategory[preceding-sibling::*[1]/name() = name()]"
                 priority="2100"/>
-  <xsl:template mode="mode-iso19115-3"
+  <xsl:template mode="mode-iso19115-3.2018"
                 match="gn:child[@name = 'topicCategory' and count(../mri:topicCategory) > 0]"
                 priority="21000"/>
 

@@ -213,7 +213,7 @@
         </mri:keyword>
       </xsl:if>
 
-      <xsl:copy-of select="geonet:add-iso19115-3-thesaurus-info($currentThesaurus, $withThesaurusAnchor, /root/gui/thesaurus/thesauri, not(/root/request/keywordOnly))" />
+      <xsl:copy-of select="geonet:add-iso19115-3.2018-thesaurus-info($currentThesaurus, $withThesaurusAnchor, /root/gui/thesaurus/thesauri, not(/root/request/keywordOnly))" />
 
     </mri:MD_Keywords>
   </xsl:template>

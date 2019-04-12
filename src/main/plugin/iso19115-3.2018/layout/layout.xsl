@@ -148,7 +148,7 @@
                 match="*[gco:CharacterString|gco:Integer|gco:Decimal|
        gco:Boolean|gco:Real|gco:Measure|gco:Length|gco:Distance|gco:Angle|gmx:FileName|
        gco:Scale|gco:RecordType|gmx:MimeFileType|gco:LocalName|gco:ScopedName|gco:RecordType|
-       gco:Record|lan:PT_FreeText|mcc:URI]">
+       gco:Record|lan:PT_FreeText|mcc:URI|gco:TM_PeriodDuration]">
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
     <xsl:param name="overrideLabel" select="''" required="no"/>
@@ -215,7 +215,7 @@
                           gco:Distance|gco:Angle|gmx:FileName|
                           gco:Scale|gco:RecordType|gmx:MimeFileType|
                           gco:LocalName|gco:ScopedName|gco:RecordType|
-                          gco:Record|mcc:URI"/>
+                          gco:Record|mcc:URI|gco:TM_PeriodDuration"/>
     <xsl:variable name="theElement"
                   select="if ($isMultilingualElement and $hasOnlyPTFreeText or not($monoLingualValue))
                           then lan:PT_FreeText

@@ -47,7 +47,7 @@
   <xsl:template name="characterStringSubstitutions">
     <xsl:param name="parentElement"/>
     <!-- This template takes a parent of a gcoold:CharacterString element and writes out the child for several possible substitutions  -->
-    <xsl:apply-templates select="$parentElement/@*" mode="from19139to19115-3"/>
+    <xsl:apply-templates select="$parentElement/@*" mode="from19139to19115-3.2018"/>
     <xsl:for-each select="$parentElement/*">
       <xsl:choose>
         <xsl:when test="local-name(.)='CharacterString'">
@@ -57,7 +57,7 @@
         </xsl:when>
         <xsl:otherwise>
           <xsl:element name="{concat('gcx:',local-name(.))}">
-            <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+            <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
             <xsl:value-of select="."/>
           </xsl:element>
         </xsl:otherwise>
@@ -65,37 +65,37 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template match="gml30:*" mode="from19139to19115-3">
+  <xsl:template match="gml30:*" mode="from19139to19115-3.2018">
     <xsl:element name="{local-name(.)}" namespace="http://www.opengis.net/gml/3.2">
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="@gml30:*" mode="from19139to19115-3">
+  <xsl:template match="@gml30:*" mode="from19139to19115-3.2018">
     <xsl:attribute name="gml:{local-name()}">
       <xsl:value-of select="."/>
     </xsl:attribute>
   </xsl:template>
-  <xsl:template match="@gcoold:*" mode="from19139to19115-3">
+  <xsl:template match="@gcoold:*" mode="from19139to19115-3.2018">
     <xsl:attribute name="gco:{local-name()}">
       <xsl:value-of select="."/>
     </xsl:attribute>
   </xsl:template>
 
-  <xsl:template match="@*" mode="from19139to19115-3">
+  <xsl:template match="@*" mode="from19139to19115-3.2018">
     <xsl:copy-of select="."/>
   </xsl:template>
 
   <!-- Default template writes correct namespace prefix -->
-  <xsl:template match="*" mode="from19139to19115-3">
+  <xsl:template match="*" mode="from19139to19115-3.2018">
     <xsl:variable name="nameSpacePrefix">
       <xsl:call-template name="getNamespacePrefix"/>
     </xsl:variable>
     <xsl:element name="{concat($nameSpacePrefix,':',local-name(.))}">
       <!-- copy all attributes -->
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
 
@@ -233,15 +233,15 @@
 
 
 
-  <xsl:template match="gmd:CI_OnlineResource/gmd:linkage/gmd:URL" mode="from19139to19115-3">
+  <xsl:template match="gmd:CI_OnlineResource/gmd:linkage/gmd:URL" mode="from19139to19115-3.2018">
     <gco:CharacterString>
       <xsl:value-of select="."/>
     </gco:CharacterString>
   </xsl:template>
 
-  <xsl:template match="gmd:MD_Format" mode="from19139to19115-3">
+  <xsl:template match="gmd:MD_Format" mode="from19139to19115-3.2018">
     <xsl:element name="mrd:MD_Format">
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
       <xsl:element name="mrd:formatSpecificationCitation">
         <xsl:element name="cit:CI_Citation">
           <cit:title>
@@ -274,7 +274,7 @@
           </cit:identifier>-->
         </xsl:element>
       </xsl:element>
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
 

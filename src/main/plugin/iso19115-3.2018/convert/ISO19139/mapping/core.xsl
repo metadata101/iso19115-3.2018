@@ -20,14 +20,14 @@
   <!--
     root element templates
   -->
-  <xsl:template match="gmd:fileIdentifier" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:fileIdentifier" priority="5" mode="from19139to19115-3.2018">
     <!--
     gmd:fileIdentifier is changed from a gco:CharacterString to a MD_Identifer
 		which now includes a codespace. This transform assumes a form of
 		namespace:code for the fileIdentifier
     -->
     <xsl:element name="mdb:metadataIdentifier">
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
       <mcc:MD_Identifier>
         <xsl:for-each select="*">
           <mcc:code>
@@ -57,14 +57,14 @@
       </mcc:MD_Identifier>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="gmd:language|gmd:locale" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:language|gmd:locale" priority="5" mode="from19139to19115-3.2018">
     <xsl:variable name="nameSpacePrefix">
       <xsl:call-template name="getNamespacePrefix"/>
     </xsl:variable>
     <xsl:variable name="elementName" select="if (local-name() = 'language') then 'defaultLocale' else 'otherLocale'"/>
     <xsl:element name="{concat($nameSpacePrefix, ':', $elementName)}">
       <!--<xsl:element name="{'mdb:defaultLocale'}">-->
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
       <lan:PT_Locale>
         <xsl:copy-of select="gmd:PT_Locale/@*"/>
         <xsl:call-template name="writeCodelistElement">
@@ -91,7 +91,7 @@
       </lan:PT_Locale>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="gmd:characterSet" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:characterSet" priority="5" mode="from19139to19115-3.2018">
     <xsl:choose>
       <!-- if ../gmd/language exists, characterSet has already been translated to defaultLocale -->
       <xsl:when test="../gmd:language"/>
@@ -101,7 +101,7 @@
         </xsl:variable>
         <xsl:element name="{concat($nameSpacePrefix,':','defaultLocale')}">
           <!--<xsl:element name="{'mdb:defaultLocale'}">-->
-          <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+          <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
           <lan:PT_Locale>
             <xsl:call-template name="writeCodelistElement">
               <xsl:with-param name="elementName" select="'lan:characterEncoding'"/>
@@ -113,7 +113,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  <xsl:template match="gmd:parentIdentifier" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:parentIdentifier" priority="5" mode="from19139to19115-3.2018">
     <!--
          gmd:parentIdentifier is changed from a gco:CharacterString to a
          mdb:parentMetadata element. This transform support two types
@@ -168,7 +168,7 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="gmd:updateScope" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:updateScope" priority="5" mode="from19139to19115-3.2018">
     <mmi:maintenanceScope>
       <mcc:MD_Scope>
         <mcc:level>
@@ -183,7 +183,7 @@
   </xsl:template>
 
 
-  <xsl:template match="gmd:hierarchyLevel" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:hierarchyLevel" priority="5" mode="from19139to19115-3.2018">
     <!-- ************************************************************************ -->
     <!-- gmd:hierarchyLevel and gmd:hierarchyLevelName are combined into a
 			   new class: MD_MetadataScope to avoid ambiguity when there are multiple elements. -->
@@ -206,7 +206,7 @@
       </mdb:MD_MetadataScope>
     </mdb:metadataScope>
   </xsl:template>
-  <xsl:template match="gmd:dateStamp" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:dateStamp" priority="5" mode="from19139to19115-3.2018">
     <!--
       dateStamp is changed into a CI_Date that includes a dateType
     -->
@@ -232,7 +232,7 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  <xsl:template match="gmd:metadataStandardName" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:metadataStandardName" priority="5" mode="from19139to19115-3.2018">
     <!--
       metadataStandardName and gmd:metadataStandardVersion are combined into a CI_Citation
     -->
@@ -250,7 +250,7 @@
     </mdb:metadataStandard>
   </xsl:template>
   <!-- gmd:spatialRepresentationInfo uses default templates -->
-  <xsl:template match="gmi:geographicCoordinates" mode="from19139to19115-3">
+  <xsl:template match="gmi:geographicCoordinates" mode="from19139to19115-3.2018">
     <xsl:choose>
       <xsl:when test="normalize-space(.)=''">
         <msr:geographicCoordinates/>
@@ -261,13 +261,13 @@
             <xsl:attribute name="gml:id">
               <xsl:value-of select="generate-id()"/>
             </xsl:attribute>
-            <xsl:apply-templates select="./*" mode="from19139to19115-3"/>
+            <xsl:apply-templates select="./*" mode="from19139to19115-3.2018"/>
           </xsl:element>
         </xsl:element>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  <xsl:template match="gmd:MD_PixelOrientationCode" mode="from19139to19115-3">
+  <xsl:template match="gmd:MD_PixelOrientationCode" mode="from19139to19115-3.2018">
     <xsl:element name="msr:MD_PixelOrientationCode">
       <xsl:choose>
         <xsl:when test=".='center'">
@@ -281,16 +281,16 @@
   </xsl:template>
   <!-- gmd:referenceSystemInfo uses default templates -->
   <!-- gmd:metadataExtensionInfo uses default templates -->
-  <xsl:template match="gmd:identificationInfo" mode="from19139to19115-3">
+  <xsl:template match="gmd:identificationInfo" mode="from19139to19115-3.2018">
     <mdb:identificationInfo>
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
       <xsl:for-each select="./*">
         <xsl:variable name="nameSpacePrefix">
           <xsl:call-template name="getNamespacePrefix"/>
         </xsl:variable>
         <xsl:element name="{concat($nameSpacePrefix,':',local-name(.))}">
-          <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:citation" mode="from19139to19115-3"/>
+          <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:citation" mode="from19139to19115-3.2018"/>
           <xsl:call-template name="writeCharacterStringElement">
             <xsl:with-param name="elementName" select="'mri:abstract'"/>
             <xsl:with-param name="nodeWithStringToWrite" select="gmd:abstract"/>
@@ -308,27 +308,27 @@
               <xsl:with-param name="codeListValue" select="gmd:status/gmd:MD_ProgressCode/@codeListValue"/>
               <xsl:with-param name="codeListName" select="'mcc:MD_ProgressCode'"/>
             </xsl:call-template>
-          <xsl:apply-templates select="gmd:pointOfContact" mode="from19139to19115-3"/>
+          <xsl:apply-templates select="gmd:pointOfContact" mode="from19139to19115-3.2018"/>
             <xsl:call-template name="writeCodelistElement">
               <xsl:with-param name="elementName" select="'mri:spatialRepresentationType'"/>
               <xsl:with-param name="codeListName" select="'mcc:MD_SpatialRepresentationTypeCode'"/>
               <xsl:with-param name="codeListValue" select="gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode/@codeListValue"/>
             </xsl:call-template>
-          <xsl:apply-templates select="gmd:spatialResolution" mode="from19139to19115-3"/>
+          <xsl:apply-templates select="gmd:spatialResolution" mode="from19139to19115-3.2018"/>
           <!-- This is here to handle early adopters of temporalResolution -->
-          <xsl:apply-templates select="gmd:temporalResolution" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:topicCategory" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:extent | srvold:extent" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:resourceMaintenance" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:graphicOverview" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:resourceFormat" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:descriptiveKeywords" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:resourceSpecificUsage" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:resourceConstraints" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:aggregationInfo" mode="from19139to19115-3"/>
+          <xsl:apply-templates select="gmd:temporalResolution" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:topicCategory" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:extent | srvold:extent" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:resourceMaintenance" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:graphicOverview" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:resourceFormat" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:descriptiveKeywords" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:resourceSpecificUsage" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:resourceConstraints" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:aggregationInfo" mode="from19139to19115-3.2018"/>
           <xsl:call-template name="collectiveTitle"/>
-          <xsl:apply-templates select="gmd:language" mode="from19139to19115-3"/>
-          <xsl:apply-templates select="gmd:characterSet" mode="from19139to19115-3"/>
+          <xsl:apply-templates select="gmd:language" mode="from19139to19115-3.2018"/>
+          <xsl:apply-templates select="gmd:characterSet" mode="from19139to19115-3.2018"/>
           <xsl:call-template name="writeCharacterStringElement">
             <xsl:with-param name="elementName" select="'mri:environmentDescription'"/>
             <xsl:with-param name="nodeWithStringToWrite" select="gmd:environmentDescription"/>
@@ -355,15 +355,15 @@
               <xsl:with-param name="codeListName" select="'srv:SV_CouplingType'"/>
               <xsl:with-param name="codeListValue" select="srvold:couplingType/srvold:SV_CouplingType/@codeListValue"/>
             </xsl:call-template>
-            <xsl:apply-templates select="srvold:containsOperations" mode="from19139to19115-3"/>
-            <xsl:apply-templates select="srvold:operatesOn" mode="from19139to19115-3"/>
+            <xsl:apply-templates select="srvold:containsOperations" mode="from19139to19115-3.2018"/>
+            <xsl:apply-templates select="srvold:operatesOn" mode="from19139to19115-3.2018"/>
           </xsl:if>
         </xsl:element>
       </xsl:for-each>
     </mdb:identificationInfo>
   </xsl:template>
   <xsl:template match="gmd:contentInfo[not(gmd:MD_FeatureCatalogueDescription) and
-                                           not(gmd:MD_ImageDescription)]" mode="from19139to19115-3">
+                                           not(gmd:MD_ImageDescription)]" mode="from19139to19115-3.2018">
     <xsl:if test="not(preceding-sibling::gmd:contentInfo)">
       <!-- ********************************************************************** -->
       <!-- First contentInfo section.                                             -->
@@ -388,13 +388,13 @@
             <xsl:for-each select="//gmd:contentInfo/gmd:MD_CoverageDescription | //gmd:contentInfo/gmi:MI_CoverageDescription">
               <xsl:element name="mrc:attributeGroup">
                 <xsl:element name="mrc:MD_AttributeGroup">
-                  <xsl:apply-templates mode="from19139to19115-3"/>
+                  <xsl:apply-templates mode="from19139to19115-3.2018"/>
                 </xsl:element>
               </xsl:element>
             </xsl:for-each>
             <xsl:for-each select="//gmi:rangeElementDescription">
               <xsl:element name="mrc:rangeElementDescription">
-                <xsl:apply-templates mode="from19139to19115-3"/>
+                <xsl:apply-templates mode="from19139to19115-3.2018"/>
               </xsl:element>
             </xsl:for-each>
           </xsl:element>
@@ -403,16 +403,16 @@
     </xsl:if>
   </xsl:template>
   <!-- transform contentInfo sections with Feature Catalogues -->
-  <xsl:template match="gmd:contentInfo[gmd:MD_FeatureCatalogueDescription] | gmd:contentInfo[gmd:MD_ImageDescription]" mode="from19139to19115-3">
+  <xsl:template match="gmd:contentInfo[gmd:MD_FeatureCatalogueDescription] | gmd:contentInfo[gmd:MD_ImageDescription]" mode="from19139to19115-3.2018">
     <xsl:element name="mdb:contentInfo">
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="//gmd:MD_FeatureCatalogueDescription/gmd:featureTypes" mode="from19139to19115-3">
+  <xsl:template match="//gmd:MD_FeatureCatalogueDescription/gmd:featureTypes" mode="from19139to19115-3.2018">
     <mrc:featureTypes>
       <mrc:MD_FeatureTypeInfo>
         <mrc:featureTypeName>
-          <xsl:apply-templates mode="from19139to19115-3"/>
+          <xsl:apply-templates mode="from19139to19115-3.2018"/>
         </mrc:featureTypeName>
       </mrc:MD_FeatureTypeInfo>
     </mrc:featureTypes>
@@ -421,40 +421,40 @@
   <!-- gmd:metadataConstraints uses default templates -->
   <!-- gmd:applicationSchemaInfo uses default templates -->
   <!-- gmd:metadataMaintenance uses default templates -->
-  <xsl:template match="gmi:acquisitionInformation" mode="from19139to19115-3">
+  <xsl:template match="gmi:acquisitionInformation" mode="from19139to19115-3.2018">
     <xsl:element name="mdb:acquisitionInformation">
       <xsl:element name="mac:MI_AcquisitionInformation">
-        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:instrument" mode="from19139to19115-3"/>
-        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:operation" mode="from19139to19115-3"/>
-        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:platform" mode="from19139to19115-3"/>
-        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:acquisitionPlan" mode="from19139to19115-3"/>
-        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:objective" mode="from19139to19115-3"/>
-        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:acquisitionRequirement" mode="from19139to19115-3"/>
+        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:instrument" mode="from19139to19115-3.2018"/>
+        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:operation" mode="from19139to19115-3.2018"/>
+        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:platform" mode="from19139to19115-3.2018"/>
+        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:acquisitionPlan" mode="from19139to19115-3.2018"/>
+        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:objective" mode="from19139to19115-3.2018"/>
+        <xsl:apply-templates select="gmi:MI_AcquisitionInformation/gmi:acquisitionRequirement" mode="from19139to19115-3.2018"/>
       </xsl:element>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="gmi:objectiveOccurance" mode="from19139to19115-3">
+  <xsl:template match="gmi:objectiveOccurance" mode="from19139to19115-3.2018">
     <!-- This element is mis-spelled in the 19115-2 schema -->
     <xsl:element name="mac:objectiveOccurence">
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
       <xsl:value-of select="."/>
     </xsl:element>
   </xsl:template>
   <!--
   gmd:spatialRepresentation templates
   -->
-  <xsl:template match="gmi:geolocationInformation/gmi:MI_GCPCollection" mode="from19139to19115-3">
+  <xsl:template match="gmi:geolocationInformation/gmi:MI_GCPCollection" mode="from19139to19115-3.2018">
     <xsl:element name="msr:MI_GCPCollection">
-      <xsl:apply-templates select="gmi:gcp" mode="from19139to19115-3"/>
-      <xsl:apply-templates select="gmi:collectionIdentification" mode="from19139to19115-3"/>
-      <xsl:apply-templates select="gmi:collectionName" mode="from19139to19115-3"/>
-      <xsl:apply-templates select="gmi:coordinateReferenceSystem" mode="from19139to19115-3"/>
+      <xsl:apply-templates select="gmi:gcp" mode="from19139to19115-3.2018"/>
+      <xsl:apply-templates select="gmi:collectionIdentification" mode="from19139to19115-3.2018"/>
+      <xsl:apply-templates select="gmi:collectionName" mode="from19139to19115-3.2018"/>
+      <xsl:apply-templates select="gmi:coordinateReferenceSystem" mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
   <!--
   gmd:identificationInformation templates
   -->
-  <xsl:template match="/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty" mode="from19139to19115-3">
+  <xsl:template match="/*/gmd:identificationInfo/*/gmd:citation/gmd:CI_Citation/gmd:citedResponsibleParty" mode="from19139to19115-3.2018">
     <xsl:if test="not(preceding-sibling::gmd:citedResponsibleParty) and /*/gmd:dataSetURI">
       <!-- **********************************************************************
       The first citedResponsibleParty is special because the identifier
@@ -476,11 +476,11 @@
     <xsl:if
       test="count(gmd:CI_ResponsibleParty/gmd:individualName/gcoold:CharacterString) + count(gmd:CI_ResponsibleParty/gmd:organisationName/gcoold:CharacterString) + count(gmd:CI_ResponsibleParty/gmd:positionName/gcoold:CharacterString) != 0">
       <cit:citedResponsibleParty>
-        <xsl:apply-templates mode="from19139to19115-3"/>
+        <xsl:apply-templates mode="from19139to19115-3.2018"/>
       </cit:citedResponsibleParty>
     </xsl:if>
   </xsl:template>
-  <xsl:template match="/*/gmd:identificationInfo/*/gmd:resourceSpecificUsage/gmd:MD_Usage/gmd:usageDateTime" mode="from19139to19115-3">
+  <xsl:template match="/*/gmd:identificationInfo/*/gmd:resourceSpecificUsage/gmd:MD_Usage/gmd:usageDateTime" mode="from19139to19115-3.2018">
     <mri:usageDateTime>
       <gml:TimeInstant>
         <xsl:attribute name="gml:id">
@@ -500,7 +500,7 @@
   <xsl:variable name="associatedResourceAsMetadataReferenceOnly"
                 select="true()"/>
 
-  <xsl:template match="gmd:aggregationInfo" priority="5" mode="from19139to19115-3">
+  <xsl:template match="gmd:aggregationInfo" priority="5" mode="from19139to19115-3.2018">
     <!--
    gmd:MD_AggregateInformation was renamed gmd:associatedResource in order
 	 to clarify the intent of the class. It is used to provide information about
@@ -520,13 +520,13 @@
               and exists(gmd:MD_AggregateInformation/gmd:aggregateDataSetIdentifier)">
               <!-- both name an identifier exist - use standard template -->
               <mri:name>
-                <xsl:apply-templates select="gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation" mode="from19139to19115-3"/>
+                <xsl:apply-templates select="gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation" mode="from19139to19115-3.2018"/>
               </mri:name>
             </xsl:when>
             <xsl:when test="exists(gmd:MD_AggregateInformation/gmd:aggregateDataSetName)">
               <!-- only an name exists - write it into a CI_Citation -->
               <mri:name>
-                <xsl:apply-templates select="gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation" mode="from19139to19115-3"/>
+                <xsl:apply-templates select="gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation" mode="from19139to19115-3.2018"/>
               </mri:name>
             </xsl:when>
             <xsl:when test="exists(gmd:MD_AggregateInformation/gmd:aggregateDataSetIdentifier)">
@@ -537,7 +537,7 @@
                   <cit:title gco:nilReason="unknown"/>
                   <cit:date gco:nilReason="unknown"/>
                   <cit:identifier>
-                    <xsl:apply-templates select="gmd:MD_AggregateInformation/gmd:aggregateDataSetIdentifier/gmd:MD_Identifier" mode="from19139to19115-3"/>
+                    <xsl:apply-templates select="gmd:MD_AggregateInformation/gmd:aggregateDataSetIdentifier/gmd:MD_Identifier" mode="from19139to19115-3.2018"/>
                   </cit:identifier>
                 </cit:CI_Citation>
               </mri:name>
@@ -564,50 +564,50 @@
     </mri:associatedResource>
   </xsl:template>
 	
-  <xsl:template match="gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty" mode="from19139to19115-3">
+  <xsl:template match="gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty" mode="from19139to19115-3.2018">
     <xsl:if test="not(preceding-sibling::gmd:citedResponsibleParty) and ancestor::gmd:MD_AggregateInformation/gmd:aggregateDataSetIdentifier">
       <!-- **********************************************************************
       The first citedResponsibleParty is special because the identifier
       from the gmd:aggregateDataSetIdentifier goes before it.
       ********************************************************************** -->
       <cit:identifier>
-        <xsl:apply-templates select="ancestor::gmd:MD_AggregateInformation/gmd:aggregateDataSetIdentifier/gmd:MD_Identifier" mode="from19139to19115-3"/>
+        <xsl:apply-templates select="ancestor::gmd:MD_AggregateInformation/gmd:aggregateDataSetIdentifier/gmd:MD_Identifier" mode="from19139to19115-3.2018"/>
       </cit:identifier>
     </xsl:if>
     <cit:citedResponsibleParty>
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </cit:citedResponsibleParty>
   </xsl:template>
   <!--
     gmd:referenceSystemInformation templates
   -->
-  <xsl:template match="gmd:RS_Identifier" mode="from19139to19115-3">
+  <xsl:template match="gmd:RS_Identifier" mode="from19139to19115-3.2018">
     <mcc:MD_Identifier>
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </mcc:MD_Identifier>
   </xsl:template>
   <!--
     gmd:contentInfo
   -->
-  <xsl:template match="gmd:dimension" mode="from19139to19115-3">
+  <xsl:template match="gmd:dimension" mode="from19139to19115-3.2018">
     <xsl:element name="mrc:attribute">
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="gmd:MD_Band" mode="from19139to19115-3">
+  <xsl:template match="gmd:MD_Band" mode="from19139to19115-3.2018">
     <xsl:element name="mrc:MD_SampleDimension">
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
-  <xsl:template match="gmi:MI_Band" mode="from19139to19115-3">
+  <xsl:template match="gmi:MI_Band" mode="from19139to19115-3.2018">
     <xsl:element name="mrc:MI_Band">
-      <xsl:apply-templates mode="from19139to19115-3"/>
+      <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
   <xsl:template match="gmd:MD_Band/gmd:descriptor|
                        gmi:MI_Band/gmd:descriptor|
-                       gmd:MD_RangeDimension/gmd:descriptor" mode="from19139to19115-3">
+                       gmd:MD_RangeDimension/gmd:descriptor" mode="from19139to19115-3.2018">
     <xsl:element name="mrc:description">
       <xsl:element name="gco:CharacterString">
         <xsl:value-of select="."/>
@@ -617,7 +617,7 @@
   <!--
   gmd:distributionInfo
   -->
-  <xsl:template match="gmd:MD_DigitalTransferOptions/gmd:offLine/gmd:MD_Medium/gmd:name" mode="from19139to19115-3">
+  <xsl:template match="gmd:MD_DigitalTransferOptions/gmd:offLine/gmd:MD_Medium/gmd:name" mode="from19139to19115-3.2018">
     <mrd:name>
       <cit:CI_Citation>
         <cit:title>
@@ -631,7 +631,7 @@
   <!--
   gmd:metadataMaintenance
   -->
-  <xsl:template match="gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate" mode="from19139to19115-3">
+  <xsl:template match="gmd:MD_MaintenanceInformation/gmd:dateOfNextUpdate" mode="from19139to19115-3.2018">
     <mmi:maintenanceDate>
       <cit:CI_Date>
         <cit:date>
@@ -648,9 +648,9 @@
   <!--
   gmi:gmi:acquisitionInformation templates
   -->
-  <xsl:template match="gmi:MI_Operation/gmi:status/gmd:MD_ProgressCode" mode="from19139to19115-3">
+  <xsl:template match="gmi:MI_Operation/gmi:status/gmd:MD_ProgressCode" mode="from19139to19115-3.2018">
     <xsl:element name="mcc:MD_ProgressCode">
-      <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+      <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
   <xsl:include href="defaults.xsl"/>
@@ -658,16 +658,16 @@
     Empty High-Priority Templates to prevent
     independent actions on these elements
   -->
-  <xsl:template match="gmd:hierarchyLevelName" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:metadataStandardVersion" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:dataSetURI" priority="5" mode="from19139to19115-3"/>
+  <xsl:template match="gmd:hierarchyLevelName" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:metadataStandardVersion" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:dataSetURI" priority="5" mode="from19139to19115-3.2018"/>
   <!-- Match MD_ and MI_CoverageDescription -->
-  <xsl:template match="gmd:contentInfo/gmd:MD_CoverageDescription/gmd:attributeDescription | gmd:contentInfo/gmi:MI_CoverageDescription/gmd:attributeDescription" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:contentInfo/gmi:MI_CoverageDescription/gmi:rangeElementDescription" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:contentInfo/gmd:MD_ImageDescription/gmd:contentType" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:MD_ExtendedElementInformation/gmd:shortName" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:MD_ExtendedElementInformation/gmd:domainCode" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:MD_Format/gmd:name" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:MD_Format/gmd:specification" priority="5" mode="from19139to19115-3"/>
-  <xsl:template match="gmd:MD_Format/gmd:version" priority="5" mode="from19139to19115-3"/>
+  <xsl:template match="gmd:contentInfo/gmd:MD_CoverageDescription/gmd:attributeDescription | gmd:contentInfo/gmi:MI_CoverageDescription/gmd:attributeDescription" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:contentInfo/gmi:MI_CoverageDescription/gmi:rangeElementDescription" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:contentInfo/gmd:MD_ImageDescription/gmd:contentType" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:MD_ExtendedElementInformation/gmd:shortName" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:MD_ExtendedElementInformation/gmd:domainCode" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:MD_Format/gmd:name" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:MD_Format/gmd:specification" priority="5" mode="from19139to19115-3.2018"/>
+  <xsl:template match="gmd:MD_Format/gmd:version" priority="5" mode="from19139to19115-3.2018"/>
 </xsl:stylesheet>

@@ -22,7 +22,7 @@
 
   <!-- A set of templates use to convert subtemplates to
        iso19115-3 fragments. -->
-  <xsl:template name="contact-from-iso19139-to-iso19115-3">
-    <xsl:apply-templates select="." mode="from19139to19115-3"/>
+  <xsl:template name="contact-from-iso19139-to-iso19115-3.2018">
+    <xsl:apply-templates select="." mode="from19139to19115-3.2018"/>
   </xsl:template>
 </xsl:stylesheet>

@@ -109,35 +109,35 @@
                 <!-- new namespaces -->
                 <xsl:call-template name="add-iso19115-3.2018-namespaces"/>
 
-                <xsl:apply-templates select="gmd:fileIdentifier" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:language" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:characterSet" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:parentIdentifier" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:hierarchyLevel" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:contact" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:dateStamp" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:metadataStandardName" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:locale" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:spatialRepresentationInfo" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:referenceSystemInfo" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:metadataExtensionInfo" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:identificationInfo" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:contentInfo" mode="from19139to19115-3"/>
+                <xsl:apply-templates select="gmd:fileIdentifier" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:language" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:characterSet" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:parentIdentifier" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:hierarchyLevel" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:contact" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:dateStamp" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:metadataStandardName" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:locale" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:spatialRepresentationInfo" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:referenceSystemInfo" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:metadataExtensionInfo" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:identificationInfo" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:contentInfo" mode="from19139to19115-3.2018"/>
                 <xsl:call-template name="onlineSourceDispatcher">
                     <xsl:with-param name="type" select="'featureCatalogueCitation'"/>
                 </xsl:call-template>
 
-                <xsl:apply-templates select="gmd:distributionInfo" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:dataQualityInfo" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:portrayalCatalogueInfo" mode="from19139to19115-3"/>
+                <xsl:apply-templates select="gmd:distributionInfo" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:dataQualityInfo" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:portrayalCatalogueInfo" mode="from19139to19115-3.2018"/>
                 <xsl:call-template name="onlineSourceDispatcher">
                     <xsl:with-param name="type" select="'portrayalCatalogueCitation'"/>
                 </xsl:call-template>
 
-                <xsl:apply-templates select="gmd:metadataConstraints" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:applicationSchemaInfo" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmd:metadataMaintenance" mode="from19139to19115-3"/>
-                <xsl:apply-templates select="gmi:acquisitionInformation" mode="from19139to19115-3"/>
+                <xsl:apply-templates select="gmd:metadataConstraints" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:applicationSchemaInfo" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmd:metadataMaintenance" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates select="gmi:acquisitionInformation" mode="from19139to19115-3.2018"/>
             </xsl:element>
         </xsl:for-each>
     </xsl:template>
@@ -162,7 +162,7 @@
     </xsl:variable>
 
     <xsl:template match="gmd:onLine[*/gmd:function/*/@codeListValue = $onlineFunctionMap/entry/@value]"
-                  mode="from19139to19115-3"
+                  mode="from19139to19115-3.2018"
                   priority="200"/>
 
     <xsl:template name="onlineSourceDispatcher">
@@ -256,11 +256,11 @@
             <cit:onlineResource>
                 <cit:CI_OnlineResource>
                     <xsl:apply-templates select="gmd:linkage"
-                                         mode="from19139to19115-3"/>
+                                         mode="from19139to19115-3.2018"/>
                     <xsl:apply-templates select="gmd:protocol"
-                                         mode="from19139to19115-3"/>
+                                         mode="from19139to19115-3.2018"/>
                     <xsl:apply-templates select="gmd:applicationProfile"
-                                         mode="from19139to19115-3"/>
+                                         mode="from19139to19115-3.2018"/>
 
                     <xsl:if test="$withDescription">
                         <xsl:call-template name="writeCharacterStringElement">
@@ -270,7 +270,7 @@
                     </xsl:if>
 
                     <xsl:apply-templates select="gmd:function"
-                                         mode="from19139to19115-3"/>
+                                         mode="from19139to19115-3.2018"/>
                 </cit:CI_OnlineResource>
             </cit:onlineResource>
         </cit:CI_Citation>

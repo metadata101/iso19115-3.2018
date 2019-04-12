@@ -34,7 +34,7 @@
             <xsl:element name="{$elementName}">
                 <!-- Deal with attributes (may be in the old gco namespace -->
                 <xsl:apply-templates select="$nodeWithStringToWrite/@*[name() != 'xsi:type']"
-                                     mode="from19139to19115-3"/>
+                                     mode="from19139to19115-3.2018"/>
                 <xsl:if test="$isMultilingual">
                     <xsl:attribute name="xsi:type" select="'lan:PT_FreeText_PropertyType'"/>
                 </xsl:if>
@@ -54,7 +54,7 @@
                 </xsl:if>
                 <xsl:if test="$isMultilingual">
                     <xsl:apply-templates
-                        mode="from19139to19115-3"
+                        mode="from19139to19115-3.2018"
                         select="$nodeWithStringToWrite/gmd:PT_FreeText"/>
                 </xsl:if>
             </xsl:element>

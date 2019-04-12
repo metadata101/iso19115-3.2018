@@ -24,7 +24,7 @@
     <xsl:for-each select="descendant::gcoold:*">
       <xsl:element name="{concat('gco:',local-name(.))}">
         <xsl:apply-templates select="@*"
-                             mode="from19139to19115-3"/>
+                             mode="from19139to19115-3.2018"/>
         <xsl:value-of select="."/>
       </xsl:element>
     </xsl:for-each>

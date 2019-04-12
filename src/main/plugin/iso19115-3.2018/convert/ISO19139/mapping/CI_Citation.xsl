@@ -55,9 +55,9 @@
             <xd:p><xd:b>Author:</xd:b>thabermann@hdfgroup.org</xd:p>
         </xd:desc>
     </xd:doc>
-    <xsl:template match="gmd:CI_Citation" mode="from19139to19115-3">
+    <xsl:template match="gmd:CI_Citation" mode="from19139to19115-3.2018">
         <xsl:element name="cit:CI_Citation">
-            <xsl:apply-templates mode="from19139to19115-3"/>
+            <xsl:apply-templates mode="from19139to19115-3.2018"/>
             <!-- Special attention is required for CI_ResponsibleParties that are included in the 
                 CI_Citation only for a URL. These are currently identified as those 
                 with no name elements (individualName, organisationName, or positionName)
@@ -69,9 +69,9 @@
         </xsl:element>
     </xsl:template>
 
-    <xsl:template match="gmd:CI_Citation/gmd:date" mode="from19139to19115-3">
+    <xsl:template match="gmd:CI_Citation/gmd:date" mode="from19139to19115-3.2018">
         <cit:date>
-            <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
+            <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
             <xsl:if test="exists(descendant::gmd:date/*) or
                           exists(descendant::gmd:dateType)">
                 <cit:CI_Date>
@@ -79,7 +79,7 @@
                         exists(descendant::gmd:date/@gcoold:nilReason) or
                         normalize-space(descendant::gmd:date/*/text()) != ''">
                         <cit:date>
-                            <xsl:apply-templates mode="from19139to19115-3" 
+                            <xsl:apply-templates mode="from19139to19115-3.2018"
                                                  select="descendant::gmd:date/@gcoold:nilReason"/>
                             <xsl:call-template name="writeDateTime"/>
                         </cit:date>
@@ -96,19 +96,19 @@
         </cit:date>
     </xsl:template>
 
-    <xsl:template match="gmd:CI_Citation/gmd:title" mode="from19139to19115-3">
+    <xsl:template match="gmd:CI_Citation/gmd:title" mode="from19139to19115-3.2018">
         <xsl:call-template name="writeCharacterStringElement">
             <xsl:with-param name="elementName" select="'cit:title'"/>
             <xsl:with-param name="nodeWithStringToWrite" select="."/>
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="gmd:CI_Citation/gmd:editionDate" mode="from19139to19115-3">
+    <xsl:template match="gmd:CI_Citation/gmd:editionDate" mode="from19139to19115-3.2018">
         <cit:editionDate>
             <xsl:call-template name="writeDateTime"/>
         </cit:editionDate>
     </xsl:template>
 
     <!-- The collectiveTitle element was dropped from CI_Citation in 19115-1 -->
-    <xsl:template match="gmd:CI_Citation/gmd:collectiveTitle" mode="from19139to19115-3"/>
+    <xsl:template match="gmd:CI_Citation/gmd:collectiveTitle" mode="from19139to19115-3.2018"/>
 </xsl:stylesheet>

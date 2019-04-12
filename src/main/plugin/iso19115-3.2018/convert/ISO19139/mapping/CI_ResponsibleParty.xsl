@@ -60,7 +60,7 @@
         </xd:desc>
     </xd:doc>
 
-    <xsl:template match="gmd:CI_ResponsibleParty" mode="from19139to19115-3">
+    <xsl:template match="gmd:CI_ResponsibleParty" mode="from19139to19115-3.2018">
         <xsl:choose>
             <xsl:when test="count(gmd:individualName/gcoold:CharacterString) + count(gmd:organisationName/gcoold:CharacterString) + count(gmd:positionName/gcoold:CharacterString) > 0">
                 <!-- 
@@ -69,7 +69,7 @@
                 using the CI_ResponsiblePartyToOnlineResource template
                 -->
                <xsl:element name="cit:CI_Responsibility">
-                   <xsl:apply-templates select="./@*" mode="from19139to19115-3"/>
+                   <xsl:apply-templates select="./@*" mode="from19139to19115-3.2018"/>
                     <xsl:choose>
                         <xsl:when test="./gmd:role/gmd:CI_RoleCode">
                             <xsl:call-template name="writeCodelistElement">
@@ -80,7 +80,7 @@
                         </xsl:when>
                         <xsl:when test="./gmd:role/@*">
                             <cit:role>
-                                <xsl:apply-templates select="./gmd:role/@*" mode="from19139to19115-3"/>
+                                <xsl:apply-templates select="./gmd:role/@*" mode="from19139to19115-3.2018"/>
                             </cit:role>
                         </xsl:when>
                         <xsl:otherwise>
@@ -148,10 +148,10 @@
         CI_Citations do not include CI_OnlineResources. In this case we, transform
         only the CI_OnlineResource element of the CI_ResponsibleParty 
     -->
-        <xsl:apply-templates select=".//gmd:onlineResource" mode="from19139to19115-3"/>
+        <xsl:apply-templates select=".//gmd:onlineResource" mode="from19139to19115-3.2018"/>
     </xsl:template>
 
-    <xsl:template match="gmd:contactInfo/gmd:CI_Contact/gmd:phone" mode="from19139to19115-3">
+    <xsl:template match="gmd:contactInfo/gmd:CI_Contact/gmd:phone" mode="from19139to19115-3.2018">
       <xsl:for-each select="gmd:CI_Telephone/*">
         <cit:phone>
           <cit:CI_Telephone>
@@ -180,16 +180,16 @@
     </xsl:template>
 
     <!-- Empty high-priority templates are used for elements that move to new locations in the output -->
-    <xsl:template match="gmd:CI_ResponsibleParty/gmd:role" priority="5" mode="from19139to19115-3"/>
-    <xsl:template match="gmd:CI_ResponsibleParty/gmd:organisationName" priority="5" mode="from19139to19115-3"/>
-    <xsl:template match="gmd:CI_ResponsibleParty/gmd:individualName" priority="5" mode="from19139to19115-3"/>
-    <xsl:template match="gmd:CI_ResponsibleParty/gmd:positionName" priority="5" mode="from19139to19115-3"/>
+    <xsl:template match="gmd:CI_ResponsibleParty/gmd:role" priority="5" mode="from19139to19115-3.2018"/>
+    <xsl:template match="gmd:CI_ResponsibleParty/gmd:organisationName" priority="5" mode="from19139to19115-3.2018"/>
+    <xsl:template match="gmd:CI_ResponsibleParty/gmd:individualName" priority="5" mode="from19139to19115-3.2018"/>
+    <xsl:template match="gmd:CI_ResponsibleParty/gmd:positionName" priority="5" mode="from19139to19115-3.2018"/>
 
     <xsl:template name="writeContactInformation">
         <xsl:for-each select="gmd:contactInfo">
             <cit:contactInfo>
-                <xsl:apply-templates select="@*" mode="from19139to19115-3"/>
-                <xsl:apply-templates mode="from19139to19115-3"/>
+                <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
+                <xsl:apply-templates mode="from19139to19115-3.2018"/>
             </cit:contactInfo>
         </xsl:for-each>
     </xsl:template>

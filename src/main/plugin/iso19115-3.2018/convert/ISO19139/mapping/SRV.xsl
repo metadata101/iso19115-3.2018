@@ -46,7 +46,7 @@
 
   <xsl:import href="../utility/multiLingualCharacterStrings.xsl"/>
 
-  <xsl:template match="srvold:optionality" mode="from19139to19115-3">
+  <xsl:template match="srvold:optionality" mode="from19139to19115-3.2018">
     <srv:optionality>
       <gco:Boolean>
         <xsl:value-of select="gcoold:CharacterString"/>
@@ -55,7 +55,7 @@
   </xsl:template>
 
 
-  <xsl:template match="srvold:containsOperations" mode="from19139to19115-3">
+  <xsl:template match="srvold:containsOperations" mode="from19139to19115-3.2018">
     <srv:containsOperations>
       <srv:SV_OperationMetadata>
         <xsl:call-template name="writeCharacterStringElement">
@@ -79,26 +79,26 @@
           <xsl:with-param name="elementName" select="'srv:invocationName'"/>
           <xsl:with-param name="nodeWithStringToWrite" select="srvold:SV_OperationMetadata/srvold:invocationName"/>
         </xsl:call-template>
-        <xsl:apply-templates select="srvold:SV_OperationMetadata/srvold:connectPoint" mode="from19139to19115-3"/>
-        <xsl:apply-templates select="srvold:SV_OperationMetadata/srvold:parameters" mode="from19139to19115-3"/>
+        <xsl:apply-templates select="srvold:SV_OperationMetadata/srvold:connectPoint" mode="from19139to19115-3.2018"/>
+        <xsl:apply-templates select="srvold:SV_OperationMetadata/srvold:parameters" mode="from19139to19115-3.2018"/>
       </srv:SV_OperationMetadata>
     </srv:containsOperations>
   </xsl:template>
 
-  <xsl:template match="srvold:parameters" mode="from19139to19115-3">
+  <xsl:template match="srvold:parameters" mode="from19139to19115-3.2018">
     <srv:parameter>
-      <xsl:apply-templates select="srvold:SV_Parameter" mode="from19139to19115-3"/>
+      <xsl:apply-templates select="srvold:SV_Parameter" mode="from19139to19115-3.2018"/>
     </srv:parameter>
   </xsl:template>
 
-  <xsl:template match="srvold:SV_Parameter/srvold:name" mode="from19139to19115-3">
+  <xsl:template match="srvold:SV_Parameter/srvold:name" mode="from19139to19115-3.2018">
     <xsl:element name="srv:name">
       <gco:MemberName>
-        <xsl:apply-templates mode="from19139to19115-3"/>
+        <xsl:apply-templates mode="from19139to19115-3.2018"/>
       </gco:MemberName>
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="srvold:containsOperations/srvold:SV_OperationMetadata/srvold:parameters/srvold:SV_Parameter/srvold:valueType" priority="5" mode="from19139to19115-3"/>
+  <xsl:template match="srvold:containsOperations/srvold:SV_OperationMetadata/srvold:parameters/srvold:SV_Parameter/srvold:valueType" priority="5" mode="from19139to19115-3.2018"/>
 
 </xsl:stylesheet>

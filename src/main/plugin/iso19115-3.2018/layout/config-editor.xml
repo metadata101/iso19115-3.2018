@@ -224,6 +224,8 @@
     <name>gex:geographicBox</name>
     <name>gex:EX_TemporalExtent</name>
     <name>mrd:MD_Distributor</name>
+    <name>mac:MI_Instrument</name>
+    <name>mac:MI_Platform</name>
     <name>srv:containsOperations</name>
     <name>srv:SV_CoupledResource</name>
     <name>mdb:metadataConstraints</name>

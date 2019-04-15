@@ -154,6 +154,7 @@
     <xsl:param name="overrideLabel" select="''" required="no"/>
     <xsl:param name="isDisabled" required="no"/>
     <xsl:param name="refToDelete" select="''" required="no"/>
+    <xsl:param name="config" required="no"/>
 
 
     <xsl:variable name="elementName" select="name()"/>
@@ -248,7 +249,7 @@
                            select="
         */@*|
         */gn:attribute[not(@name = parent::node()/@*/name())]">
-        <xsl:with-param name="ref" select="*/gn:element/@ref"/>
+        <xsl:with-param name="ref" select="$theElement/gn:element/@ref"/>
         <xsl:with-param name="insertRef" select="$theElement/gn:element/@ref"/>
       </xsl:apply-templates>
     </xsl:variable>
@@ -263,7 +264,8 @@
 
     <xsl:variable name="values">
       <xsl:if test="$isMultilingualElement">
-
+        <xsl:variable name="text"
+                      select="normalize-space(gco:CharacterString|gcx:Anchor)"/>
         <values>
           <!--
           CharacterString is not edited anymore, but it's PT_FreeText
@@ -282,12 +284,27 @@
 
           <!-- and create field for none translated language -->
           <xsl:for-each select="$metadataOtherLanguages/lang">
+            <xsl:variable name="code" select="@code"/>
             <xsl:variable name="currentLanguageId" select="@id"/>
-            <xsl:if test="count($theElement/parent::node()/
-                            lan:PT_FreeText/lan:textGroup/
-                              lan:LocalisedCharacterString[@locale = concat('#',$currentLanguageId)]) = 0">
-              <value ref="lang_{@id}_{$theElement/parent::node()/gn:element/@ref}" lang="{@id}"></value>
-            </xsl:if>
+            <xsl:variable name="ptFreeElementDoesNotExist"
+                          select="count($theElement/parent::node()/
+                                        lan:PT_FreeText/*/
+                                        lan:LocalisedCharacterString[
+                                          @locale = concat('#', $currentLanguageId)]) = 0"/>
+            <xsl:choose>
+              <xsl:when test="$ptFreeElementDoesNotExist and
+                              $text != '' and
+                              $code = $metadataLanguage">
+                <value ref="lang_{@id}_{$theElement/parent::node()/gn:element/@ref}"
+                       lang="{@id}">
+                  <xsl:value-of select="$text"/>
+                </value>
+              </xsl:when>
+              <xsl:when test="$ptFreeElementDoesNotExist">
+                <value ref="lang_{@id}_{$theElement/parent::node()/gn:element/@ref}"
+                       lang="{@id}"></value>
+              </xsl:when>
+            </xsl:choose>
           </xsl:for-each>
         </values>
       </xsl:if>
@@ -314,7 +331,23 @@
       <xsl:with-param name="xpath" select="$xpath"/>
       <xsl:with-param name="attributesSnippet" select="$attributes"/>
       <xsl:with-param name="type"
-                      select="gn-fn-metadata:getFieldType($editorConfig, name(), name($theElement), $xpath)"/>
+                      select="if ($config and $config/@use != '')
+                              then $config/@use
+                              else gn-fn-metadata:getFieldType($editorConfig, name(),
+                                                               name($theElement), $xpath)"/>
+      <xsl:with-param name="directiveAttributes">
+        <xsl:choose>
+          <xsl:when test="$config and $config/@use != ''">
+            <xsl:element name="directive">
+              <xsl:attribute name="data-directive-name" select="$config/@use"/>
+              <xsl:copy-of select="$config/directiveAttributes/@*"/>
+            </xsl:element>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:copy-of select="gn-fn-metadata:getFieldDirective($editorConfig, name())"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:with-param>
       <xsl:with-param name="name" select="if ($isEditing) then $theElement/gn:element/@ref else ''"/>
       <xsl:with-param name="editInfo" select="$theElement/gn:element"/>
       <xsl:with-param name="parentEditInfo" select="if ($refToDelete) then $refToDelete else gn:element"/>

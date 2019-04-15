@@ -34,7 +34,7 @@
     <xsl:variable name="thesaurusTitle"
       select="if ($overrideLabel != '')
               then $overrideLabel
-              else mri:MD_Keywords/mri:thesaurusName/cit:CI_Citation/cit:title/gco:CharacterString"/>
+              else mri:MD_Keywords/mri:thesaurusName/*/cit:title/gco:CharacterString"/>
 
     <xsl:variable name="attributes">
       <xsl:if test="$isEditing">
@@ -51,57 +51,81 @@
     </xsl:variable>
 
 
+    <xsl:variable name="thesaurusIdentifier"
+                  select="normalize-space(*/mri:thesaurusName/*/cit:identifier/*/mcc:code/*/text())"/>
 
+    <xsl:variable name="thesaurusConfig"
+                  as="element()?"
+                  select="if ($thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier, 'geonetwork.thesaurus.')])
+                          then $thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier, 'geonetwork.thesaurus.')]
+                          else $listOfThesaurus/thesaurus[title=$thesaurusTitle]"/>
 
-    <xsl:call-template name="render-boxed-element">
-      <xsl:with-param name="label"
-        select="if ($thesaurusTitle)
-                then $thesaurusTitle
-                else gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)/label"/>
-      <xsl:with-param name="editInfo" select="gn:element"/>
-      <xsl:with-param name="cls" select="local-name()"/>
-      <xsl:with-param name="xpath" select="$xpath"/>
-      <xsl:with-param name="attributesSnippet" select="$attributes"/>
-      <xsl:with-param name="subTreeSnippet">
+    <xsl:message>=<xsl:copy-of select="$thesaurusIdentifier"/></xsl:message>
+    <xsl:message>=<xsl:copy-of select="$thesaurusConfig"/></xsl:message>
+    <xsl:choose>
+      <xsl:when test="$thesaurusConfig/@fieldset = 'false'">
         <xsl:apply-templates mode="mode-iso19115-3.2018" select="*">
           <xsl:with-param name="schema" select="$schema"/>
           <xsl:with-param name="labels" select="$labels"/>
+          <xsl:with-param name="overrideLabel" select="$overrideLabel"/>
         </xsl:apply-templates>
-      </xsl:with-param>
-    </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="render-boxed-element">
+          <xsl:with-param name="label"
+            select="if ($thesaurusTitle)
+                    then $thesaurusTitle
+                    else gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)/label"/>
+          <xsl:with-param name="editInfo" select="gn:element"/>
+          <xsl:with-param name="cls" select="local-name()"/>
+          <xsl:with-param name="xpath" select="$xpath"/>
+          <xsl:with-param name="attributesSnippet" select="$attributes"/>
+          <xsl:with-param name="subTreeSnippet">
+            <xsl:apply-templates mode="mode-iso19115-3.2018" select="*">
+              <xsl:with-param name="schema" select="$schema"/>
+              <xsl:with-param name="labels" select="$labels"/>
+              <xsl:with-param name="overrideLabel" select="$overrideLabel"/>
+            </xsl:apply-templates>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
 
   </xsl:template>
 
 
-
-
-
-
   <xsl:template mode="mode-iso19115-3.2018" match="mri:MD_Keywords" priority="2000">
-    <xsl:variable name="thesaurusTitle"
-      select="mri:thesaurusName/cit:CI_Citation/cit:title/gco:CharacterString"/>
+    <xsl:param name="overrideLabel" select="''" required="no"/>
 
-    <xsl:variable name="isTheaurusAvailable"
-      select="count($listOfThesaurus/thesaurus[title=$thesaurusTitle]) > 0"/>
+
+    <xsl:variable name="thesaurusIdentifier"
+                  select="normalize-space(mri:thesaurusName/*/cit:identifier/*/mcc:code/*/text())"/>
+
+    <xsl:variable name="thesaurusTitle"
+      select="if ($overrideLabel != '')
+              then $overrideLabel
+              else mri:thesaurusName/*/cit:title/gco:CharacterString"/>
+
+    <xsl:variable name="thesaurusConfig"
+                  as="element()?"
+                  select="if ($thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier, 'geonetwork.thesaurus.')])
+                          then $thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier, 'geonetwork.thesaurus.')]
+                          else $listOfThesaurus/thesaurus[title=$thesaurusTitle]"/>
+
     <xsl:choose>
-      <xsl:when test="$isTheaurusAvailable">
+      <xsl:when test="$thesaurusConfig">
 
         <!-- The thesaurus key may be contained in the MD_Identifier field or
           get it from the list of thesaurus based on its title.
           -->
         <xsl:variable name="thesaurusInternalKey"
-          select="if (mri:thesaurusName/cit:CI_Citation/cit:identifier/mcc:MD_Identifier/mcc:code)
-          then mri:thesaurusName/cit:CI_Citation/cit:identifier/mcc:MD_Identifier/mcc:code
-          else $listOfThesaurus/thesaurus[title=$thesaurusTitle]/key"/>
+          select="if ($thesaurusIdentifier)
+                  then $thesaurusIdentifier
+                  else $thesaurusConfig/key"/>
         <xsl:variable name="thesaurusKey"
                       select="if (starts-with($thesaurusInternalKey, 'geonetwork.thesaurus.'))
                       then substring-after($thesaurusInternalKey, 'geonetwork.thesaurus.')
                       else $thesaurusInternalKey"/>
-
-        <!-- Single quote are escaped inside keyword. -->
-        <xsl:variable name="thesaurusConfig"
-                      as="element()?"
-                      select="$thesaurusList/thesaurus[@key = $thesaurusKey]"/>
 
         <!-- if gui lang eng > #EN -->
         <xsl:variable name="guiLangId"
@@ -109,6 +133,10 @@
                       if (count($metadata/mdb:otherLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $lang]) = 1)
                         then $metadata/mdb:otherLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $lang]/@id
                         else $metadata/mdb:otherLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $metadataLanguage]/@id"/>
+        <!--
+        get keyword in gui lang
+        in default language
+        -->
         <xsl:variable name="keywords" select="string-join(
                   if ($guiLangId and mri:keyword//*[@locale = concat('#', $guiLangId)])
                   then mri:keyword//*[@locale = concat('#', $guiLangId)]/replace(text(), ',', ',,')
@@ -143,13 +171,17 @@
                       select="if ($thesaurusConfig/@maxtags)
                               then $thesaurusConfig/@maxtags
                               else ''"/>
+        <xsl:variable name="orderById"
+                      as="xs:string"
+                      select="if ($thesaurusConfig/@orderById)
+                              then $thesaurusConfig/@orderById
+                              else 'false'"/>
         <!--
           Example: to restrict number of keyword to 1 for INSPIRE
           <xsl:variable name="maxTags"
           select="if ($thesaurusKey = 'external.theme.httpinspireeceuropaeutheme-theme') then '1' else ''"/>
         -->
         <!-- Create a div with the directive configuration
-            * widgetMod: the layout to use
             * elementRef: the element ref to edit
             * elementName: the element name
             * thesaurusName: the thesaurus title to use
@@ -162,15 +194,17 @@
                       select="concat($metadataLanguage, ',', $metadataOtherLanguages)"/>
 
         <div data-gn-keyword-selector="{$widgetMode}"
-          data-metadata-id="{$metadataId}"
-          data-element-ref="{concat('_X', ../gn:element/@ref, '_replace')}"
-          data-thesaurus-title="{$thesaurusTitle}"
-          data-thesaurus-key="{$thesaurusKey}"
-          data-keywords="{$keywords}"
-          data-transformations="{$transformations}"
-          data-current-transformation="{$transformation}"
-          data-lang="{$metadataOtherLanguagesAsJson}"
-          data-max-tags="{$maxTags}">
+             data-metadata-id="{$metadataId}"
+             data-element-ref="{concat('_X', ../gn:element/@ref, '_replace')}"
+             data-thesaurus-title="{$thesaurusTitle}"
+             data-thesaurus-key="{$thesaurusKey}"
+             data-keywords="{$keywords}"
+             data-transformations="{$transformations}"
+             data-current-transformation="{$transformation}"
+             data-max-tags="{$maxTags}"
+             data-order-by-id="{$orderById}"
+             data-lang="{$metadataOtherLanguagesAsJson}"
+             data-textgroup-only="false">
         </div>
 
         <xsl:variable name="isTypePlace" select="count(mri:type/mri:MD_KeywordTypeCode[@codeListValue='place']) > 0"/>

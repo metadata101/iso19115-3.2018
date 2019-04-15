@@ -203,7 +203,7 @@
     <name>mdb:spatialRepresentationInfo</name>
     <name>mri:pointOfContact</name>
     <name>mri:resourceFormat</name>
-    <name>mri:distributionFormat</name>
+    <name>mrd:distributionFormat</name>
     <name>mdb:dataQualityInfo</name>
     <name>mdq:result</name>
     <name>mdq:report</name>

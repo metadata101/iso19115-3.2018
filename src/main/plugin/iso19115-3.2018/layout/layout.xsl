@@ -313,7 +313,9 @@
     <xsl:variable name="labelCfg">
       <xsl:choose>
         <xsl:when test="$overrideLabel != ''">
-          <label><xsl:value-of select="$overrideLabel"/></label>
+	  <element>
+            <label><xsl:value-of select="$overrideLabel"/></label>
+	  </element>
         </xsl:when>
         <xsl:otherwise>
           <xsl:copy-of select="$labelConfig/*"/>

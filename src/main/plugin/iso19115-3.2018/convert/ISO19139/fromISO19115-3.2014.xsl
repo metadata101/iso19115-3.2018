@@ -22,6 +22,7 @@
                 xmlns:mex="http://standards.iso.org/iso/19115/-3/mex/1.0"
                 xmlns:mic="http://standards.iso.org/iso/19115/-3/mic/1.0"
                 xmlns:mil="http://standards.iso.org/iso/19115/-3/mil/1.0"
+                xmlns:mrl1="http://standards.iso.org/iso/19115/-3/mrl/1.0"
                 xmlns:mrl="http://standards.iso.org/iso/19115/-3/mrl/2.0"
                 xmlns:mds1="http://standards.iso.org/iso/19115/-3/mds/1.0"
                 xmlns:mds="http://standards.iso.org/iso/19115/-3/mds/2.0"
@@ -73,6 +74,11 @@
   </xsl:template>
   <xsl:template match="msr1:*" priority="200">
     <xsl:element name="{name()}" namespace="http://standards.iso.org/iso/19115/-3/msr/2.0">
+      <xsl:apply-templates select="@*|*"/>
+    </xsl:element>
+  </xsl:template>
+  <xsl:template match="mrl1:*" priority="200">
+    <xsl:element name="{name()}" namespace="http://standards.iso.org/iso/19115/-3/mrl/2.0">
       <xsl:apply-templates select="@*|*"/>
     </xsl:element>
   </xsl:template>

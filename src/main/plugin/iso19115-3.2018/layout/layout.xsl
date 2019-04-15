@@ -313,18 +313,18 @@
     <xsl:variable name="labelCfg">
       <xsl:choose>
         <xsl:when test="$overrideLabel != ''">
-	  <element>
+          <element>
             <label><xsl:value-of select="$overrideLabel"/></label>
-	  </element>
+          </element>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:copy-of select="$labelConfig/*"/>
+          <xsl:copy-of select="$labelConfig"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
 
     <xsl:call-template name="render-element">
-      <xsl:with-param name="label" select="$labelCfg"/>
+      <xsl:with-param name="label" select="$labelCfg/*"/>
       <xsl:with-param name="value" select="if ($isMultilingualElement) then $values else *"/>
       <xsl:with-param name="errors" select="$errors"/>
       <xsl:with-param name="cls" select="local-name()"/>

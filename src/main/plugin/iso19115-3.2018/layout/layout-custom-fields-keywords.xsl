@@ -53,15 +53,14 @@
 
     <xsl:variable name="thesaurusIdentifier"
                   select="normalize-space(*/mri:thesaurusName/*/cit:identifier/*/mcc:code/*/text())"/>
-
+    
     <xsl:variable name="thesaurusConfig"
                   as="element()?"
                   select="if ($thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier, 'geonetwork.thesaurus.')])
                           then $thesaurusList/thesaurus[@key=substring-after($thesaurusIdentifier, 'geonetwork.thesaurus.')]
                           else $listOfThesaurus/thesaurus[title=$thesaurusTitle]"/>
 
-    <xsl:message>=<xsl:copy-of select="$thesaurusIdentifier"/></xsl:message>
-    <xsl:message>=<xsl:copy-of select="$thesaurusConfig"/></xsl:message>
+   
     <xsl:choose>
       <xsl:when test="$thesaurusConfig/@fieldset = 'false'">
         <xsl:apply-templates mode="mode-iso19115-3.2018" select="*">

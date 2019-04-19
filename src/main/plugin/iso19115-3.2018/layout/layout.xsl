@@ -145,7 +145,7 @@
 
   <!-- Render simple element which usually match a form field -->
   <xsl:template mode="mode-iso19115-3.2018" priority="200"
-                match="*[gco:CharacterString|gco:Integer|gco:Decimal|
+                match="*[gco:CharacterString|gcx:Anchor|gco:Integer|gco:Decimal|
        gco:Boolean|gco:Real|gco:Measure|gco:Length|gco:Distance|gco:Angle|gmx:FileName|
        gco:Scale|gco:RecordType|gmx:MimeFileType|gco:LocalName|gco:ScopedName|gco:RecordType|
        gco:Record|lan:PT_FreeText|mcc:URI|gco:TM_PeriodDuration]">
@@ -198,7 +198,7 @@
 
     <xsl:variable name="hasPTFreeText" select="count(lan:PT_FreeText) > 0"/>
     <xsl:variable name="hasOnlyPTFreeText"
-                  select="count(lan:PT_FreeText) > 0 and count(gco:CharacterString) = 0"/>
+                  select="count(lan:PT_FreeText) > 0 and count(gco:CharacterString|gcx:Anchor) = 0"/>
 
 
     <xsl:variable name="isMultilingualElement"
@@ -208,10 +208,10 @@
 
     <!-- For some fields, always display attributes.
     TODO: move to editor config ? -->
-    <xsl:variable name="forceDisplayAttributes" select="false()"/>
+    <xsl:variable name="forceDisplayAttributes" select="count(gcx:Anchor) > 0"/>
 
     <xsl:variable name="monoLingualValue"
-                  select="gco:CharacterString|gco:Integer|gco:Decimal|
+                  select="gco:CharacterString|gcx:Anchor|gco:Integer|gco:Decimal|
                           gco:Boolean|gco:Real|gco:Measure|gco:Length|
                           gco:Distance|gco:Angle|gmx:FileName|
                           gco:Scale|gco:RecordType|gmx:MimeFileType|

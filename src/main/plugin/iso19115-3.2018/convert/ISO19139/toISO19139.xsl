@@ -552,7 +552,29 @@
 
   <xsl:template match="cit:CI_Citation">
     <xsl:element name="gmd:CI_Citation">
-      <xsl:apply-templates/>
+      <xsl:apply-templates select="cit:title|cit:alternateTitle"/>
+
+      <!-- Add a null date to keep XSD validation status green. -->
+      <xsl:choose>
+        <xsl:when test="count(cit:date) = 0">
+          <gmd:date gco:nilReason="missing"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates select="cit:date"/>
+        </xsl:otherwise>
+      </xsl:choose>
+
+      <xsl:apply-templates select="cit:edition|
+                                    cit:editionDate|
+                                    cit:identifier|
+                                    cit:citedResponsibleParty|
+                                    cit:presentationForm|
+                                    cit:series|
+                                    cit:otherCitationDetails|
+                                    cit:ISBN|
+                                    cit:ISSN|
+                                    cit:onlineResource"/>
+      
       <!-- Special attention is required for CI_ResponsibleParties that are included in the CI_Citation only for a URL. These are currently identified as those
         with no name elements (individualName, organisationName, or positionName)
       -->
@@ -562,6 +584,8 @@
         count(cit:party/cit:CI_Organisation/cit:organisationName/gco2:CharacterString) = 0]">
         <xsl:call-template name="CI_ResponsiblePartyToOnlineResource"/>
       </xsl:for-each>
+      
+      <xsl:apply-templates select="cit:graphic"/>
     </xsl:element>
   </xsl:template>
   <xsl:template match="cit:CI_Citation/cit:date">

@@ -18,6 +18,7 @@
         xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
         xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
         xmlns:mac="http://standards.iso.org/iso/19115/-3/mac/2.0"
+        xmlns:mcc="http://standards.iso.org/iso/19115/-3/mcc/1.0"
         xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0">
 
   <!-- Form field type configuration. Default is text. -->

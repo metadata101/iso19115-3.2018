@@ -351,6 +351,26 @@
       <name>srv:serviceTypeVersion</name>
     </exclude>
   </multilingualFields>
+  
+  <tableFields>
+    <!-- This is an example for organisation table layout.
+    19115-3 being more flexible with link between orgs and individual,
+    a table view force some constraints. -->
+    <table for="cit:CI_Responsibility">
+      <header>
+        <col label="cit:role"/>
+        <col label="cit:CI_Organisation"/>
+        <col label="cit:electronicMailAddress"/>
+        <col/>
+      </header>
+      <row>
+        <col xpath="cit:role"/>
+        <col xpath="cit:party/cit:CI_Organisation/cit:name"/>
+        <col xpath="cit:party/*/cit:contactInfo/*/cit:address/*/cit:electronicMailAddress"/>
+        <col del=".."/>
+      </row>
+    </table>
+  </tableFields>
 
 
   <!-- View configuration -->

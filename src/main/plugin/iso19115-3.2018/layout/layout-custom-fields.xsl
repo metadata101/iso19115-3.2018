@@ -111,6 +111,7 @@
     <xsl:param name="schema" select="$schema" required="no"/>
     <xsl:param name="labels" select="$labels" required="no"/>
     <xsl:param name="refToDelete" select="''" required="no"/>
+    <xsl:param name="overrideLabel" select="''" required="no"/>
 
     <!--Avoid CHOICEELEMENT level for parent name -->
     <xsl:variable name="labelConfig"
@@ -127,8 +128,9 @@
          id="gn-el-{*/gn:element/@ref}"
          data-gn-field-highlight="">
       <label class="col-sm-2 control-label">
-        <xsl:value-of select="$labelConfig/label"/>
-        <xsl:if test="$labelMeasureType != '' and
+        <xsl:value-of select="if ($overrideLabel) then $overrideLabel else $labelConfig/label"/>
+        <xsl:if test="$overrideLabel = '' and
+                      $labelMeasureType != '' and
                       $labelMeasureType/label != $labelConfig/label">&#10;
           (<xsl:value-of select="$labelMeasureType/label"/>)
         </xsl:if>

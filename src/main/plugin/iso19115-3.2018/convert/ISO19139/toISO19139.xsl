@@ -88,6 +88,7 @@
       <xsl:variable name="nameSpacePrefix">
         <xsl:call-template name="getNamespacePrefix"/>
       </xsl:variable>
+      
       <xsl:element name="{concat($nameSpacePrefix,':',local-name(.))}">
         <xsl:call-template name="add-namespaces"/>
 
@@ -224,6 +225,10 @@
         <xsl:variable name="nameSpacePrefix">
           <xsl:call-template name="getNamespacePrefix"/>
         </xsl:variable>
+        
+        <xsl:variable name="isService"
+                      select="local-name(.) = 'SV_ServiceIdentification'"/>
+      
         <xsl:element name="{concat($nameSpacePrefix,':',local-name(.))}">
           <xsl:apply-templates select="@*"/>
           <xsl:apply-templates select="mri:citation"/>
@@ -304,7 +309,7 @@
           <xsl:apply-templates select="srv2:containsOperations"/>
           
           <!-- Add mandatory contains operation -->
-          <xsl:if test="not(srv2:containsOperations)">
+          <xsl:if test="$isService and not(srv2:containsOperations)">
             <srv:containsOperations/>
           </xsl:if>
 
@@ -568,7 +573,13 @@
     </gmd:DQ_QuantitativeResult>
   </xsl:template>
 
-
+  <!-- maintenanceScope was updateScope -->
+  <xsl:template match="mmi:maintenanceScope">
+    <gmd:updateScope>
+      <!-- "//" is a temporaty fix for invalid 115-3 records -->
+      <xsl:apply-templates select="*/mcc:level//mcc:MD_ScopeCode"/>
+    </gmd:updateScope>
+  </xsl:template>
 
 
   <xsl:template match="cit:CI_Citation">

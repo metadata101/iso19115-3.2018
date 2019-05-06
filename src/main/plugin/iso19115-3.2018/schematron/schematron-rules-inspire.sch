@@ -246,8 +246,8 @@
 	
 	<!--  Keyword and INSPIRE themes -->
 	<sch:diagnostics>
-		<sch:diagnostic id="rule.keyword-thesaurus-file-failure-en" xml:lang="en">INSPIRE Theme thesaurus not found. Check installation in codelist/external/thesauri/theme. Download thesaurus from https://geonetwork.svn.sourceforge.net/svnroot/geonetwork/utilities/gemet/thesauri/.</sch:diagnostic>
-		<sch:diagnostic id="rule.keyword-thesaurus-file-failure-fr" xml:lang="fr">Le thesaurus du thème ISNPIRE n'a pas été trouvé. Vérifier si ce dernier est bien installer (codelist/external/thesauri/theme). Télécharger le thesaurus à partir de l'url suivant https://geonetwork.svn.sourceforge.net/svnroot/geonetwork/utilities/gemet/thesauri/.</sch:diagnostic>
+		<sch:diagnostic id="rule.keyword-thesaurus-file-failure-en" xml:lang="en">INSPIRE Theme thesaurus not found. Download thesaurus from the INSPIRE Registry.</sch:diagnostic>
+		<sch:diagnostic id="rule.keyword-thesaurus-file-failure-fr" xml:lang="fr">Le thesaurus du thème ISNPIRE n'a pas été trouvé. Télécharger le Registre INSPIRE.</sch:diagnostic>
 		<sch:diagnostic id="rule.keyword-inspire-theme-failure-en" xml:lang="en">INSPIRE theme is mandatory.</sch:diagnostic>
 		<sch:diagnostic id="rule.keyword-inspire-theme-failure-fr" xml:lang="fr">Le thème INSPIRE est manquant (mot clé issu du thésaurus "GEMET INSPIRE themes")</sch:diagnostic>
 		<sch:diagnostic id="rule.keyword-inspire-theme-success-en" xml:lang="en">"<sch:value-of select="$inspire-theme-found"/>" INSPIRE theme(s) found.</sch:diagnostic>
@@ -268,7 +268,7 @@
 			<sch:let name="inspire-thesaurus" value="document('file:///..../core-geonetwork/web/src/main/webapp/WEB-INF/data/config/codelist/external/thesauri/theme/inspire-theme.rdf')"/>
 			-->
 
-			<sch:let name="inspire-thesaurus" value="document(concat($thesaurusDir, '/external/thesauri/theme/inspire-theme.rdf'))"/>
+			<sch:let name="inspire-thesaurus" value="document(concat($thesaurusDir, '/external/thesauri/theme/httpinspireeceuropaeutheme-theme.rdf'))"/>
 			<sch:let name="inspire-theme" value="$inspire-thesaurus//skos:Concept"/>
 			
 			<!-- Display error if INSPIRE Theme thesaurus is not available. -->

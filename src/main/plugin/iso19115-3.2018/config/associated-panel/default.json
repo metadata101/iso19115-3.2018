@@ -14,10 +14,11 @@
         "process": "thumbnail-add",
         "fields": {
           "url": {
-            "isMultilingual": false
+            "isMultilingual": false,
+            "param": "thumbnail_url"
           },
           "name": {
-            "param": "desc"
+            "param": "thumbnail_desc"
           }
         }
       },

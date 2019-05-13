@@ -246,7 +246,7 @@
           </xsl:call-template>
           <xsl:call-template name="writeCodelistElement">
             <xsl:with-param name="elementName" select="'gmd:status'"/>
-            <xsl:with-param name="codeListValue" select="mri:status/mri:MD_ProgressCode/@codeListValue"/>
+            <xsl:with-param name="codeListValue" select="mri:status/mcc:MD_ProgressCode/@codeListValue"/>
             <xsl:with-param name="codeListName" select="'gmd:MD_ProgressCode'"/>
           </xsl:call-template>
           <xsl:apply-templates select="mri:pointOfContact"/>
@@ -452,6 +452,11 @@
     </srv:extent>
   </xsl:template>
 
+  <!-- Add nilReason attribute for unassigned Boolean -->
+  <xsl:template match="mdq:pass[gco2:Boolean = '']" priority="2">
+    <gmd:pass gco:nilReason="missing"/>
+  </xsl:template>
+  
   <xsl:template match="mdb:dataQualityInfo">
     <gmd:dataQualityInfo>
       <gmd:DQ_DataQuality>
@@ -1003,6 +1008,12 @@
         <xsl:when test="ancestor-or-self::srv2:SV_ServiceIdentification
                         and not(ancestor-or-self::mri:pointOfContact)
                         and not(ancestor-or-self::mri:resourceMaintenance)
+                        and not(ancestor-or-self::mri:graphicOverview)
+                        and not(ancestor-or-self::mri:resourceFormat)
+                        and not(ancestor-or-self::mri:topicCategory)
+                        and not(ancestor-or-self::mri:spatialResolution)
+                        and not(ancestor-or-self::mri:resourceSpecificUsage)
+                        and not(ancestor-or-self::mri:associatedResource)
                         and not(ancestor-or-self::mri:resourceConstraints)
                         and not(ancestor-or-self::mri:descriptiveKeywords)">
           <xsl:text>srv</xsl:text>
@@ -1033,6 +1044,7 @@
                        cit:CI_Citation/cit:onlineResource|
                        srv2:parameter|
                        mri:keywordClass|
+                       mri:temporalResolution|
                        mrd:formatSpecificationCitation|
                        mdb:dateInfo|
                        mdb:metadataProfile|

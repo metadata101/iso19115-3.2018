@@ -236,6 +236,7 @@
     <name>mri:associatedResource</name>
     <name>mri:descriptiveKeywords</name>
     <name>mri:resourceSpecificUsage</name>
+    <name>mri:identifiedIssues</name>
     <name>mri:equivalentScale</name>
     <name>mri:graphicOverview</name>
     <name>mri:pointOfContact</name>

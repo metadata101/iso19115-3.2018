@@ -84,7 +84,7 @@ Build the application.
 
 ### Adding the conversion to the import record page
 
-TODO
+Add `ISO19139-to-ISO19115-3-2018.xsl` and `ISO19115-3-2014-to-ISO19115-3-2018.xsl` to the `/web/src/main/webapp/xsl/conversion/import` folder.
 
 ## Metadata rules:
 

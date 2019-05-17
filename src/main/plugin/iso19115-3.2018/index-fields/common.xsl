@@ -809,13 +809,13 @@
         <Field name="dqMeasureName" index="true" store="false"
                string="{$qmName}"/>
 
-
         <xsl:for-each select="mdq:result/mdq:DQ_QuantitativeResult">
           <xsl:variable name="qmDate" select="mdq:dateTime/gco:Date/text()"/>
+          <!-- TODO: We assume one value per measure which may not be the case. -->
           <xsl:variable name="qmValue" select="mdq:value/gco:Record/text()"/>
           <xsl:variable name="qmUnit" select="mdq:valueUnit/*/gml:identifier/text()"/>
           <Field name="dqValues" index="true" store="true"
-                 string="{concat($dqId, '|', $cptName, '|', $qmId, '|', $qmName, '|', $qmDate, '|', $qmValue, '|', $qmUnit)}"/>
+                 string="{concat($dqId, '|', $cptName, '|', $qmId, '|', $qmName, '|', $qmDate, '|', string-join($qmValue, ', '), '|', $qmUnit)}"/>
 
         </xsl:for-each>
       </xsl:for-each>

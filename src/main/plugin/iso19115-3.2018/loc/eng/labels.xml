@@ -3046,16 +3046,6 @@
     </description>
     <condition>mandatory</condition>
   </element>
-  <element name="mri:individualName" id="375.0">
-    <label>Individual name</label>
-    <description>Name of the responsible person- surname, given name, title
-      separated by a
-      delimiter
-    </description>
-    <_condition>Conditional / organisationName and positionName not
-      documented?
-    </_condition>
-  </element>
   <element name="mri:initiativeType" id="66.5">
     <label>Initiative Type</label>
     <description>Type of initiative under which the aggregate dataset was
@@ -3294,6 +3284,15 @@
   <element name="mri:name" context="mri:MD_Role" id="556.0">
     <label>Name</label>
     <description>Role name</description>
+  </element>
+  <element name="cit:name" context="cit:CI_Organisation" id="376.0">
+    <label>Organisation name</label>
+    <description>Name of the responsible organization</description>
+    <condition>conditional</condition>
+  </element>
+  <element name="cit:name" context="cit:CI_Individual" id="375.0">
+    <label>Individual name</label>
+    <description>Name of the responsible person- surname, given name, title</description>
   </element>
   <element name="cit:name">
     <label>Name</label>
@@ -3726,11 +3725,6 @@
     <description>General instructions, terms and services provided by the
       distributor
     </description>
-  </element>
-  <element name="mri:organisationName" id="376.0">
-    <label>Organisation name</label>
-    <description>Name of the responsible organization</description>
-    <condition>conditional</condition>
   </element>
   <element name="mri:orientationParameterAvailability" id="172.0">
     <label>Orientation parameter availability</label>

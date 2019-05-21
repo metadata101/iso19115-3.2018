@@ -5049,16 +5049,6 @@ période de temps couverte par le service.
     <condition/>
 
   </element>
-  <element name="cit:individualName" id="375.0">
-    <label>Nom de la personne</label>
-    <description>Nom de la personne responsable. Prénom, nom et titre sont
-      séparés par un signe de délimitation
-    </description>
-    <help>Nom de la personne responsable. Des séparateurs (virgules) figurent
-      entre le prénom, le nom et le titre.
-    </help>
-    <condition>Condition</condition>
-  </element>
   <element name="mri:initiativeType" id="66.5">
     <label>Type d'initiative</label>
     <description>Type d'initiative pour laquelle le jeu de données rassemblé a
@@ -5479,6 +5469,26 @@ période de temps couverte par le service.
     <condition>Obligatoire</condition>
 
   </element>
+        
+  <element name="cit:name" context="cit:CI_Organisation" id="376.0">
+    <label>Nom de l'organisation</label>
+    <description>Nom de l'organisation responsable</description>
+    <help>Nom de l'organisation responsable, s'il s'agit d'une personne isolée
+      ou nom de l'organisation au sein de laquelle cette personne est employée.
+      Ces informations sont du type PT_FreeText et sont gérées dans la classe du
+      même nom.
+    </help>
+  </element>
+  <element name="cit:name" context="cit:CI_Individual" id="375.0">
+    <label>Nom de la personne</label>
+    <description>Nom de la personne responsable. Prénom, nom et titre sont
+      séparés par un signe de délimitation
+    </description>
+    <help>Nom de la personne responsable. Des séparateurs (virgules) figurent
+      entre le prénom, le nom et le titre.
+    </help>
+  </element>
+  
   <element name="cit:name">
     <label>Nom</label>
     <description>Name of the series, or aggregate dataset, of which the dataset
@@ -5941,16 +5951,6 @@ période de temps couverte par le service.
     </help>
     <condition/>
 
-  </element>
-  <element name="cit:organisationName" id="376.0">
-    <label>Nom de l'organisation</label>
-    <description>Nom de l'organisation responsable</description>
-    <help>Nom de l'organisation responsable, s'il s'agit d'une personne isolée
-      ou nom de l'organisation au sein de laquelle cette personne est employée.
-      Ces informations sont du type PT_FreeText et sont gérées dans la classe du
-      même nom.
-    </help>
-    <condition>Condition</condition>
   </element>
   <element name="cit:orientationParameterAvailability" id="172.0">
     <label>Disponibililté des paramètres d'orientation</label>

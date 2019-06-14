@@ -30,7 +30,7 @@
   </xsl:template>
   
   <!-- Subtemplate mode -->
-  <xsl:template mode="iso191115-1-2013-subtemplate" match="cit:CI_Responsibility">
+  <xsl:template mode="iso19115-3.2018-subtemplate" match="cit:CI_Responsibility">
     <!-- TODO : multilingual subtemplate are not supported. There is
       no locale element -->
     <xsl:variable name="langId">
@@ -67,7 +67,7 @@
     </xsl:choose>
   </xsl:template>
   
-  <xsl:template mode="iso191115-1-2013-subtemplate" match="gex:EX_Extent">
+  <xsl:template mode="iso19115-3.2018-subtemplate" match="gex:EX_Extent">
     <!-- TODO : multilingual subtemplate are not supported. There is
       no gmd:language element or gmd:locales -->
     <xsl:variable name="langId">
@@ -82,7 +82,7 @@
     </xsl:apply-templates>
   </xsl:template>
   
-  <xsl:template mode="iso191115-1-2013-subtemplate" match="mri:MD_Keywords">
+  <xsl:template mode="iso19115-3.2018-subtemplate" match="mri:MD_Keywords">
     <xsl:variable name="langId">
       <xsl:call-template name="getLangId">
         <xsl:with-param name="langGui" select="/root/gui/language"/>
@@ -100,19 +100,19 @@
     </xsl:for-each>
   </xsl:template>
   
-  <xsl:template mode="iso191115-1-2013-subtemplate" match="mrd:MD_Distribution">
+  <xsl:template mode="iso19115-3.2018-subtemplate" match="mrd:MD_Distribution">
     <xsl:value-of
       select="string-join(mrd:transferOptions/mrd:MD_DigitalTransferOptions/mrd:onLine/cit:CI_OnlineResource/cit:linkage/*, ' ,')"
     />
   </xsl:template>
   
-  <xsl:template mode="iso191115-1-2013-subtemplate" match="mco:MD_LegalConstraints">
+  <xsl:template mode="iso19115-3.2018-subtemplate" match="mco:MD_LegalConstraints">
     <xsl:value-of
       select="if (mco:useLimitation) then mco:useLimitation/* else mco:otherConstraints/*"
     />
   </xsl:template>
   
   
-  <xsl:template mode="iso191115-1-2013-subtemplate" match="*"/>
+  <xsl:template mode="iso19115-3.2018-subtemplate" match="*"/>
   
 </xsl:stylesheet>

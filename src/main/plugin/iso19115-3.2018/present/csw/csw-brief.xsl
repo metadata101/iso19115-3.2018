@@ -25,7 +25,7 @@
   <xsl:template match="mdb:MD_Metadata|*[contains(@gco:isoType,'MD_Metadata')]">
     <xsl:variable name="info" select="geonet:info"/>
     <xsl:variable name="langId">
-      <xsl:call-template name="getLangId19115-1-2013">
+      <xsl:call-template name="getLangId19115-3.2018">
         <xsl:with-param name="langGui" select="$lang"/>
         <xsl:with-param name="md" select="."/>
       </xsl:call-template>

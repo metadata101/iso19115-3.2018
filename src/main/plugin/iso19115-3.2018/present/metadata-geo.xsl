@@ -77,7 +77,7 @@
     <xsl:template mode="gml" match="text()"/>
     
     <!-- Compute global bbox of current metadata record -->
-    <xsl:template name="iso191115-1-2013-global-bbox">
+    <xsl:template name="iso19115-3.2018-global-bbox">
         <xsl:param name="separator" select="','"/>
         <xsl:if test="//gex:EX_GeographicBoundingBox">
             <xsl:value-of select="math:min(//gex:EX_GeographicBoundingBox/gex:westBoundLongitude/gco:Decimal)"/>

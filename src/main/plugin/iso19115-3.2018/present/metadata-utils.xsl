@@ -22,7 +22,7 @@
         FIXME : lan:PT_FreeText should not be in the match clause as gco:CharacterString 
         is mandatory and PT_FreeText optional. Added for testing GM03 import.
     -->
-    <xsl:template name="localised19115-1-2013" mode="localised19115-1-2013" match="*[gco:CharacterString or lan:PT_FreeText]">
+    <xsl:template name="localised19115-3.2018" mode="localised19115-3.2018" match="*[gco:CharacterString or lan:PT_FreeText]">
         <xsl:param name="langId"/>
         
         <xsl:choose>
@@ -48,22 +48,22 @@
 
     <!-- Template used to match any other element eg. gco:Boolean, gco:Date
          when looking for localised strings -->
-    <xsl:template mode="localised19115-1-2013" match="*[not(gco:CharacterString or lan:PT_FreeText)]">
+    <xsl:template mode="localised19115-3.2018" match="*[not(gco:CharacterString or lan:PT_FreeText)]">
         <xsl:param name="langId"/>
 			<xsl:value-of select="*[1]"/>
 	</xsl:template>
 
 	<!-- Check if the element has hidden subelements -->
-    <xsl:template mode="localised19115-1-2013" match="*[@gco:nilReason='withheld' and count(./*) = 0 and count(./@*) = 1]" priority="100">
+    <xsl:template mode="localised19115-3.2018" match="*[@gco:nilReason='withheld' and count(./*) = 0 and count(./@*) = 1]" priority="100">
         <xsl:value-of select="/root/gui/strings/concealed"/>
 	</xsl:template>
 
     <!-- Map GUI language to iso3code -->
-    <xsl:template name="getLangId19115-1-2013">
+    <xsl:template name="getLangId19115-3.2018">
         <xsl:param name="langGui"/>
         <xsl:param name="md"/>
 
-        <xsl:call-template name="getLangIdFromMetadata19115-1-2013">
+        <xsl:call-template name="getLangIdFromMetadata19115-3.2018">
             <xsl:with-param name="lang" select="$langGui"/>
             <xsl:with-param name="md" select="$md"/>
         </xsl:call-template>
@@ -74,7 +74,7 @@
 
          if not return the lang iso3code in uper case.
         -->
-    <xsl:template name="getLangIdFromMetadata19115-1-2013">
+    <xsl:template name="getLangIdFromMetadata19115-3.2018">
         <xsl:param name="md"/>
         <xsl:param name="lang"/>
     
@@ -90,7 +90,7 @@
     </xsl:template>
     
     <!-- Get lang codeListValue in metadata PT_Locale section,  if not return eng by default -->
-    <xsl:template name="getLangCode19115-1-2013">
+    <xsl:template name="getLangCode19115-3.2018">
         <xsl:param name="md"/>
         <xsl:param name="langId"/>
 
@@ -109,7 +109,7 @@
         Title is loaded from current language index if available.
         If not, default title is returned.
         If failed, return uuid. -->
-    <xsl:template name="getMetadataTitle19115-1-2013">
+    <xsl:template name="getMetadataTitle19115-3.2018">
         <xsl:param name="uuid"/>
     	<xsl:variable name="metadataTitle" select="java:getIndexField(string(substring(/root/gui/url, 2)), string($uuid), 'title', string(/root/gui/language))"/>
         <xsl:choose>
@@ -143,7 +143,7 @@
 		In view mode link to related resources are displayed
 		In edit mode link to add elements are provided.
 	-->
-	<xsl:template name="relatedResources19115-1-2013">
+	<xsl:template name="relatedResources19115-3.2018">
 		<xsl:param name="edit"/>
 
 		<xsl:variable name="metadata" select="/root/mds:MD_Metadata|/root/*[contains(@gco:isoType,'MD_Metadata')]"/>
@@ -165,7 +165,7 @@
 
 			<!-- The GetCapabilities URL -->
 			<xsl:variable name="capabilitiesUrl">
-				<xsl:call-template name="getServiceURL19115-1-2013">
+				<xsl:call-template name="getServiceURL19115-3.2018">
 					<xsl:with-param name="metadata" select="$metadata"/>
 				</xsl:call-template>
 			</xsl:variable>
@@ -181,7 +181,7 @@
 		        					<ul>
 		        						<li>
 			        						<a class="arrow" href="metadata.show?uuid={uuid}">
-				        						<xsl:call-template name="getMetadataTitle19115-1-2013">
+				        						<xsl:call-template name="getMetadataTitle19115-3.2018">
 				        							<xsl:with-param name="uuid" select="uuid"/>
 				        						</xsl:call-template>
 			        						</a>
@@ -208,7 +208,7 @@
 		        				<xsl:if test="normalize-space($parent)!=''">
 		        					<li>
 			        					<a class="arrow" href="metadata.show?uuid={$parent}">
-				        					<xsl:call-template name="getMetadataTitle19115-1-2013">
+				        					<xsl:call-template name="getMetadataTitle19115-3.2018">
 				        						<xsl:with-param name="uuid" select="$parent"/>
 				        					</xsl:call-template>
 			        					</a>
@@ -216,7 +216,7 @@
 		        				</xsl:if>
 		        				<li>
 		        					<ul>
-		        						<li><xsl:call-template name="getMetadataTitle19115-1-2013">
+		        						<li><xsl:call-template name="getMetadataTitle19115-3.2018">
 		        								<xsl:with-param name="uuid" select="$uuid"/>
 		        							</xsl:call-template></li>
 	        							<xsl:if test="$children">
@@ -224,7 +224,7 @@
 		        								<ul>
 		        									<xsl:for-each select="$children">
 		        										<li><a class="arrow" href="metadata.show?uuid={geonet:info/uuid}">
-		        											<xsl:call-template name="getMetadataTitle19115-1-2013">
+		        											<xsl:call-template name="getMetadataTitle19115-3.2018">
 		        												<xsl:with-param name="uuid" select="geonet:info/uuid"/>
 		        											</xsl:call-template>
 		        										</a></li>
@@ -282,7 +282,7 @@
 							<ul>
 								<xsl:for-each select="$services">
 									<li><a class="arrow" href="metadata.show?uuid={geonet:info/uuid}">
-										<xsl:call-template name="getMetadataTitle19115-1-2013">
+										<xsl:call-template name="getMetadataTitle19115-3.2018">
 											<xsl:with-param name="uuid" select="geonet:info/uuid"/>
 										</xsl:call-template>
 									</a></li>
@@ -314,7 +314,7 @@
 						<ul>
 							<xsl:for-each select="$metadata/mds:identificationInfo/(srv:SV_ServiceIdentification | *[contains(@gco:isoType, 'SV_ServiceIdentification')])/srv:operatesOn[@uuidref!='']">
 								<li><a class="arrow" href="metadata.show?uuid={@uuidref}">
-									<xsl:call-template name="getMetadataTitle19115-1-2013">
+									<xsl:call-template name="getMetadataTitle19115-3.2018">
 										<xsl:with-param name="uuid" select="@uuidref"/>
 									</xsl:call-template>
 								</a>
@@ -357,7 +357,7 @@
 		        			<ul>
 		        				<xsl:for-each select="$relatedRecords">
 		        					<li><a class="arrow" href="metadata.show?uuid={geonet:info/uuid}">
-		        						<xsl:call-template name="getMetadataTitle19115-1-2013">
+		        						<xsl:call-template name="getMetadataTitle19115-3.2018">
 		        							<xsl:with-param name="uuid" select="geonet:info/uuid"/>
 		        						</xsl:call-template>
 		        						</a>
@@ -374,7 +374,7 @@
 			        			<ul>
 			        				<xsl:for-each select="$relatedRecords">
 			        					<li><a class="arrow" href="metadata.show?uuid={geonet:info/uuid}">
-			        						<xsl:call-template name="getMetadataTitle19115-1-2013">
+			        						<xsl:call-template name="getMetadataTitle19115-3.2018">
 			        							<xsl:with-param name="uuid" select="geonet:info/uuid"/>
 			        						</xsl:call-template>
 			        					</a>
@@ -436,7 +436,7 @@
   </xsl:template>
 
 	<!-- Create a service URL for a service metadata record. -->
-	<xsl:template name="getServiceURL19115-1-2013">
+	<xsl:template name="getServiceURL19115-3.2018">
 		<xsl:param name="metadata"/>
 		
 		<!-- Get Service URL from GetCapabilities Operation, if null from distribution information-->

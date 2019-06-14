@@ -72,7 +72,7 @@
       <dct:issued><xsl:value-of select="$date"/></dct:issued>
       <!-- xpath: mds:dateInfo/cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue='revision']cit:date/gco:DateTime -->
       
-      <xsl:call-template name="add-reference-19115-1-2013">
+      <xsl:call-template name="add-reference-19115-3.2018">
         <xsl:with-param name="uuid" select="mds:metadataIdentifier[position() = 1]/mcc:MD_Identifier/mcc:code/gco:CharacterString"/>
       </xsl:call-template>
     </dcat:CatalogRecord>
@@ -83,7 +83,7 @@
   
   
   <!-- Add references for HTML and XML metadata record link -->
-  <xsl:template name="add-reference-19115-1-2013">
+  <xsl:template name="add-reference-19115-3.2018">
     <xsl:param name="uuid"/>
     
     <dct:references>
@@ -217,7 +217,7 @@
   -->
   <xsl:template match="srv:SV_ServiceIdentification|*[contains(@gco:isoType, 'SV_ServiceIdentification')]" mode="to-dcat">
     <rdf:Description rdf:about="{$url}/resource/{iso19115-3.2018:getResourceCode(../../.)}">
-      <xsl:call-template name="to-dcat-19115-1-2013"/>
+      <xsl:call-template name="to-dcat-19115-3.2018"/>
     </rdf:Description>
   </xsl:template>
   
@@ -231,14 +231,14 @@
   -->
   <xsl:template match="mri:MD_DataIdentification|*[contains(@gco:isoType, 'MD_DataIdentification')]" mode="to-dcat">
     <dcat:Dataset rdf:about="{$url}/resource/{iso19115-3.2018:getResourceCode(../../.)}">
-      <xsl:call-template name="to-dcat-19115-1-2013"/>
+      <xsl:call-template name="to-dcat-19115-3.2018"/>
     </dcat:Dataset>
   </xsl:template>
   
   
   
   <!-- Build a dcat record for a dataset or service -->
-  <xsl:template name="to-dcat-19115-1-2013">
+  <xsl:template name="to-dcat-19115-3.2018">
     <!-- "A unique identifier of the dataset." -->
     <dct:identifier><xsl:value-of select="iso19115-3.2018:getResourceCode(../../.)"/></dct:identifier>
     <!-- xpath: mri:identificationInfo/*/mri:citation/*/cit:identifier/*/mcc:code --> 

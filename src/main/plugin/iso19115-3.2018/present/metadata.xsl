@@ -492,7 +492,7 @@
 				</xsl:if>
 				<xsl:if test="/root/gui/config/editor-metadata-relation">
 					<div style="float:right;">
-						<xsl:call-template name="relatedResources19115-1-2013">
+						<xsl:call-template name="relatedResources19115-3.2018">
 							<xsl:with-param name="edit" select="$edit"/>
 						</xsl:call-template>
 					</div>
@@ -1358,7 +1358,7 @@
 		</xsl:if>
 
 		<xsl:variable name="langId">
-			<xsl:call-template name="getLangId19115-1-2013">
+			<xsl:call-template name="getLangId19115-3.2018">
 				<xsl:with-param name="langGui" select="/root/gui/language"/>
 				<xsl:with-param name="md" select="."/>
 			</xsl:call-template>
@@ -1380,7 +1380,7 @@
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:for-each select="cit:name">
-							<xsl:call-template name="localised19115-1-2013">
+							<xsl:call-template name="localised19115-3.2018">
 								<xsl:with-param name="langId" select="$langId"/>
 							</xsl:call-template>
 						</xsl:for-each>
@@ -1392,7 +1392,7 @@
 
 			<xsl:variable name="desc">
 				<xsl:for-each select="cit:description">
-					<xsl:call-template name="localised19115-1-2013">
+					<xsl:call-template name="localised19115-3.2018">
 						<xsl:with-param name="langId" select="$langId"/>
 					</xsl:call-template>
 				</xsl:for-each>
@@ -1518,7 +1518,7 @@
 
 		<xsl:if test="mri:citation/*/cit:title">
 			<title>
-				<xsl:apply-templates mode="localised19115-1-2013" select="mri:citation/*/cit:title">
+				<xsl:apply-templates mode="localised19115-3.2018" select="mri:citation/*/cit:title">
 					<xsl:with-param name="langId" select="$langId"></xsl:with-param>
 				</xsl:apply-templates>
 			</title>
@@ -1532,7 +1532,7 @@
 
 		<xsl:if test="mri:abstract">
 			<abstract>
-				<xsl:apply-templates mode="localised19115-1-2013" select="mri:abstract">
+				<xsl:apply-templates mode="localised19115-3.2018" select="mri:abstract">
 					<xsl:with-param name="langId" select="$langId"></xsl:with-param>
 				</xsl:apply-templates>
 			</abstract>
@@ -1540,7 +1540,7 @@
 
 		<xsl:for-each select=".//mri:keyword[not(@gco:nilReason)]">
 			<keyword>
-				<xsl:apply-templates mode="localised19115-1-2013" select=".">
+				<xsl:apply-templates mode="localised19115-3.2018" select=".">
 					<xsl:with-param name="langId" select="$langId"></xsl:with-param>
 				</xsl:apply-templates>
 			</keyword>
@@ -1984,7 +1984,7 @@ mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language/lan:LanguageCode
 			</xsl:choose>
 		</xsl:variable>
 
-		<xsl:call-template name="localizedCharStringField_19115-1-2013">
+		<xsl:call-template name="localizedCharStringField_19115-3.2018">
 			<xsl:with-param name="schema" select="$schema" />
 			<xsl:with-param name="edit" select="$edit" />
 			<xsl:with-param name="rows" select="$rows" />
@@ -2075,13 +2075,13 @@ mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language/lan:LanguageCode
 
 		Change this template to defined another multilingual widget.
 	-->
-	<xsl:template name="localizedCharStringField_19115-1-2013" >
+	<xsl:template name="localizedCharStringField_19115-3.2018" >
 		<xsl:param name="schema" />
 		<xsl:param name="edit" />
 		<xsl:param name="rows" select="1" />
 
 		<xsl:variable name="langId">
-			<xsl:call-template name="getLangId19115-1-2013">
+			<xsl:call-template name="getLangId19115-3.2018">
 				<xsl:with-param name="langGui" select="/root/gui/language" />
 				<xsl:with-param name="md"
 					select="ancestor-or-self::*[name(.)='mdb:MD_Metadata' or contains(@gco:isoType,'MD_Metadata')]" />
@@ -2091,7 +2091,7 @@ mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language/lan:LanguageCode
 		<xsl:variable name="widget">
 			<xsl:if test="$edit=true()">
 				<xsl:variable name="tmpFreeText">
-					<xsl:call-template name="PT_FreeText_Tree_19115-1-2013" />
+					<xsl:call-template name="PT_FreeText_Tree_19115-3.2018" />
 				</xsl:variable>
 
 				<xsl:variable name="ptFreeTextTree" select="exslt:node-set($tmpFreeText)" />
@@ -2099,7 +2099,7 @@ mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language/lan:LanguageCode
 				<xsl:variable name="mainLang"
 				  select="string(/root/*/mdb:defaultLocal/lan:language/lan:LanguageCode/@codeListValue)" />
 				<xsl:variable name="mainLangId">
-					<xsl:call-template name="getLangIdFromMetadata19115-1-2013">
+					<xsl:call-template name="getLangIdFromMetadata19115-3.2018">
 						<xsl:with-param name="lang" select="$mainLang" />
 						<xsl:with-param name="md"
 							select="ancestor-or-self::*[name(.)='mdb:MD_Metadata' or contains(@gco:isoType,'MD_Metadata')]" />
@@ -2262,12 +2262,12 @@ mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language/lan:LanguageCode
 	</xsl:template>
 
 	<!--
-		Create a PT_FreeText_Tree_19115-1-2013 for multilingual editing.
+		Create a PT_FreeText_Tree_19115-3.2018 for multilingual editing.
 
 		The lang prefix for geonet:element is used by the DataManager 
 		to clean multilingual content and add required attribute (xsi:type).
 	-->
-	<xsl:template name="PT_FreeText_Tree_19115-1-2013">
+	<xsl:template name="PT_FreeText_Tree_19115-3.2018">
 		<xsl:variable name="mainLang"
 		select="string(/root/*/mdb:defaultLocale/lan:PT_Locale/lan:language/lan:LanguageCode/@codeListValue)" />
 		<xsl:variable name="languages"
@@ -2278,7 +2278,7 @@ mdb:MD_Metadata/mdb:defaultLocale/lan:PT_Locale/lan:language/lan:LanguageCode
 			<xsl:variable name="langId"
 				select="concat('&#35;',string(../../../@id))" />
 			<xsl:variable name="code">
-				<xsl:call-template name="getLangCode19115-1-2013">
+				<xsl:call-template name="getLangCode19115-3.2018">
 					<xsl:with-param name="md"
 						select="ancestor-or-self::*[name(.)='mdb:MD_Metadata' or contains(@gco:isoType,'MD_Metadata')]" />
 					<xsl:with-param name="langId" select="substring($langId,2)" />

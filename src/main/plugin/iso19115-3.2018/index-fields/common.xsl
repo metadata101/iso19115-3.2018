@@ -112,7 +112,12 @@
               <xsl:value-of select="normalize-space(//node()[@locale=$langId])"/>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="normalize-space(string(.))"/>
+              <!-- <xsl:value-of select="normalize-space(string(.))"/> -->
+              <!-- Index all text nodes except those that are in a bounding 
+                   polygon -->
+              <xsl:for-each select="//text()[not(ancestor::gex:EX_BoundingPolygon) and normalize-space()!='']">
+                 <xsl:value-of select="concat(.,' ')"/>
+              </xsl:for-each>
             </xsl:otherwise>
           </xsl:choose>
           <xsl:text> </xsl:text>
@@ -244,7 +249,7 @@
     <xsl:for-each select="$metadata/mdb:identificationInfo/*">
 
       <xsl:for-each select="mri:citation/*">
-        <xsl:for-each select="mcc:identifier/mcc:MD_Identifier/mcc:code">
+        <xsl:for-each select="cit:identifier/mcc:MD_Identifier/mcc:code">
           <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('identifier', ., $langId)"/>
         </xsl:for-each>
 
@@ -984,19 +989,22 @@
     <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('orgName', cit:name, $langId)"/>
     <xsl:variable name="role" select="../../cit:role/*/@codeListValue"/>
     <xsl:variable name="email" select="cit:contactInfo/cit:CI_Contact/
-                                              cit:address/cit:CI_Address/
-                                              cit:electronicMailAddress/gco:CharacterString"/>
+                             cit:address/cit:CI_Address/
+                             cit:electronicMailAddress/gco:CharacterString|
+                 cit:individual//cit:contactInfo/cit:CI_Contact/
+                                cit:address/cit:CI_Address/
+                                cit:electronicMailAddress/gco:CharacterString"/>
     <xsl:variable name="roleTranslation" select="util:getCodelistTranslation('cit:CI_RoleCode', string($role), string($lang))"/>
     <xsl:variable name="logo" select="cit:logo/mcc:MD_BrowseGraphic/mcc:fileName/gco:CharacterString"/>
     <xsl:variable name="phones"
-                  select="cit:contactInfo/cit:CI_Contact/cit:phone/*/cit:number/gco:CharacterString"/>
+                  select=".//cit:contactInfo/cit:CI_Contact/cit:phone/*/cit:number/gco:CharacterString"/>
     <!--<xsl:variable name="phones"
                   select="cit:contactInfo/cit:CI_Contact/cit:phone/concat(*/cit:numberType/*/@codeListValue, ':', */cit:number/gco:CharacterString)"/>-->
     <xsl:variable name="address" select="string-join(cit:contactInfo/*/cit:address/*/(
                                           cit:deliveryPoint|cit:postalCode|cit:city|
                                           cit:administrativeArea|cit:country)/gco:CharacterString/text(), ', ')"/>
-    <xsl:variable name="individualNames" select="''"/>
-    <xsl:variable name="positionName" select="''"/>
+    <xsl:variable name="individualNames" select="cit:individual//cit:name/gco:CharacterString"/>
+    <xsl:variable name="positionName" select="cit:individual//cit:positionName/gco:CharacterString"/>
 
     <xsl:variable name="orgName">
       <xsl:apply-templates mode="localised" select="cit:name">

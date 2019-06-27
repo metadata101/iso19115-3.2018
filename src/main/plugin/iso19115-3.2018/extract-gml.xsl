@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- FIXME: GML namespace in gex: elements will be different to those
-  used under the gml: namespace required by geotools. For the time
-  being create a default GML parser and not a GML3.2 parser. -->
 <xsl:stylesheet version="2.0" 
   xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
   xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
-  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:output indent="no" method="xml"/>

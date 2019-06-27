@@ -95,6 +95,28 @@
     <xsl:call-template name="subtemplate-common-fields"/>
   </xsl:template>
 
+  <xsl:template mode="index" match="cit:CI_Organisation">
+
+    <xsl:variable name="org" select="normalize-space(cit:name/gco:CharacterString)"/>
+    <xsl:variable name="name" select="string-join(.//cit:individual/cit:CI_Individual/cit:name/gco:CharacterString, ', ')"/>
+
+    <xsl:variable name="mail" select="string-join(.//cit:CI_Address/cit:electronicMailAddress[1]/gco:CharacterString, ', ')"/>
+
+    <Field name="_title" string="{concat($name,' @ ',$org)}" store="true" index="true"/>
+
+    <Field name="personOrganisation" string="{concat($name,' @ ',$org)}" store="true" index="true"/>
+    <xsl:call-template name="subtemplate-common-fields"/>
+  </xsl:template>
+
+  <xsl:template mode="index" match="mac:MI_Sensor">
+    <xsl:variable name="platformType" select="mac:identifier/mcc:MD_Identifier/mcc:code/gco:CharacterString"/>
+    <xsl:variable name="sensorName" select="mac:citation/cit:CI_Citation/cit:title/gco:CharacterString"/>
+    <Field name="sensorName" string="{$sensorName}" store="true" index="true"/>
+    <Field name="platformType" string="{$platformType}" store="true" index="true"/>
+    <Field name="sensorType" string="{mac:type/gco:CharacterString}" store="true" index="true"/>
+    <Field name="_title" string="{concat($platformType,': ',$sensorName)}" store="true" index="true"/>
+    <xsl:call-template name="subtemplate-common-fields"/>
+  </xsl:template>
 
   <xsl:template mode="index"
                 match="mcc:MD_BrowseGraphic[count(ancestor::node()) =  1]">

@@ -566,6 +566,12 @@
         </xsl:call-template>
       </xsl:for-each>
 
+      <xsl:for-each select="mri:pointOfContact/cit:CI_Responsibility/cit:party/cit:CI_Individual[not(cit:CI_Organisation)]">
+        <xsl:call-template name="ContactIndexing">
+          <xsl:with-param name="lang" select="$lang"/>
+          <xsl:with-param name="langId" select="$langId"/>
+        </xsl:call-template>
+      </xsl:for-each>
 
 
       <!-- FIXME: Additional constraints have been created in the mco schema -->
@@ -1020,8 +1026,8 @@
     <Field name="{$fieldPrefix}"
            string="{concat($roleTranslation, '|', $type, '|',
                               $orgName, '|', $logo, '|',
-                              string-join($email, ','), '|', $individualNames,
-                              '|', $positionName, '|',
+                              string-join($email, ','), '|', string-join($individualNames, ','),
+                              '|', string-join($positionName, ','), '|',
                               $address, '|', string-join($phones, ','))}"
            store="true" index="false"/>
 

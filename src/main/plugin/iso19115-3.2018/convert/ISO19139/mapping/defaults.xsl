@@ -65,14 +65,14 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:template match="gml30:*" mode="from19139to19115-3.2018">
+  <xsl:template match="gml30:*|gml:*" mode="from19139to19115-3.2018">
     <xsl:element name="{local-name(.)}" namespace="http://www.opengis.net/gml/3.2">
       <xsl:apply-templates select="@*" mode="from19139to19115-3.2018"/>
       <xsl:apply-templates mode="from19139to19115-3.2018"/>
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="@gml30:*" mode="from19139to19115-3.2018">
+  <xsl:template match="@gml30:*|@gml:*" mode="from19139to19115-3.2018">
     <xsl:attribute name="gml:{local-name()}">
       <xsl:value-of select="."/>
     </xsl:attribute>

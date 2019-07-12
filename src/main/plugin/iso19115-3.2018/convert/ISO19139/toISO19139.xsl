@@ -10,7 +10,6 @@
                 xmlns:gss="http://www.isotc211.org/2005/gss"
                 xmlns:gts="http://www.isotc211.org/2005/gts"
                 xmlns:srv="http://www.isotc211.org/2005/srv"
-                xmlns:gml="http://www.opengis.net/gml"
                 xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0"
                 xmlns:cit="http://standards.iso.org/iso/19115/-3/cit/2.0"
                 xmlns:gcx="http://standards.iso.org/iso/19115/-3/gcx/1.0"
@@ -39,7 +38,7 @@
                 xmlns:mai="http://standards.iso.org/iso/19115/-3/mai/1.0"
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
                 xmlns:gco2="http://standards.iso.org/iso/19115/-3/gco/1.0"
-                xmlns:gml32="http://www.opengis.net/gml/3.2"
+                xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl"
                 exclude-result-prefixes="#all">
@@ -76,7 +75,7 @@
     <xsl:namespace name="gsr" select="'http://www.isotc211.org/2005/gsr'"/>
     <xsl:namespace name="gmi" select="'http://www.isotc211.org/2005/gmi'"/>
     <!-- external namespaces -->
-    <xsl:namespace name="gml" select="'http://www.opengis.net/gml'"/>
+    <xsl:namespace name="gml" select="'http://www.opengis.net/gml/3.2'"/>
     <xsl:namespace name="xlink" select="'http://www.w3.org/1999/xlink'"/>
   </xsl:template>
 
@@ -169,7 +168,7 @@
     <xsl:if test="name(preceding-sibling::node()[1]) != name()">
       <gmd:hierarchyLevel>
         <gmd:MD_ScopeCode
-            codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
+          codeList="https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
             codeListValue="{if (mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode/@codeListValue != '')
                             then mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode/@codeListValue
                             else mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode}"/>
@@ -320,15 +319,11 @@
   </xsl:template>
 
 
-  <xsl:template match="mdb:distributionInfo">
-    <gmd:distributionInfo>
-      <xsl:apply-templates select="@*"/>
-      <xsl:apply-templates select="*"/>
-    </gmd:distributionInfo>
+  <xsl:template match="mrd:onLine" priority="1000">
 
     <!-- Add a new distribution section after existing one with
     documents referenced in other sections of the record. -->
-    <xsl:if test="$mergeAllOnlineResourcesInDistribution">
+    <xsl:if test="$mergeAllOnlineResourcesInDistribution and position() = 1">
       <!-- Define custom function depending on the section of origin.
       Values are an extension of ISO19139 to be able to make distinction
       between documents. -->
@@ -346,55 +341,61 @@
                                 *[cit:onlineResource/*/cit:linkage/
                                   gco2:CharacterString != '']) > 0"/>
       <xsl:if test="$hasRelation">
-        <gmd:distributionInfo>
-          <gmd:MD_Distribution>
-            <gmd:transferOptions>
-              <gmd:MD_DigitalTransferOptions>
-                <xsl:for-each select="ancestor::mdb:MD_Metadata/descendant::*[
-                    local-name() = $functionMap/entry/@key
-                    ]/*[cit:onlineResource/*/cit:linkage/gco2:CharacterString != '']">
-                  <gmd:onLine>
-                    <gmd:CI_OnlineResource>
-                      <gmd:linkage>
-                        <xsl:apply-templates select="cit:onlineResource/cit:CI_OnlineResource/cit:linkage/gco2:CharacterString"/>
-                      </gmd:linkage>
-                      <gmd:protocol>
-                        <gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
-                      </gmd:protocol>
+        <xsl:for-each select="ancestor::mdb:MD_Metadata/descendant::*[
+            local-name() = $functionMap/entry/@key
+            ]/*[cit:onlineResource/*/cit:linkage/gco2:CharacterString != '']">
+          <gmd:onLine>
+            <gmd:CI_OnlineResource>
+              <gmd:linkage>
+                <xsl:apply-templates select="cit:onlineResource/cit:CI_OnlineResource/cit:linkage/gco2:CharacterString"/>
+              </gmd:linkage>
+              <gmd:protocol>
+                <gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
+              </gmd:protocol>
 
-                      <xsl:call-template name="writeCharacterStringElement">
-                        <xsl:with-param name="elementName" select="'gmd:applicationProfile'"/>
-                        <xsl:with-param name="nodeWithStringToWrite" select="cit:applicationProfile"/>
-                      </xsl:call-template>
+              <xsl:call-template name="writeCharacterStringElement">
+                <xsl:with-param name="elementName" select="'gmd:applicationProfile'"/>
+                <xsl:with-param name="nodeWithStringToWrite" select="cit:applicationProfile"/>
+              </xsl:call-template>
 
-                      <xsl:call-template name="writeCharacterStringElement">
-                        <xsl:with-param name="elementName" select="'gmd:name'"/>
-                        <xsl:with-param name="nodeWithStringToWrite" select="cit:title"/>
-                      </xsl:call-template>
+              <xsl:call-template name="writeCharacterStringElement">
+                <xsl:with-param name="elementName" select="'gmd:name'"/>
+                <xsl:with-param name="nodeWithStringToWrite" select="cit:title"/>
+              </xsl:call-template>
 
-                      <xsl:call-template name="writeCharacterStringElement">
-                        <xsl:with-param name="elementName" select="'gmd:description'"/>
-                        <xsl:with-param name="nodeWithStringToWrite" select="cit:onlineResource/cit:CI_OnlineResource/cit:description"/>
-                      </xsl:call-template>
+              <xsl:call-template name="writeCharacterStringElement">
+                <xsl:with-param name="elementName" select="'gmd:description'"/>
+                <xsl:with-param name="nodeWithStringToWrite" select="cit:onlineResource/cit:CI_OnlineResource/cit:description"/>
+              </xsl:call-template>
 
-                      <xsl:variable name="type" select="local-name(..)"/>
-                      <xsl:variable name="function" select="$functionMap/entry[@key = $type]/@value"/>
-                      <xsl:if test="$function">
-                        <gmd:function>
-                          <gmd:CI_OnLineFunctionCode
-                            codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
-                            codeListValue="{$function}"/>
-                        </gmd:function>
-                      </xsl:if>
-                    </gmd:CI_OnlineResource>
-                  </gmd:onLine>
-                </xsl:for-each>
-              </gmd:MD_DigitalTransferOptions>
-            </gmd:transferOptions>
-          </gmd:MD_Distribution>
-        </gmd:distributionInfo>
+              <xsl:variable name="type" select="local-name(..)"/>
+              <xsl:variable name="function" select="$functionMap/entry[@key = $type]/@value"/>
+              <xsl:if test="$function">
+                <gmd:function>
+                  <gmd:CI_OnLineFunctionCode
+            codeList="https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
+                    codeListValue="{$function}"/>
+                </gmd:function>
+              </xsl:if>
+            </gmd:CI_OnlineResource>
+          </gmd:onLine>
+        </xsl:for-each>
       </xsl:if>
     </xsl:if>
+
+    <gmd:onLine>
+      <xsl:apply-templates select="*"/>
+    </gmd:onLine>
+  </xsl:template>
+
+  <xsl:template match="mdb:distributionInfo">
+    <gmd:distributionInfo>
+      <xsl:apply-templates select="@*"/>
+      <gmd:MD_Distribution>
+        <xsl:apply-templates select="mrd:MD_Distribution/@*"/>
+        <xsl:apply-templates select="mrd:MD_Distribution/*"/>
+      </gmd:MD_Distribution>
+    </gmd:distributionInfo>
   </xsl:template>
 
   <xsl:template match="mdb:contentInfo">
@@ -660,30 +661,37 @@
           CI_ResponsibleParties without name elements are assummed to be placeholders for CI_OnlineResources. They are transformed later in the process
           using the CI_ResponsiblePartyToOnlineReseource template
         -->
+
+        <!-- Create as many responsible parties as the number of individual + organisation (with no individual) + individuals in an organisation -->
+        <xsl:for-each select="cit:party/(cit:CI_Individual|cit:CI_Organisation[not(cit:individual)]|cit:CI_Organisation/*/cit:CI_Individual)">
         <xsl:element name="gmd:CI_ResponsibleParty">
           <xsl:apply-templates select="@*"/>
-          <xsl:if test="cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name|
-            cit:party/cit:CI_Individual/cit:name">
+            <xsl:if test="name(.) = 'cit:CI_Individual' and cit:name != ''">
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:individualName'"/>
-              <xsl:with-param name="nodeWithStringToWrite" select="cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name|
-                cit:party/cit:CI_Individual/cit:name"/>
+                <xsl:with-param name="nodeWithStringToWrite" select="cit:name"/>
             </xsl:call-template>
           </xsl:if>
 
-          <xsl:if test="cit:party/cit:CI_Organisation/cit:name">
+            <xsl:choose>
+              <xsl:when test="name(.) = 'cit:CI_Organisation' and cit:name != ''">
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
-              <xsl:with-param name="nodeWithStringToWrite" select="cit:party/cit:CI_Organisation/cit:name"/>
+                  <xsl:with-param name="nodeWithStringToWrite" select="cit:name"/>
             </xsl:call-template>
-          </xsl:if>
+              </xsl:when>
+              <xsl:when test="name(.) = 'cit:CI_Individual' and ../../cit:name != ''">
+                <xsl:call-template name="writeCharacterStringElement">
+                  <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
+                  <xsl:with-param name="nodeWithStringToWrite" select="../../cit:name"/>
+                </xsl:call-template>
+              </xsl:when>
+            </xsl:choose>
 
-          <xsl:if test="cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName|
-            cit:party/cit:CI_Individual/cit:positionName">
+            <xsl:if test="cit:positionName != ''">
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:positionName'"/>
-              <xsl:with-param name="nodeWithStringToWrite" select="cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:positionName|
-                cit:party/cit:CI_Individual/cit:positionName"/>
+                <xsl:with-param name="nodeWithStringToWrite" select="cit:positionName"/>
             </xsl:call-template>
           </xsl:if>
 
@@ -691,35 +699,31 @@
           <xsl:call-template name="writeContactInformation"/>
 
           <xsl:choose>
-            <xsl:when test="./cit:role/cit:CI_RoleCode">
+              <xsl:when test="ancestor::cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue != ''">
               <xsl:call-template name="writeCodelistElement">
                 <xsl:with-param name="elementName" select="'gmd:role'"/>
                 <xsl:with-param name="codeListName" select="'gmd:CI_RoleCode'"/>
-                <xsl:with-param name="codeListValue" select="cit:role/cit:CI_RoleCode/@codeListValue"/>
+                  <xsl:with-param name="codeListValue" select="ancestor::cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue"/>
               </xsl:call-template>
-            </xsl:when>
-            <xsl:when test="./gmd:role/@*">
-              <gmd:role>
-                <xsl:apply-templates select="@*"/>
-              </gmd:role>
             </xsl:when>
             <xsl:otherwise>
               <gmd:role gco:nilReason="missing"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:element>
+        </xsl:for-each>
       </xsl:when>
     </xsl:choose>
   </xsl:template>
   <xsl:template name="writeContactInformation">
-    <xsl:for-each select="cit:party/*/cit:contactInfo">
+    <xsl:for-each select="cit:party/*/cit:contactInfo[normalize-space(.) != '']|cit:contactInfo[normalize-space(.) != '']">
       <gmd:contactInfo>
         <xsl:apply-templates/>
       </gmd:contactInfo>
     </xsl:for-each>
   </xsl:template>
   
-  <xsl:template match="cit:party/*/cit:contactInfo/cit:CI_Contact/cit:phone[1]">
+  <xsl:template match="cit:contactInfo/cit:CI_Contact/cit:phone[1]">
     <!-- Only phone number and facsimile are allowed in ISO19139 -->
     <gmd:phone>
       <gmd:CI_Telephone>
@@ -740,7 +744,7 @@
       </gmd:CI_Telephone>
     </gmd:phone>
   </xsl:template>
-  <xsl:template match="cit:party/*/cit:contactInfo/cit:CI_Contact/cit:phone[position() > 1]"/>
+  <xsl:template match="cit:contactInfo/cit:CI_Contact/cit:phone[position() > 1]"/>
 
   <xsl:template name="CI_ResponsiblePartyToOnlineResource">
     <!--
@@ -818,14 +822,14 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="gml32:*">
+  <xsl:template match="gml:*">
     <xsl:element name="gml:{local-name(.)}">
       <xsl:apply-templates select="@*"/>
       <xsl:apply-templates/>
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="@gml32:*">
+  <xsl:template match="@gml:*">
     <xsl:attribute name="gml:{local-name()}">
       <xsl:value-of select="."/>
     </xsl:attribute>
@@ -967,6 +971,9 @@
         <!--
           Changed 2013-03-06 to fix PresentationFormCode <xsl:when test="parent::gmd:CI_Citation or self::gmd:CI_Citation">-->
         <xsl:when test="ancestor-or-self::cit:CI_Citation">
+          <xsl:text>gmd</xsl:text>
+        </xsl:when>
+        <xsl:when test="ancestor-or-self::mri:citation">
           <xsl:text>gmd</xsl:text>
         </xsl:when>
         <xsl:when test="ancestor-or-self::mpc:MD_PortrayalCatalogueReference">

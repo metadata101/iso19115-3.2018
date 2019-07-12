@@ -9,6 +9,7 @@
   xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0"
   xmlns:gts="http://www.isotc211.org/2005/gts"
   xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:gn="http://www.fao.org/geonetwork"
   xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
   xmlns:java-xsl-util="java:org.fao.geonet.util.XslUtil"
@@ -259,12 +260,37 @@
   </xsl:template>
 
   <xsl:template mode="mode-iso19115-3.2018"
-          match="gml:Polygon"
-          priority="2000">
-    Not supported
-    <textarea>
-      <xsl:copy-of select="."/>
-    </textarea>
+                match="gex:EX_BoundingPolygon" priority="2000">
+    <xsl:param name="schema" select="$schema" required="no"/>
+    <xsl:param name="labels" select="$labels" required="no"/>
+
+    <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
+    <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
+    <xsl:variable name="labelConfig" select="gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)"/>
+
+    <xsl:call-template name="render-boxed-element">
+      <xsl:with-param name="label"
+                      select="$labelConfig/label"/>
+      <xsl:with-param name="editInfo" select="../gn:element"/>
+      <xsl:with-param name="cls" select="local-name()"/>
+      <xsl:with-param name="subTreeSnippet">
+
+        <xsl:variable name="geometry">
+          <xsl:apply-templates select="gex:polygon/gml:MultiSurface|gex:polygon/gml:LineString"
+                               mode="gn-element-cleaner"/>
+        </xsl:variable>
+
+        <xsl:variable name="identifier"
+                      select="concat('_X', gex:polygon/gn:element/@ref, '_replace')"/>
+        <xsl:variable name="readonly" select="ancestor-or-self::node()[@xlink:href] != ''"/>
+
+        <br />
+        <gn-bounding-polygon polygon-xml="{saxon:serialize($geometry, 'default-serialize-mode')}"
+                             identifier="{$identifier}"
+                             read-only="{$readonly}">
+        </gn-bounding-polygon>
+      </xsl:with-param>
+    </xsl:call-template>
   </xsl:template>
 
   <!-- Those elements MUST be ignored in the editor layout -->

@@ -8701,10 +8701,6 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
     <label>Contenu du catalogue attributaire</label>
     <description>Contenu du catalogue attributaire</description>
   </element>
-  <element name="cat:language">
-    <label>Langue</label>
-    <description></description>
-  </element>
   <element name="cat:versionNumber">
     <label>Version du catalogue</label>
     <description>Version du catalogue</description>

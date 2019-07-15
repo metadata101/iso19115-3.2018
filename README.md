@@ -118,7 +118,7 @@ source catalog.
       <gco:CharacterString>http://localhost/geonetwork/srv/eng/home?uuid={{MetadataUUID}}</gco:CharacterString>
     </cit:linkage>
     <cit:function>
-      <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
+      <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_OnLineFunctionCode"
                                  codeListValue="completeMetadata"/>
     </cit:function>
   </cit:CI_OnlineResource>

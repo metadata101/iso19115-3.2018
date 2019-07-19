@@ -168,7 +168,7 @@
     <xsl:if test="name(preceding-sibling::node()[1]) != name()">
       <gmd:hierarchyLevel>
         <gmd:MD_ScopeCode
-          codeList="https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
+          codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_ScopeCode"
             codeListValue="{if (mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode/@codeListValue != '')
                             then mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode/@codeListValue
                             else mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode}"/>
@@ -373,7 +373,7 @@
               <xsl:if test="$function">
                 <gmd:function>
                   <gmd:CI_OnLineFunctionCode
-            codeList="https://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode"
+            codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_OnLineFunctionCode"
                     codeListValue="{$function}"/>
                 </gmd:function>
               </xsl:if>
@@ -763,6 +763,9 @@
         <xsl:apply-templates select="mrd:formatSpecificationCitation/cit:CI_Citation/cit:title/*"/>
       </gmd:name>
       <gmd:version>
+        <xsl:if test="normalize-space(mrd:formatSpecificationCitation/cit:CI_Citation/cit:edition/*) = ''">
+          <xsl:attribute name="nilReason" select="'unknown'"/>
+        </xsl:if>
         <xsl:apply-templates select="mrd:formatSpecificationCitation/cit:CI_Citation/cit:edition/*"/>
       </gmd:version>
 
@@ -850,7 +853,7 @@
     <xsl:param name="codeListName"/>
     <xsl:param name="codeListValue"/>
     <!-- The correct codeList Location goes here -->
-    <xsl:variable name="codeListLocation" select="'https://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml'"/>
+    <xsl:variable name="codeListLocation" select="'http://standards.iso.org/iso/19139/resources/gmxCodelists.xml'"/>
     <xsl:if test="$codeListValue">
       <xsl:element name="{$elementName}">
         <xsl:element name="{$codeListName}">

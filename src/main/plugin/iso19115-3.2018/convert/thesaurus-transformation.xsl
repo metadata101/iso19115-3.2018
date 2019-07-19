@@ -46,7 +46,8 @@
     <xsl:param name="withXlink" select="false()"/>
     <!-- Add thesaurus identifier using an Anchor which points to the download link.
         It's recommended to use it in order to have the thesaurus widget inline editor
-        which use the thesaurus identifier for initialization. -->
+        which use the thesaurus identifier for initialization.
+        Also add the thesaurus title using an Anchor. -->
     <xsl:param name="withThesaurusAnchor" select="true()"/>
 
 
@@ -235,9 +236,18 @@
       <mri:thesaurusName>
         <cit:CI_Citation>
           <cit:title>
-            <gco:CharacterString>
-              <xsl:value-of select="$thesauri/thesaurus[key = $currentThesaurus]/title" />
-            </gco:CharacterString>
+            <xsl:choose>
+              <xsl:when test="$withThesaurusAnchor = true()">
+                <gcx:Anchor xlink:href="{$thesauri/thesaurus[key = $currentThesaurus]/defaultNamespace}">
+                  <xsl:value-of select="$thesauri/thesaurus[key = $currentThesaurus]/title"/>
+                </gcx:Anchor>
+              </xsl:when>
+              <xsl:otherwise>
+                <gco:CharacterString>
+                  <xsl:value-of select="$thesauri/thesaurus[key = $currentThesaurus]/title"/>
+                </gco:CharacterString>
+              </xsl:otherwise>
+            </xsl:choose>
           </cit:title>
 
           <xsl:variable name="thesaurusDate"

@@ -277,6 +277,12 @@
   </xsl:template>
 
 
+  <!-- The topic category directive may create empty topic. -->
+  <xsl:template
+    match="mri:topicCategory[not(mri:MD_TopicCategoryCode)]"
+    priority="10" />
+
+
   <xsl:template match="*[gco:CharacterString|lan:PT_FreeText]">
     <xsl:copy>
       <xsl:apply-templates select="@*[not(name() = 'gco:nilReason') and not(name() = 'xsi:type')]"/>

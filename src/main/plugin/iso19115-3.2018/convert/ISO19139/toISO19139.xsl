@@ -626,6 +626,7 @@
       <xsl:apply-templates select="cit:graphic"/>
     </xsl:element>
   </xsl:template>
+
   <xsl:template match="cit:CI_Citation/cit:date">
     <gmd:date>
       <xsl:apply-templates select="@*"/>
@@ -644,11 +645,13 @@
       </gmd:CI_Date>
     </gmd:date>
   </xsl:template>
+
   <xsl:template match="cit:CI_Citation/cit:editionDate">
     <gmd:editionDate>
       <xsl:call-template name="writeDateTime"/>
     </gmd:editionDate>
   </xsl:template>
+
   <xsl:template match="cit:CI_Responsibility" priority="5">
     <xsl:choose>
       <xsl:when test="count(cit:party/cit:CI_Organisation/cit:individual/cit:CI_Individual/cit:name/gco2:CharacterString) +
@@ -666,37 +669,54 @@
         <xsl:for-each select="cit:party/(cit:CI_Individual|cit:CI_Organisation[not(cit:individual)]|cit:CI_Organisation/*/cit:CI_Individual)">
         <xsl:element name="gmd:CI_ResponsibleParty">
           <xsl:apply-templates select="@*"/>
-            <xsl:if test="name(.) = 'cit:CI_Individual' and cit:name != ''">
+          <xsl:if test="name() = 'cit:CI_Individual' and cit:name != ''">
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:individualName'"/>
                 <xsl:with-param name="nodeWithStringToWrite" select="cit:name"/>
             </xsl:call-template>
           </xsl:if>
 
-            <xsl:choose>
-              <xsl:when test="name(.) = 'cit:CI_Organisation' and cit:name != ''">
-            <xsl:call-template name="writeCharacterStringElement">
-              <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
-                  <xsl:with-param name="nodeWithStringToWrite" select="cit:name"/>
-            </xsl:call-template>
-              </xsl:when>
-              <xsl:when test="name(.) = 'cit:CI_Individual' and ../../cit:name != ''">
-                <xsl:call-template name="writeCharacterStringElement">
-                  <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
-                  <xsl:with-param name="nodeWithStringToWrite" select="../../cit:name"/>
-                </xsl:call-template>
-              </xsl:when>
-            </xsl:choose>
+          <xsl:choose>
+            <xsl:when test="name() = 'cit:CI_Organisation' and cit:name != ''">
+              <xsl:call-template name="writeCharacterStringElement">
+                <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
+                    <xsl:with-param name="nodeWithStringToWrite" select="cit:name"/>
+              </xsl:call-template>
+            </xsl:when>
+            <xsl:when test="name() = 'cit:CI_Individual' and ../../cit:name != ''">
+              <xsl:call-template name="writeCharacterStringElement">
+                <xsl:with-param name="elementName" select="'gmd:organisationName'"/>
+                <xsl:with-param name="nodeWithStringToWrite" select="../../cit:name"/>
+              </xsl:call-template>
+            </xsl:when>
+          </xsl:choose>
 
-            <xsl:if test="cit:positionName != ''">
+          <xsl:if test="cit:positionName != ''">
             <xsl:call-template name="writeCharacterStringElement">
               <xsl:with-param name="elementName" select="'gmd:positionName'"/>
                 <xsl:with-param name="nodeWithStringToWrite" select="cit:positionName"/>
             </xsl:call-template>
           </xsl:if>
 
-          <!-- contactInformation comes before indivudual/position -->
-          <xsl:call-template name="writeContactInformation"/>
+          <!-- contactInformation comes before individual/position -->
+          <xsl:choose>
+            <xsl:when test="name() = 'cit:CI_Individual' and cit:contactInfo[normalize-space(.) != '']">
+              <xsl:for-each select="cit:contactInfo[normalize-space(.) != '']">
+                <xsl:call-template name="writeContactInformation"/>
+              </xsl:for-each>
+            </xsl:when>
+            <!-- Individual gets contact info from the parent organisation -->
+            <xsl:when test="name() = 'cit:CI_Individual' and ../../cit:contactInfo[normalize-space(.) != '']">
+              <xsl:for-each select="../../cit:contactInfo[normalize-space(.) != '']">
+                <xsl:call-template name="writeContactInformation"/>
+              </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:for-each select="cit:contactInfo[normalize-space(.) != '']">
+                <xsl:call-template name="writeContactInformation"/>
+              </xsl:for-each>
+            </xsl:otherwise>
+          </xsl:choose>
 
           <xsl:choose>
               <xsl:when test="ancestor::cit:CI_Responsibility/cit:role/cit:CI_RoleCode/@codeListValue != ''">
@@ -715,12 +735,11 @@
       </xsl:when>
     </xsl:choose>
   </xsl:template>
+
   <xsl:template name="writeContactInformation">
-    <xsl:for-each select="cit:party/*/cit:contactInfo[normalize-space(.) != '']|cit:contactInfo[normalize-space(.) != '']">
-      <gmd:contactInfo>
-        <xsl:apply-templates/>
-      </gmd:contactInfo>
-    </xsl:for-each>
+    <gmd:contactInfo>
+      <xsl:apply-templates select="*"/>
+    </gmd:contactInfo>
   </xsl:template>
   
   <xsl:template match="cit:contactInfo/cit:CI_Contact/cit:phone[1]">
@@ -744,6 +763,7 @@
       </gmd:CI_Telephone>
     </gmd:phone>
   </xsl:template>
+
   <xsl:template match="cit:contactInfo/cit:CI_Contact/cit:phone[position() > 1]"/>
 
   <xsl:template name="CI_ResponsiblePartyToOnlineResource">
@@ -752,11 +772,13 @@
     -->
     <xsl:apply-templates select=".//gmd:onlineResource"/>
   </xsl:template>
+
   <xsl:template match="cit:CI_OnlineResource/cit:linkage/gco2:CharacterString">
     <gmd:URL>
       <xsl:value-of select="."/>
     </gmd:URL>
   </xsl:template>
+
   <xsl:template match="mrd:MD_Format">
     <xsl:element name="gmd:MD_Format">
       <gmd:name>

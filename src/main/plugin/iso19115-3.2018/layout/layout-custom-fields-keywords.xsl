@@ -12,6 +12,7 @@
                 xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:xslutil="java:org.fao.geonet.util.XslUtil"
                 xmlns:gn="http://www.fao.org/geonetwork"
                 xmlns:gn-fn-metadata="http://geonetwork-opensource.org/xsl/functions/metadata"
                 exclude-result-prefixes="#all">
@@ -31,10 +32,45 @@
 
     <xsl:variable name="xpath" select="gn-fn-metadata:getXPath(.)"/>
     <xsl:variable name="isoType" select="if (../@gco:isoType) then ../@gco:isoType else ''"/>
-    <xsl:variable name="thesaurusTitle"
-      select="if ($overrideLabel != '')
+    <xsl:variable name="thesaurusTitleEl"
+                  select="mri:MD_Keywords/mri:thesaurusName/*/cit:title"/>
+
+    <!--TODO Add all Thesaurus as first block of keywords-->
+
+
+    <xsl:variable name="thesaurusTitle">
+      <xsl:choose>
+        <xsl:when test="normalize-space($thesaurusTitleEl/gco:CharacterString) != ''">
+          <xsl:value-of select="if ($overrideLabel != '')
               then $overrideLabel
-              else mri:MD_Keywords/mri:thesaurusName/*/cit:title/gco:CharacterString"/>
+              else concat(
+                      $strings/keywordFrom,
+                      normalize-space($thesaurusTitleEl/gco:CharacterString))"/>
+        </xsl:when>
+        <xsl:when test="normalize-space($thesaurusTitleEl/lan:PT_FreeText/
+                          lan:textGroup/lan:LocalisedCharacterString[
+                            @locale = concat('#', upper-case(xslutil:twoCharLangCode($lang)))][1]) != ''">
+          <xsl:value-of
+            select="$thesaurusTitleEl/lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString[@locale = concat('#', upper-case(xslutil:twoCharLangCode($lang)))][1]"/>
+        </xsl:when>
+        <xsl:when test="$thesaurusTitleEl/lan:PT_FreeText/
+                          lan:textGroup/lan:LocalisedCharacterString[
+                            normalize-space(text()) != ''][1]">
+          <xsl:value-of select="$thesaurusTitleEl/lan:PT_FreeText/lan:textGroup/
+                                  lan:LocalisedCharacterString[normalize-space(text()) != ''][1]"/>
+        </xsl:when>
+        <xsl:when test="normalize-space($thesaurusTitleEl/gcx:Anchor) != ''">
+          <xsl:value-of select="if ($overrideLabel != '')
+              then $overrideLabel
+              else concat(
+                      $strings/keywordFrom,
+                      normalize-space($thesaurusTitleEl/gcx:Anchor))"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="mri:MD_Keywords/mri:thesaurusName/*/cit:identifier/*/mcc:code"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
     <xsl:variable name="attributes">
       <xsl:if test="$isEditing">
@@ -62,17 +98,16 @@
 
    
     <xsl:choose>
-      <xsl:when test="$thesaurusConfig/@fieldset = 'false'">
+      <xsl:when test="($isFlatMode and not($thesaurusConfig/@fieldset)) or $thesaurusConfig/@fieldset = 'false'">
         <xsl:apply-templates mode="mode-iso19115-3.2018" select="*">
           <xsl:with-param name="schema" select="$schema"/>
           <xsl:with-param name="labels" select="$labels"/>
-          <xsl:with-param name="overrideLabel" select="$overrideLabel"/>
         </xsl:apply-templates>
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="render-boxed-element">
           <xsl:with-param name="label"
-            select="if ($thesaurusTitle)
+            select="if ($thesaurusTitle != '')
                     then $thesaurusTitle
                     else gn-fn-metadata:getLabel($schema, name(), $labels, name(..), $isoType, $xpath)/label"/>
           <xsl:with-param name="editInfo" select="gn:element"/>
@@ -83,7 +118,6 @@
             <xsl:apply-templates mode="mode-iso19115-3.2018" select="*">
               <xsl:with-param name="schema" select="$schema"/>
               <xsl:with-param name="labels" select="$labels"/>
-              <xsl:with-param name="overrideLabel" select="$overrideLabel"/>
             </xsl:apply-templates>
           </xsl:with-param>
         </xsl:call-template>
@@ -94,16 +128,14 @@
 
 
   <xsl:template mode="mode-iso19115-3.2018" match="mri:MD_Keywords" priority="2000">
-    <xsl:param name="overrideLabel" select="''" required="no"/>
 
 
     <xsl:variable name="thesaurusIdentifier"
                   select="normalize-space(mri:thesaurusName/*/cit:identifier/*/mcc:code/*/text())"/>
 
     <xsl:variable name="thesaurusTitle"
-      select="if ($overrideLabel != '')
-              then $overrideLabel
-              else mri:thesaurusName/*/cit:title/gco:CharacterString"/>
+                  select="mri:thesaurusName/*/cit:title/(gco:CharacterString|lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString|gcx:Anchor)"/>
+
 
     <xsl:variable name="thesaurusConfig"
                   as="element()?"
@@ -130,8 +162,8 @@
         <xsl:variable name="guiLangId"
                       select="
                       if (count($metadata/mdb:otherLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $lang]) = 1)
-                        then $metadata/mdb:otherLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $lang]/@id
-                        else $metadata/mdb:otherLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $metadataLanguage]/@id"/>
+                        then ($metadata/mdb:otherLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $lang]/@id)[1]
+                        else ($metadata/mdb:otherLocale/lan:PT_Locale[lan:language/lan:LanguageCode/@codeListValue = $metadataLanguage]/@id)[1]"/>
         <!--
         get keyword in gui lang
         in default language

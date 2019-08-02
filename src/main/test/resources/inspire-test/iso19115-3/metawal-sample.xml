@@ -213,7 +213,7 @@ Les emplacements des panneaux " fauchage tardif - zone refuge ".</gco:CharacterS
                            <cit:onlineResource>
                               <cit:CI_OnlineResource>
                                  <cit:linkage>
-                                    <gco:CharacterString>http://geoportail.wallonie.be</gco:CharacterString>
+                                    <gco:CharacterString>https://geoportail.wallonie.be</gco:CharacterString>
                                  </cit:linkage>
                                  <cit:protocol>
                                     <gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
@@ -555,7 +555,7 @@ Les emplacements des panneaux " fauchage tardif - zone refuge ".</gco:CharacterS
                <mrd:onLine>
                   <cit:CI_OnlineResource>
                      <cit:linkage>
-                        <gco:CharacterString xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl">http://geoportail.wallonie.be/walonmap/?agsDynUrls=http://geoservices.wallonie.be/arcgis/rest/services/FAUNE_FLORE/BDR/MapServer</gco:CharacterString>
+                        <gco:CharacterString xmlns:xd="http://www.oxygenxml.com/ns/doc/xsl">https://geoportail.wallonie.be/walonmap/?agsDynUrls=http://geoservices.wallonie.be/arcgis/rest/services/FAUNE_FLORE/BDR/MapServer</gco:CharacterString>
                      </cit:linkage>
                      <cit:name>
                         <gco:CharacterString>Application WalOnMap - Toute la Wallonie à la carte</gco:CharacterString>

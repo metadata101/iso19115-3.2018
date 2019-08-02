@@ -54,7 +54,7 @@
 
   <xsl:template match="*" mode="RespParty">
     <cit:role>
-      <cit:CI_RoleCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_RoleCode"
+      <cit:CI_RoleCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_RoleCode"
                        codeListValue="pointOfContact"/>
     </cit:role>
     <cit:party>
@@ -99,7 +99,7 @@
                       </gco:CharacterString>
                     </cit:number>
                     <cit:numberType>
-                      <cit:CI_TelephoneTypeCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_TelephoneTypeCode"
+                      <cit:CI_TelephoneTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_TelephoneTypeCode"
                                                 codeListValue="voice"/>
                     </cit:numberType>
                   </xsl:for-each>
@@ -111,7 +111,7 @@
                       </gco:CharacterString>
                     </cit:number>
                     <cit:numberType>
-                      <cit:CI_TelephoneTypeCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_TelephoneTypeCode"
+                      <cit:CI_TelephoneTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_TelephoneTypeCode"
                                                 codeListValue="facsimilie"/>
                     </cit:numberType>
                   </xsl:for-each>

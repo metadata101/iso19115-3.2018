@@ -205,7 +205,7 @@
 
                 <xsl:if test="$function != ''">
                   <cit:function>
-                    <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_OnLineFunctionCode"
+                    <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_OnLineFunctionCode"
                                                codeListValue="{$function}"/>
                   </cit:function>
                 </xsl:if>
@@ -250,7 +250,7 @@
 
               <xsl:if test="$function != ''">
                 <cit:function>
-                  <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_OnLineFunctionCode"
+                  <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_OnLineFunctionCode"
                                              codeListValue="{$function}"/>
                 </cit:function>
               </xsl:if>

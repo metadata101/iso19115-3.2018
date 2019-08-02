@@ -766,7 +766,7 @@
         </xsl:for-each>
         <mri:type>
           <mri:MD_KeywordTypeCode
-            codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_KeywordTypeCode"
+            codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_KeywordTypeCode"
             codeListValue="theme"/>
         </mri:type>
         <mri:thesaurusName>
@@ -781,7 +781,7 @@
                 </cit:date>
                 <cit:dateType>
                   <cit:CI_DateTypeCode
-                    codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_DateTypeCode"
+                    codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode"
                     codeListValue="publication"/>
                 </cit:dateType>
               </cit:CI_Date>
@@ -810,14 +810,14 @@
               ">
             <mco:accessConstraints>
               <mco:MD_RestrictionCode
-                codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_RestrictionCode"
+                codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_RestrictionCode"
                 codeListValue="{.}"/>
             </mco:accessConstraints>
           </xsl:when>
           <xsl:when test="lower-case(.) = 'none'">
             <mco:accessConstraints>
               <mco:MD_RestrictionCode
-                codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_RestrictionCode"
+                codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_RestrictionCode"
                 codeListValue="otherRestrictions"/>
             </mco:accessConstraints>
             <mco:otherConstraints>
@@ -827,7 +827,7 @@
           <xsl:otherwise>
             <mco:accessConstraints>
               <mco:MD_RestrictionCode
-                codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_RestrictionCode"
+                codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_RestrictionCode"
                 codeListValue="otherRestrictions"/>
             </mco:accessConstraints>
             <mco:otherConstraints>
@@ -936,7 +936,7 @@
                     </cit:date>
                     <cit:dateType>
                       <cit:CI_DateTypeCode
-                        codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_DateTypeCode"
+                        codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode"
                         codeListValue="revision"/>
                     </cit:dateType>
                   </cit:CI_Date>

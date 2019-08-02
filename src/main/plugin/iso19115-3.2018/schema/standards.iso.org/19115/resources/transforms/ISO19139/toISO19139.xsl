@@ -158,7 +158,7 @@
     <xsl:if test="name(preceding-sibling::node()[1]) != name()">
       <gmd:hierarchyLevel>
         <gmd:MD_ScopeCode
-            codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_ScopeCode"
+            codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_ScopeCode"
             codeListValue="{mdb:MD_MetadataScope/mdb:resourceScope/mcc:MD_ScopeCode}"/>
       </gmd:hierarchyLevel>
       <xsl:if test="mdb:MD_MetadataScope/mdb:name">

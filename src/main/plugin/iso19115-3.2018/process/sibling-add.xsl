@@ -113,14 +113,14 @@ Stylesheet used to add a reference to a related record using aggregation info.
         <mri:MD_AssociatedResource>
           <mri:associationType>
             <mri:DS_AssociationTypeCode
-                codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#DS_AssociationTypeCode"
+                codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#DS_AssociationTypeCode"
                 codeListValue="{$associationType}"/>
           </mri:associationType>
 
           <xsl:if test="$initiativeType != ''">
             <mri:initiativeType>
               <mri:DS_InitiativeTypeCode
-                  codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#DS_InitiativeTypeCode"
+                  codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#DS_InitiativeTypeCode"
                   codeListValue="{$initiativeType}"/>
             </mri:initiativeType>
           </xsl:if>

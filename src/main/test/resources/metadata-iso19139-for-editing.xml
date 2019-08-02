@@ -32665,7 +32665,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
       </geonet:attribute>
     </gmd:language>
     <gmd:characterSet>
-      <gmd:MD_CharacterSetCode codeListValue="utf8" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_CharacterSetCode">
+      <gmd:MD_CharacterSetCode codeListValue="utf8" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_CharacterSetCode">
         <geonet:element ref="7" parent="6" uuid="gmd:MD_CharacterSetCode_5f5f7eda-d1ae-440c-9e83-be8de7f1df3c" min="1" max="1" />
         <geonet:attribute name="codeList" />
         <geonet:attribute name="codeListValue" />
@@ -32963,7 +32963,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
           <geonet:attribute name="uuidref" add="true" />
         </gmd:contactInfo>
         <gmd:role>
-          <gmd:CI_RoleCode codeListValue="pointOfContact" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_RoleCode">
+          <gmd:CI_RoleCode codeListValue="pointOfContact" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_RoleCode">
             <geonet:element ref="39" parent="38" uuid="gmd:CI_RoleCode_a99ac76d-f5be-4c39-a2a0-d44fda402565" min="1" max="1" />
             <geonet:attribute name="codeList" />
             <geonet:attribute name="codeListValue" />
@@ -33078,7 +33078,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
         <gmd:axisDimensionProperties>
           <gmd:MD_Dimension>
             <gmd:dimensionName>
-              <gmd:MD_DimensionNameTypeCode codeListValue="row" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_DimensionNameTypeCode">
+              <gmd:MD_DimensionNameTypeCode codeListValue="row" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_DimensionNameTypeCode">
                 <geonet:element ref="53" parent="52" uuid="gmd:MD_DimensionNameTypeCode_5f539111-82f2-4c78-88fe-8f503a37d068" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -33157,7 +33157,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
         <gmd:axisDimensionProperties>
           <gmd:MD_Dimension>
             <gmd:dimensionName>
-              <gmd:MD_DimensionNameTypeCode codeListValue="column" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_DimensionNameTypeCode">
+              <gmd:MD_DimensionNameTypeCode codeListValue="column" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_DimensionNameTypeCode">
                 <geonet:element ref="61" parent="60" uuid="gmd:MD_DimensionNameTypeCode_a48a6104-dd35-447c-8fa7-db0aceeb28f2" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -33236,7 +33236,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
         <gmd:axisDimensionProperties>
           <gmd:MD_Dimension>
             <gmd:dimensionName>
-              <gmd:MD_DimensionNameTypeCode codeListValue="vertical" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_DimensionNameTypeCode">
+              <gmd:MD_DimensionNameTypeCode codeListValue="vertical" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_DimensionNameTypeCode">
                 <geonet:element ref="69" parent="68" uuid="gmd:MD_DimensionNameTypeCode_27b8341f-26a5-49d3-b9a7-14c3f063ba40" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -33314,7 +33314,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
         </gmd:axisDimensionProperties>
         <geonet:child name="axisDimensionProperties" prefix="gmd" namespace="http://standards.iso.org/iso/19115/-3/gmd" uuid="child_gmd:axisDimensionProperties_0dc1370a-495b-4a6c-b347-5be3d9518d4f" min="0" max="10000" action="replace" />
         <gmd:cellGeometry>
-          <gmd:MD_CellGeometryCode codeListValue="area" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_CellGeometryCode">
+          <gmd:MD_CellGeometryCode codeListValue="area" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_CellGeometryCode">
             <geonet:element ref="75" parent="74" uuid="gmd:MD_CellGeometryCode_56896cca-a04d-48aa-8134-c064d042b199" min="1" max="1" />
             <geonet:attribute name="codeList" />
             <geonet:attribute name="codeListValue" />
@@ -33514,7 +33514,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
                   </geonet:attribute>
                 </gmd:date>
                 <gmd:dateType>
-                  <gmd:CI_DateTypeCode codeListValue="publication" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_DateTypeCode">
+                  <gmd:CI_DateTypeCode codeListValue="publication" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode">
                     <geonet:element ref="95" parent="94" uuid="gmd:CI_DateTypeCode_9c92f1ac-8c48-4787-a190-b6d68afc61d6" min="1" max="1" />
                     <geonet:attribute name="codeList" />
                     <geonet:attribute name="codeListValue" />
@@ -33667,7 +33667,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
           <geonet:child name="CharacterString" prefix="gco" namespace="http://standards.iso.org/iso/19115/-3/gco/1.0" uuid="child_gco:CharacterString_aed006d9-948a-456f-8182-554c57ad07db" min="1" max="1" action="replace" />
         </geonet:child>
         <gmd:status>
-          <gmd:MD_ProgressCode codeListValue="onGoing" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_ProgressCode">
+          <gmd:MD_ProgressCode codeListValue="onGoing" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_ProgressCode">
             <geonet:element ref="103" parent="102" uuid="gmd:MD_ProgressCode_be321abd-e8fa-4058-a8f0-49a3931a623e" min="1" max="1" />
             <geonet:attribute name="codeList" />
             <geonet:attribute name="codeListValue" />
@@ -33957,7 +33957,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
               <geonet:attribute name="uuidref" add="true" />
             </gmd:contactInfo>
             <gmd:role>
-              <gmd:CI_RoleCode codeListValue="originator" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_RoleCode">
+              <gmd:CI_RoleCode codeListValue="originator" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_RoleCode">
                 <geonet:element ref="135" parent="134" uuid="gmd:CI_RoleCode_9942c599-dee9-4176-991a-9ee512580d8d" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -34010,7 +34010,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
         <gmd:resourceMaintenance>
           <gmd:MD_MaintenanceInformation>
             <gmd:maintenanceAndUpdateFrequency>
-              <gmd:MD_MaintenanceFrequencyCode codeListValue="asNeeded" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode">
+              <gmd:MD_MaintenanceFrequencyCode codeListValue="asNeeded" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_MaintenanceFrequencyCode">
                 <geonet:element ref="139" parent="138" uuid="gmd:MD_MaintenanceFrequencyCode_86f98d48-aa69-46f6-a362-63580a49b14a" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -34227,7 +34227,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
               <geonet:child name="CharacterString" prefix="gco" namespace="http://standards.iso.org/iso/19115/-3/gco/1.0" uuid="child_gco:CharacterString_0796efe0-0c97-4227-89ba-554573563256" min="1" max="1" action="replace" />
             </geonet:child>
             <gmd:type>
-              <gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_KeywordTypeCode">
+              <gmd:MD_KeywordTypeCode codeListValue="theme" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_KeywordTypeCode">
                 <geonet:element ref="157" parent="156" uuid="gmd:MD_KeywordTypeCode_146e49a9-e86a-4c92-a9ae-3b3ddc5048f3" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -34297,7 +34297,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
               <geonet:child name="CharacterString" prefix="gco" namespace="http://standards.iso.org/iso/19115/-3/gco/1.0" uuid="child_gco:CharacterString_90a5bb40-ee06-48b2-81bd-9ce01a038461" min="1" max="1" action="replace" />
             </geonet:child>
             <gmd:type>
-              <gmd:MD_KeywordTypeCode codeListValue="place" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_KeywordTypeCode">
+              <gmd:MD_KeywordTypeCode codeListValue="place" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_KeywordTypeCode">
                 <geonet:element ref="163" parent="162" uuid="gmd:MD_KeywordTypeCode_d295d97f-b443-4c94-bbcc-2f988e929b4c" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -34355,7 +34355,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
               <geonet:child name="CharacterString" prefix="gco" namespace="http://standards.iso.org/iso/19115/-3/gco/1.0" uuid="child_gco:CharacterString_09bc665b-c511-4126-b4b9-e2b2fdd80711" min="1" max="1" action="replace" />
             </geonet:child>
             <gmd:accessConstraints>
-              <gmd:MD_RestrictionCode codeListValue="copyright" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_RestrictionCode">
+              <gmd:MD_RestrictionCode codeListValue="copyright" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_RestrictionCode">
                 <geonet:element ref="167" parent="166" uuid="gmd:MD_RestrictionCode_7d07bdf9-45f3-47dd-a562-e68ecac26b8a" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -34372,7 +34372,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
             </gmd:accessConstraints>
             <geonet:child name="accessConstraints" prefix="gmd" namespace="http://standards.iso.org/iso/19115/-3/gmd" uuid="child_gmd:accessConstraints_272f75d9-7a83-453b-bbb5-167c41658166" min="0" max="10000" action="replace" />
             <gmd:useConstraints>
-              <gmd:MD_RestrictionCode codeListValue="otherRestictions" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_RestrictionCode">
+              <gmd:MD_RestrictionCode codeListValue="otherRestictions" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_RestrictionCode">
                 <geonet:element ref="169" parent="168" uuid="gmd:MD_RestrictionCode_51d661e9-8cb4-4d5b-b13d-ed64b2c8c5ed" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />
@@ -34445,7 +34445,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
         </geonet:child>
         <geonet:child name="aggregationInfo" prefix="gmd" namespace="http://standards.iso.org/iso/19115/-3/gmd" uuid="child_gmd:aggregationInfo_0e5f3ac1-71f2-4fc7-86fb-6f445ba78196" min="0" max="10000" action="replace" />
         <gmd:spatialRepresentationType>
-          <gmd:MD_SpatialRepresentationTypeCode codeListValue="" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_SpatialRepresentationTypeCode">
+          <gmd:MD_SpatialRepresentationTypeCode codeListValue="" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_SpatialRepresentationTypeCode">
             <geonet:element ref="173" parent="172" uuid="gmd:MD_SpatialRepresentationTypeCode_40c29d89-298a-4713-b6ce-677fe3257b78" min="1" max="1" />
             <geonet:attribute name="codeList" />
             <geonet:attribute name="codeListValue" />
@@ -34543,7 +34543,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
           <geonet:choose name="gco:CharacterString" />
         </geonet:child>
         <gmd:characterSet>
-          <gmd:MD_CharacterSetCode codeListValue="utf8" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_CharacterSetCode">
+          <gmd:MD_CharacterSetCode codeListValue="utf8" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_CharacterSetCode">
             <geonet:element ref="183" parent="182" uuid="gmd:MD_CharacterSetCode_e0928128-3613-440a-a2e6-bb0a4a59e2a6" min="1" max="1" />
             <geonet:attribute name="codeList" />
             <geonet:attribute name="codeListValue" />
@@ -35339,7 +35339,7 @@ http://www.sandre.eaufrance.fr/?urn=urn:sandre:ensembledonnees:BDCarthage:FXX:::
         <gmd:scope>
           <gmd:DQ_Scope>
             <gmd:level>
-              <gmd:MD_ScopeCode codeListValue="dataset" codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_ScopeCode">
+              <gmd:MD_ScopeCode codeListValue="dataset" codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_ScopeCode">
                 <geonet:element ref="251" parent="250" uuid="gmd:MD_ScopeCode_0aa7a105-d2a3-41ba-b9ce-c0725fda5d08" min="1" max="1" />
                 <geonet:attribute name="codeList" />
                 <geonet:attribute name="codeListValue" />

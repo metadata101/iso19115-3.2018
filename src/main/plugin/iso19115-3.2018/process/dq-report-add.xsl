@@ -112,7 +112,7 @@
                   <mdq:scope>
                     <mcc:MD_Scope>
                       <mcc:level>
-                        <mcc:MD_ScopeCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_ScopeCode"
+                        <mcc:MD_ScopeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_ScopeCode"
                                           codeListValue=""/>
                       </mcc:level>
                     </mcc:MD_Scope>
@@ -169,7 +169,7 @@
                   <mrl:scope>
                     <mcc:MD_Scope>
                       <mcc:level>
-                        <mcc:MD_ScopeCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#MD_ScopeCode"
+                        <mcc:MD_ScopeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_ScopeCode"
                                           codeListValue="dataset"/>
                       </mcc:level>
                     </mcc:MD_Scope>

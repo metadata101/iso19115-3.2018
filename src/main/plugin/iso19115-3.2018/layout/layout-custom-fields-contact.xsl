@@ -24,7 +24,7 @@
             <gco:CharacterString>PHONE</gco:CharacterString>
          </cit:number>
          <cit:numberType>
-            <cit:CI_TelephoneTypeCode codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_TelephoneTypeCode"
+            <cit:CI_TelephoneTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_TelephoneTypeCode"
                                       codeListValue=""/>
          </cit:numberType>
       </cit:CI_Telephone>

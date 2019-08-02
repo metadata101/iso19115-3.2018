@@ -272,7 +272,7 @@
                 </cit:date>
                 <cit:dateType>
                   <cit:CI_DateTypeCode
-                          codeList="http://standards.iso.org/iso/19139/resources/codelist/gmxCodelists.xml#CI_DateTypeCode"
+                          codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode"
                           codeListValue="publication" />
                 </cit:dateType>
               </cit:CI_Date>

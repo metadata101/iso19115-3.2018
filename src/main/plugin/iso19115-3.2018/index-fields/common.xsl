@@ -25,12 +25,14 @@
                 xmlns:joda="java:org.fao.geonet.domain.ISODate"
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:gn-fn-core="http://geonetwork-opensource.org/xsl/functions/core"
+                xmlns:gn-fn-index="http://geonetwork-opensource.org/xsl/functions/index"
                 xmlns:gn-fn-iso19115-3.2018="http://geonetwork-opensource.org/xsl/functions/profiles/iso19115-3.2018"
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:skos="http://www.w3.org/2004/02/skos/core#"
                 exclude-result-prefixes="#all">
 
 
+  <xsl:include href="common/index-utils.xsl"/>
   <xsl:include href="common/functions-core.xsl"/>
   <xsl:include href="../layout/utility-tpl-multilingual.xsl"/>
 
@@ -770,30 +772,54 @@
 
     <!-- Index feature catalog as complex object in attributeTable field.
     TODO multilingual -->
-    <xsl:for-each select="$metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue/mrc:featureCatalogue">
-      <xsl:variable name="attributes"
-                    select=".//gfc:carrierOfCharacteristics"/>
-      <xsl:if test="count($attributes) > 0">
-        <xsl:variable name="jsonAttributeTable">
-          [<xsl:for-each select="$attributes">
-          {"name": "<xsl:value-of select="*/gfc:code/*/text()"/>",
-          "definition": "<xsl:value-of select="*/gfc:definition/*/text()"/>",
-          "type": "<xsl:value-of select="*/gfc:valueType/gco:TypeName/gco:aName/*/text()"/>"
-          <xsl:if test="*/gfc:listedValue">
-            ,"values": [<xsl:for-each select="*/gfc:listedValue">{
-            "label": "<xsl:value-of select="*/gfc:label/*/text()"/>",
+    <xsl:variable name="jsonFeatureTypes">[
+
+      <xsl:for-each select="$metadata/mdb:contentInfo/mrc:MD_FeatureCatalogue//gfc:featureType">{
+
+        "typeName" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:typeName/text()"/>",
+        "definition" :"<xsl:value-of select="gn-fn-index:json-escape(gfc:FC_FeatureType/gfc:definition/*/text())"/>",
+        "code" :"<xsl:value-of select="gfc:FC_FeatureType/gfc:code/*/text()"/>",
+        "isAbstract" :"<xsl:value-of select="gfc:FC_FeatureType/gfc:isAbstract/*/text()"/>",
+        "aliases" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:aliases/*/text()"/>",
+        <!--"inheritsFrom" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:inheritsFrom/*/text()"/>",
+        "inheritsTo" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:inheritsTo/*/text()"/>",
+        "constrainedBy" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:constrainedBy/*/text()"/>",
+        "definitionReference" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:definitionReference/*/text()"/>",-->
+        <!-- Index attribute table as JSON object -->
+        <xsl:variable name="attributes"
+                      select="*/gfc:carrierOfCharacteristics"/>
+        <xsl:if test="count($attributes) > 0">
+          "attributeTable" : [
+          <xsl:for-each select="$attributes">
+            {"name": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:memberName/*/text())"/>",
+            "definition": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:definition/*/text())"/>",
             "code": "<xsl:value-of select="*/gfc:code/*/text()"/>",
-            "definition": "<xsl:value-of select="*/gfc:definition/*/text()"/>"}
+            "link": "<xsl:value-of select="*/gfc:code/*/@xlink:href"/>",
+            "type": "<xsl:value-of select="*/gfc:valueType/gco:TypeName/gco:aName/*/text()"/>"
+            <xsl:if test="*/gfc:listedValue">
+              ,"values": [
+              <xsl:for-each select="*/gfc:listedValue">{
+                "label": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:label/*/text())"/>",
+                "code": "<xsl:value-of select="*/gfc:code/*/text()"/>",
+                "definition": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:definition/*/text())"/>"}
+                <xsl:if test="position() != last()">,</xsl:if>
+              </xsl:for-each>
+              ]
+            </xsl:if>
+            }
             <xsl:if test="position() != last()">,</xsl:if>
-          </xsl:for-each>]
-          </xsl:if>}
-          <xsl:if test="position() != last()">,</xsl:if>
-        </xsl:for-each>]
-        </xsl:variable>
-        <Field name="attributeTable" index="true" store="true"
-               string="{$jsonAttributeTable}"/>
-      </xsl:if>
-    </xsl:for-each>
+          </xsl:for-each>
+          ]
+        </xsl:if>
+        }
+        <xsl:if test="position() != last()">,</xsl:if>
+      </xsl:for-each>
+      ]
+
+    </xsl:variable>
+
+    <Field name="featureTypes" index="true" store="true"
+           string="{$jsonFeatureTypes}"/>
 
 
     <Field name="hasDqMeasures" index="true" store="true"

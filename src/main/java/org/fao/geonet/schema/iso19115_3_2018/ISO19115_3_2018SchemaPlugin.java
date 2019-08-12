@@ -7,6 +7,9 @@ import org.fao.geonet.kernel.schema.AssociatedResource;
 import org.fao.geonet.kernel.schema.AssociatedResourcesSchemaPlugin;
 import org.fao.geonet.kernel.schema.ExportablePlugin;
 import org.fao.geonet.kernel.schema.ISOPlugin;
+import org.fao.geonet.kernel.schema.LinkAwareSchemaPlugin;
+import org.fao.geonet.kernel.schema.LinkPatternStreamer.ILinkBuilder;
+import org.fao.geonet.kernel.schema.LinkPatternStreamer.RawLinkPatternStreamer;
 import org.fao.geonet.kernel.schema.MultilingualSchemaPlugin;
 import org.fao.geonet.utils.Log;
 import org.fao.geonet.utils.Xml;
@@ -34,7 +37,8 @@ public class ISO19115_3_2018SchemaPlugin
     AssociatedResourcesSchemaPlugin,
     MultilingualSchemaPlugin,
     ExportablePlugin,
-    ISOPlugin {
+    ISOPlugin,
+    LinkAwareSchemaPlugin {
     public static final String IDENTIFIER = "iso19115-3";
 
     private static ImmutableSet<Namespace> allNamespaces;
@@ -468,5 +472,13 @@ public class ISO19115_3_2018SchemaPlugin
         if (el == null) return false;
 
         return elementsToProcess.contains(el.getQualifiedName());
+    }
+
+    public <L, M> RawLinkPatternStreamer<L, M> createLinkStreamer(ILinkBuilder<L, M> linkbuilder) {
+        RawLinkPatternStreamer patternStreamer = new RawLinkPatternStreamer(linkbuilder);
+        patternStreamer.setNamespaces(ISO19115_3_2018SchemaPlugin.allNamespaces.asList());
+        // TODO: Add xlink:href ?
+        patternStreamer.setRawTextXPath(".//*[name() = 'gco:CharacterString' or name() = 'lan:LocalisedCharacterString']");
+        return patternStreamer;
     }
 }

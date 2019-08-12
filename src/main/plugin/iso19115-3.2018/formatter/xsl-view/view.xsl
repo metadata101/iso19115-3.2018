@@ -316,128 +316,136 @@
   <xsl:template mode="render-field"
                 match="*[cit:CI_Responsibility]"
                 priority="100">
-    <xsl:variable name="email">
-      <xsl:for-each select="*/cit:party/*/cit:contactInfo/
-                                      */cit:address/*/cit:electronicMailAddress[not(gco:nilReason)]">
-        <xsl:apply-templates mode="render-value" select="."/>
-        <xsl:if test="position() != last()">, </xsl:if>
-      </xsl:for-each>
-    </xsl:variable>
-
-    <!-- Display name is <org name> - <individual name> (<position name> -->
-    <xsl:variable name="displayName">
-      <xsl:choose>
-        <xsl:when
-                test="*/cit:party/cit:CI_Organisation/cit:name and
-                      */cit:CI_Individual/cit:name">
-          <!-- Org name may be multilingual -->
-          <xsl:apply-templates mode="render-value"
-                               select="*/cit:party/cit:CI_Organisation/cit:name"/>
-          -
-          <xsl:value-of select="*/cit:CI_Individual/cit:name"/>
-          <xsl:if test="*/cit:CI_Individual/cit:positionName">&#160;
-            (<xsl:apply-templates mode="render-value"
-                                  select="*/cit:CI_Individual/cit:positionName"/>)
-          </xsl:if>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="*/cit:party/cit:CI_Organisation/cit:name|
-                                */cit:CI_Individual/cit:name"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-
     <div class="gn-contact">
       <h4>
         <i class="fa fa-envelope">&#160;</i>
         <xsl:apply-templates mode="render-value"
                              select="*/cit:role/*/@codeListValue"/>
       </h4>
-      <div class="row">
-        <div class="col-md-6">
-          <!-- Needs improvements as contact/org are more flexible in iso19115-3.2018 -->
-          <address itemprop="author"
-                   itemscope="itemscope"
-                   itemtype="http://schema.org/Organization">
-            <strong>
-              <xsl:choose>
-                <xsl:when test="normalize-space($email) != ''">
-                  <a href="mailto:{normalize-space($email)}">
-                    <xsl:value-of select="$displayName"/>&#160;
-                  </a>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="$displayName"/>&#160;
-                </xsl:otherwise>
-              </xsl:choose>
-            </strong><br/>
-            <xsl:for-each select="*//cit:contactInfo/*">
-              <xsl:for-each select="cit:address/*/(
-                                          cit:deliveryPoint|cit:city|
-                                          cit:administrativeArea|cit:postalCode|cit:country)">
-                <div itemprop="address"
-                      itemscope="itemscope"
-                      itemtype="http://schema.org/PostalAddress">
-                  <xsl:if test="normalize-space(.) != ''">
-                    <xsl:apply-templates mode="render-value" select="."/><br/>
-                  </xsl:if>
-                </div>
+
+
+
+      <xsl:for-each select="*/cit:party/(cit:CI_Organisation|cit:CI_Individual)">
+        <!-- Display name is <org name> - <individual name> (<position name> -->
+        <xsl:variable name="displayName">
+          <xsl:choose>
+            <xsl:when
+              test="name(.) = 'cit:CI_Organisation'">
+              <!-- Org name may be multilingual -->
+              <xsl:apply-templates mode="render-value"
+                                   select="cit:name"/>
+              -
+              <xsl:for-each select="cit:individual/*/cit:name">
+                <xsl:value-of select="."/>
+                <xsl:if test="cit:positionName">&#160;
+                  (<xsl:apply-templates mode="render-value"
+                                        select="cit:positionName"/>)
+                </xsl:if>
+                <xsl:if test="position() != last()">,&#160;</xsl:if>
               </xsl:for-each>
-            </xsl:for-each>
-          </address>
-        </div>
-        <div class="col-md-6">
-          <xsl:for-each select="*//cit:contactInfo/*">
-            <address>
-              <xsl:for-each select="cit:phone/*/cit:voice[normalize-space(.) != '']">
-                <div itemprop="contactPoint"
-                      itemscope="itemscope"
-                      itemtype="http://schema.org/ContactPoint">
-                  <meta itemprop="contactType"
-                        content="{ancestor::cit:Responsibility/*/cit:role/*/@codeListValue}"/>
-                  <xsl:variable name="phoneNumber">
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="cit:name"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <xsl:variable name="email">
+          <xsl:for-each select=".//cit:electronicMailAddress[not(gco:nilReason)]">
+            <xsl:apply-templates mode="render-value" select="."/>
+            <xsl:if test="position() != last()">,&#160;</xsl:if>
+          </xsl:for-each>
+        </xsl:variable>
+
+
+        <div class="row">
+          <div class="col-md-6">
+            <!-- Needs improvements as contact/org are more flexible in iso19115-3.2018 -->
+            <address itemprop="author"
+                     itemscope="itemscope"
+                     itemtype="http://schema.org/Organization">
+              <strong>
+                <xsl:choose>
+                  <xsl:when test="normalize-space($email) != ''">
+                    <a href="mailto:{normalize-space($email)}">
+                      <xsl:value-of select="$displayName"/>&#160;
+                    </a>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="$displayName"/>&#160;
+                  </xsl:otherwise>
+                </xsl:choose>
+              </strong><br/>
+              <xsl:for-each select=".//cit:contactInfo/*">
+                <xsl:for-each select="cit:address/*/(
+                                            cit:deliveryPoint|cit:city|
+                                            cit:administrativeArea|cit:postalCode|cit:country)">
+                  <div itemprop="address"
+                        itemscope="itemscope"
+                        itemtype="http://schema.org/PostalAddress">
+                    <xsl:if test="normalize-space(.) != ''">
+                      <xsl:apply-templates mode="render-value" select="."/><br/>
+                    </xsl:if>
+                  </div>
+                </xsl:for-each>
+              </xsl:for-each>
+            </address>
+          </div>
+          <div class="col-md-6">
+            <xsl:for-each select=".//cit:contactInfo/*">
+              <address>
+                <xsl:for-each select="cit:phone/*[cit:numberType/*/@codeListValue = 'voice']/cit:number[normalize-space(.) != '']">
+                  <div itemprop="contactPoint"
+                        itemscope="itemscope"
+                        itemtype="http://schema.org/ContactPoint">
+                    <meta itemprop="contactType"
+                          content="{ancestor::cit:Responsibility/*/cit:role/*/@codeListValue}"/>
+                    <xsl:variable name="phoneNumber">
+                      <xsl:apply-templates mode="render-value" select="."/>
+                    </xsl:variable>
+                    <i class="fa fa-phone">&#160;</i>
+                    <a href="tel:{$phoneNumber}">
+                      <xsl:value-of select="$phoneNumber"/>
+                    </a>
+                  </div>
+                </xsl:for-each>
+                <xsl:for-each select="cit:phone/*[cit:numberType/*/@codeListValue != 'voice']/cit:number[normalize-space(.) != '']">
+                  <div>
+                    <xsl:variable name="phoneNumber">
+                      <xsl:apply-templates mode="render-value" select="."/>
+                    </xsl:variable>
+                    <i class="fa fa-fax">&#160;</i>
+                    <a href="tel:{normalize-space($phoneNumber)}">
+                      <xsl:value-of select="normalize-space($phoneNumber)"/>&#160;(<xsl:value-of select="../cit:numberType/*/@codeListValue"/>)
+                    </a>
+                  </div>
+                </xsl:for-each>
+                <xsl:for-each select="cit:onlineResource/*/cit:linkage[normalize-space(.) != '']">
+                  <xsl:variable name="linkage">
                     <xsl:apply-templates mode="render-value" select="."/>
                   </xsl:variable>
-                  <i class="fa fa-phone">&#160;</i>
-                  <a href="tel:{$phoneNumber}">
-                    <xsl:value-of select="$phoneNumber"/>
+                  <i class="fa fa-link">&#160;</i>
+                  <a href="{normalize-space($linkage)}" target="_blank">
+                    <xsl:value-of select="if (../cit:name)
+                                          then ../cit:name/* else
+                                          normalize-space(linkage)"/>&#160;
                   </a>
-                </div>
-              </xsl:for-each>
-              <xsl:for-each select="cit:phone/*/cit:facsimile[normalize-space(.) != '']">
-                <xsl:variable name="phoneNumber">
-                  <xsl:apply-templates mode="render-value" select="."/>
-                </xsl:variable>
-                <i class="fa fa-fax">&#160;</i>
-                <a href="tel:{normalize-space($phoneNumber)}">
-                  <xsl:value-of select="normalize-space($phoneNumber)"/>&#160;
-                </a>
-              </xsl:for-each>
-              <xsl:for-each select="cit:onlineResource/*/cit:linkage[normalize-space(.) != '']">
-                <xsl:variable name="linkage">
-                  <xsl:apply-templates mode="render-value" select="."/>
-                </xsl:variable>
-                <i class="fa fa-link">&#160;</i>
-                <a href="{normalize-space($linkage)}" target="_blank">
-                  <xsl:value-of select="if (../cit:name)
-                                        then ../cit:name/* else
-                                        normalize-space(linkage)"/>&#160;
-                </a>
-              </xsl:for-each>
-              <xsl:for-each select="cit:hoursOfService">
-                <span itemprop="hoursAvailable"
-                      itemscope="itemscope"
-                      itemtype="http://schema.org/OpeningHoursSpecification">
-                  <xsl:apply-templates mode="render-field"
-                                       select="."/>
-                </span>
-              </xsl:for-each>
-              <xsl:apply-templates mode="render-field"
-                                   select="cit:contactInstructions"/>
-            </address>
-          </xsl:for-each>
+                </xsl:for-each>
+                <xsl:for-each select="cit:hoursOfService">
+                  <span itemprop="hoursAvailable"
+                        itemscope="itemscope"
+                        itemtype="http://schema.org/OpeningHoursSpecification">
+                    <xsl:apply-templates mode="render-field"
+                                         select="."/>
+                  </span>
+                </xsl:for-each>
+                <xsl:apply-templates mode="render-field"
+                                     select="cit:contactInstructions"/>
+              </address>
+            </xsl:for-each>
+          </div>
         </div>
-      </div>
+      </xsl:for-each>
     </div>
   </xsl:template>
 

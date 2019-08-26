@@ -21,14 +21,15 @@
     <!-- Convert an element gco:CharacterString
     to the GN localized string structure -->
     <xsl:template mode="get-iso19115-3.2018-localized-string" match="*">
+      <xsl:variable name="mainLanguage"
+                    select="ancestor::mdb:MD_Metadata/mdb:defaultLocale/*/lan:language/*/@codeListValue"/>
+
         <xsl:for-each select="gco:CharacterString|
                           lan:PT_FreeText/*/lan:LocalisedCharacterString">
             <xsl:variable name="localeId"
                           select="substring-after(@locale, '#')"/>
-            <xsl:variable name="mainLanguage"
-                          select="ancestor::lan:MD_Metadata/mdb:defaultLocale/*/lan:language/*/@codeListValue"/>
             <value lang="{if (@locale)
-                  then ancestor::lan:MD_Metadata/mdb:otherLocale/*/lan:locale/*[@id = $localeId]/lan:languageCode/*/@codeListValue
+                  then ancestor::mdb:MD_Metadata/mdb:otherLocale/*[@id = $localeId]/lan:language/*/@codeListValue
                   else if ($mainLanguage) then $mainLanguage else $lang}">
                 <xsl:value-of select="."/>
             </value>

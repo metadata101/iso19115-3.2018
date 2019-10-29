@@ -1289,6 +1289,9 @@
     <label>Identifier for the party</label>
     <description/>
   </element>
+  <element name="cit:role" id="377.0">
+    <label>Role</label>
+  </element>
   <element name="cit:role" id="377.0" context="cit:CI_Responsibility">
     <label>Role</label>
     <description>Function performed by the responsible party</description>

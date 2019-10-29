@@ -6327,6 +6327,7 @@ la non-évaluation</b>, dans le cadre de métadonnées INSPIRE
       <option value="WWW:DOWNLOAD-1.0-http--download">Fichier à télécharger
       </option>
       <option value="ESRI:REST">ESRI Service REST</option>
+      <option value="ESRI:REST-TILED">ESRI Service REST Tuilé</option>
       <option value="FILE:GEO">Fichier SIG</option>
       <option value="FILE:RASTER">Fichier SIG RASTER</option>
       <option value="WWW:LINK-1.0-http--link" default="">Adresse Internet

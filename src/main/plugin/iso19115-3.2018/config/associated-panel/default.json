@@ -189,6 +189,38 @@
       },
       {
         "group": "onlineDiscover",
+        "label": "onlineDiscoverArcGISTiled",
+        "copyLabel": "desc",
+        "icon": "fa gn-icon-onlinesrc",
+        "sources": {
+          "metadataStore": {
+            "label": "searchAservice",
+            "params": {
+              "serviceType": "ESRI:REST"
+            }
+          }
+        },
+        "process": "onlinesrc-add",
+        "fields": {
+          "url": {
+            "isMultilingual": false
+          },
+          "protocol": {
+            "value": "ESRI:REST-TILED",
+            "hidden": true,
+            "isMultilingual": false
+          },
+          "name": {},
+          "desc": {},
+          "function": {
+            "value": "browsing",
+            "hidden": true,
+            "isMultilingual": false
+          }
+        }
+      },
+      {
+        "group": "onlineDiscover",
         "label": "onlineDiscoverKML",
         "copyLabel": "name",
         "sources": {

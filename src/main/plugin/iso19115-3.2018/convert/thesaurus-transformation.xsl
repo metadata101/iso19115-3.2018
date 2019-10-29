@@ -62,7 +62,7 @@
                   select="if (/root/request/textgroupOnly and normalize-space(/root/request/textgroupOnly) != '')
                           then /root/request/textgroupOnly
                           else false()"/>
-    
+
     <xsl:apply-templates mode="to-iso19115-3.2018-keyword" select="." >
       <xsl:with-param name="withAnchor" select="$withAnchor"/>
       <xsl:with-param name="withXlink" select="$withXlink"/>
@@ -94,7 +94,7 @@
                         select="if ($isLocalXlink = 'true')
                               then  concat('local://', /root/gui/language)
                               else $serviceUrl"/>
-          
+
           <xsl:attribute name="xlink:href"
                          select="concat($prefixUrl,
                                   'api/registries/vocabularies/keyword?skipdescriptivekeywords=true&amp;thesaurus=',
@@ -160,9 +160,29 @@
               <xsl:variable name="keyword" select="." />
 
               <xsl:if test="not($textgroupOnly)">
-                <gco:CharacterString>
-                  <xsl:value-of select="$keyword/values/value[@language = $listOfLanguage[1]]/text()"></xsl:value-of>
-                </gco:CharacterString>
+                <xsl:choose>
+                  <xsl:when test="$withAnchor">
+                    <gcx:Anchor>
+                      <xsl:attribute name="xlink:href">
+                        <xsl:choose>
+                          <xsl:when test="matches(uri, '^http.*')">
+                            <xsl:value-of select="uri"/>
+                          </xsl:when>
+                          <xsl:otherwise>
+                            <xsl:value-of select="concat($serviceUrl, 'api/registries/vocabularies/keyword?thesaurus=', thesaurus/key, '&amp;id=', uri)"/>
+                          </xsl:otherwise>
+                        </xsl:choose>
+                      </xsl:attribute>
+                      <xsl:value-of select="value"/>
+                    </gcx:Anchor>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <gco:CharacterString>
+                      <xsl:value-of
+                        select="$keyword/values/value[@language = $listOfLanguage[1]]/text()"></xsl:value-of>
+                    </gco:CharacterString>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:if>
               <lan:PT_FreeText>
                 <xsl:for-each select="$listOfLanguage">

@@ -633,16 +633,6 @@
           <Field name="{$fieldPrefix}UseLimitation"
                  string="{concat('link|',string(@xlink:href), '|', string(.))}" store="true" index="true"/>
         </xsl:for-each>
-
-        <xsl:for-each select="mco:useLimitation/gcx:Anchor[not(string(@xlink:href))]">
-          <Field name="{$fieldPrefix}UseLimitation"
-                 string="{string(.)}" store="true" index="true"/>
-        </xsl:for-each>
-
-        <xsl:for-each select="mco:useLimitation/gcx:Anchor[string(@xlink:href)]">
-          <Field name="{$fieldPrefix}UseLimitation"
-                 string="{concat('link|',string(@xlink:href), '|', string(.))}" store="true" index="true"/>
-        </xsl:for-each>
       </xsl:for-each>
 
 

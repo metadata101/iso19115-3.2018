@@ -285,6 +285,7 @@
           <xsl:if test="srv2:serviceType">
             <srv:serviceType>
               <gco:LocalName>
+                <xsl:copy-of select="srv2:serviceType/gco2:ScopedName/@codeSpace"/>
                 <xsl:value-of select="srv2:serviceType/gco2:ScopedName"/>
               </gco:LocalName>
             </srv:serviceType>

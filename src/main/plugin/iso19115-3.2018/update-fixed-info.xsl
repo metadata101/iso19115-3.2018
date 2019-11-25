@@ -377,16 +377,18 @@
               </xsl:if>
             </xsl:when>
             <xsl:otherwise>
-              <!-- Populate PT_FreeText for default language if not existing. -->
+              <!-- Populate PT_FreeText for default language if not existing and it is not null. -->
               <xsl:apply-templates select="gco:CharacterString|gcx:Anchor"/>
-              <lan:PT_FreeText>
-                <lan:textGroup>
-                  <lan:LocalisedCharacterString locale="#{$mainLanguageId}">
-                    <xsl:value-of select="gco:CharacterString"/>
-                  </lan:LocalisedCharacterString>
-                </lan:textGroup>
-                <xsl:call-template name="populate-free-text"/>
-              </lan:PT_FreeText>
+              <xsl:if test="normalize-space(gco:CharacterString|gcx:Anchor) != ''">
+                <lan:PT_FreeText>
+                  <lan:textGroup>
+                    <lan:LocalisedCharacterString locale="#{$mainLanguageId}">
+                      <xsl:value-of select="gco:CharacterString|gcx:Anchor"/>
+                    </lan:LocalisedCharacterString>
+                  </lan:textGroup>
+                  <xsl:call-template name="populate-free-text"/>
+                </lan:PT_FreeText>
+              </xsl:if>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:otherwise>

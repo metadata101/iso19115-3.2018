@@ -3917,6 +3917,7 @@
       <option value="OGC:WCS">OGC-WCS Web Coverage Service</option>
       <option value="OGC:WCTS">OGC-WCTS Web Coordinate Transformation Service</option>
       <option value="OGC:WFS">OGC-WFS Web Feature Service</option>
+      <option value="INSPIRE Atom">INSPIRE Atom</option>
       <option value="OGC:WMS">OGC-WMS Web Map Service</option>
       <option value="OGC:WMTS">OGC-WMS Web Map Tile Service</option>
       <option value="OGC:WNS">OGC-WNS Web Notification Service</option>

@@ -18,18 +18,42 @@ establishes a common set of metadata terminology, definitions, and extension pro
 
 Although the primary purpose of this part of ISO  19115 is to describe digital information that has a
 geographic extent, it can be used to describe all types of resources including textual documents,
-initiatives, software, non-geographic information, product specifications and repositories, i.e. it can be
+initiatives, software, sensors, non-geographic information, product specifications and repositories, i.e. it can be
 used to describe information resources that do not have geographic extent. Some domains have their
 own metadata standards, such as the Dublin Core for libraries. If necessary such standards and this part
 of ISO 19115 could be profiled to create a Community Schema.
 
 This schema also includes:
 
-- ISO19110 for feature catalog
+- Describe imagery data (covered by ISO19115-2)
 
-- ISO19115-2 for Imagery
+- Embed data model (feature catalogue) in the dataset record (covered by ISO19110)
 
-- ISO19157 for Data Quality
+- Data quality described using ISO19157
+
+
+
+More information:
+
+- `Using the latest ISO Standard for Geographic Information (ISO19115-1) for an INSPIRE Discovery Service <http://cnig.gouv.fr/wp-content/uploads/2015/06/titellus_fx_prunayre_iso19115-3_inspire2015.pdf>`_
+
+
+This standard is maintained on https://github.com/metadata101/iso19115-3.2018
+and is available by default in GeoNetwork 3.8+. The TC211 is maintaining the XSD for this standard on https://github.com/ISO-TC211/XML.
+
+
+Example of catalogues using this standard:
+
+- `Metawal - Catalogue pour l'information géographique de Wallonie <http://metawal.wallonie.be/>`_ is using ISO19115-3 as the default standard for all records. Main advantages are: categorizations of related documents (eg. online sources, DQ reports, GIS styles, Data models),  better description of organization / parties and roles, remain compliant to the INSPIRE directive by converting to ISO19139 through CSW.
+
+.. figure:: img/metawal-tramedesaxes.png
+
+
+- `Sextant - Checkpoints <https://sextant.ifremer.fr/>`_ is using ISO19115-3 for data quality description of Specification / Products and upstream data.
+
+.. figure:: img/sextant-checkpoint.png
+
+
   ]]></description>
   <description xml:lang="fr"><![CDATA[
 L’objectif de l’ISO 19115 est de fournir un modèle destiné à décrire des informations

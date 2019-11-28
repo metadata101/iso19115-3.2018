@@ -5469,7 +5469,7 @@ période de temps couverte par le service.
     <condition>Obligatoire</condition>
 
   </element>
-        
+
   <element name="cit:name" context="cit:CI_Organisation" id="376.0">
     <label>Nom de l'organisation</label>
     <description>Nom de l'organisation responsable</description>
@@ -5488,7 +5488,7 @@ période de temps couverte par le service.
       entre le prénom, le nom et le titre.
     </help>
   </element>
-  
+
   <element name="cit:name">
     <label>Nom</label>
     <description>Name of the series, or aggregate dataset, of which the dataset
@@ -6315,6 +6315,7 @@ la non-évaluation</b>, dans le cadre de métadonnées INSPIRE
       <option value="OGC:WCTS">OGC-WCTS Web Coordinate Transformation Service
       </option>
       <option value="OGC:WFS">OGC-WFS Web Feature Service</option>
+      <option value="INSPIRE Atom">INSPIRE Atom</option>
       <option value="OGC:WFS-G">OGC-WFS-G Gazzetteer Service</option>
       <option value="OGC:WMC">OGC-WMC Web Map Context</option>
       <option value="OGC:WMS">OGC-WMS Web Map Service</option>

@@ -464,6 +464,43 @@
         }
       },
       {
+        "group": "onlineDownload",
+        "label": "onlineDownloadINSPIREATOM",
+        "copyLabel": "desc",
+        "icon": "fa gn-icon-onlinesrc",
+        "sources": {
+          "metadataStore": {
+            "label": "searchAservice",
+            "params": {
+              "serviceType": "download"
+            }
+          }
+        },
+        "process": "onlinesrc-add",
+        "fields": {
+          "url": {
+            "isMultilingual": false
+          },
+          "protocol": {
+            "value": "INSPIRE Atom",
+            "hidden": true,
+            "isMultilingual": false
+          },
+          "name": {},
+          "desc": {},
+          "function": {
+            "value": "download",
+            "hidden": true,
+            "isMultilingual": false
+          },
+          "applicationProfile": {
+            "value": "inspire-download",
+            "hidden": true,
+            "isMultilingual": false
+          }
+        }
+      },
+      {
         "group": "onlineUse",
         "label": "onlineUseFcats",
         "copyLabel": "name",

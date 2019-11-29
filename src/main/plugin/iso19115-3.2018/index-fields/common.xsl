@@ -589,17 +589,6 @@
         </xsl:call-template>
       </xsl:for-each>
 
-
-      <!-- FIXME: Additional constraints have been created in the mco schema -->
-      <xsl:for-each select="mri:resourceConstraints">
-        <xsl:for-each select="//mco:otherConstraints">
-          <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('otherConstr', ., $langId)"/>
-        </xsl:for-each>
-        <xsl:for-each select="//mco:useLimitation">
-          <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('conditionApplyingToAccessAndUse', ., $langId)"/>
-        </xsl:for-each>
-      </xsl:for-each>
-
       <xsl:for-each select="mri:resourceConstraints/*">
         <xsl:variable name="fieldPrefix" select="local-name()"/>
 
@@ -609,9 +598,9 @@
                  string="{string(.)}" store="true" index="true"/>
         </xsl:for-each>
 
-        <xsl:for-each select="mco:otherConstraints/gco:CharacterString">
-          <Field name="{$fieldPrefix}OtherConstraints"
-                 string="{string(.)}" store="true" index="true"/>
+        <xsl:for-each select="mco:otherConstraints[gco:CharacterString]">
+          <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field(
+                                  concat($fieldPrefix, 'OtherConstraints'), ., $langId)"/>
         </xsl:for-each>
 
         <xsl:for-each select="mco:otherConstraints/gcx:Anchor">
@@ -619,9 +608,9 @@
                  string="{concat('link|',string(@xlink:href), '|', string(.))}" store="true" index="true"/>
         </xsl:for-each>
 
-        <xsl:for-each select="mco:useLimitation/gco:CharacterString">
-          <Field name="{$fieldPrefix}UseLimitation"
-                 string="{string(.)}" store="true" index="true"/>
+        <xsl:for-each select="mco:useLimitation[gco:CharacterString]">
+          <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field(
+                                  concat($fieldPrefix, 'UseLimitation'), ., $langId)"/>
         </xsl:for-each>
 
         <xsl:for-each select="mco:useLimitation/gcx:Anchor[not(string(@xlink:href))]">
@@ -634,7 +623,6 @@
                  string="{concat('link|',string(@xlink:href), '|', string(.))}" store="true" index="true"/>
         </xsl:for-each>
       </xsl:for-each>
-
 
 
 
@@ -1067,7 +1055,12 @@
     <xsl:param name="lang"/>
     <xsl:param name="langId"/>
 
+    <!-- Only used in ISO19139 -->
+    <xsl:variable name="position" select="'0'"/>
+
     <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('orgName', cit:name, $langId)"/>
+
+    <xsl:variable name="uuid" select="@uuid"/>
     <xsl:variable name="role" select="../../cit:role/*/@codeListValue"/>
     <xsl:variable name="email" select="cit:contactInfo/cit:CI_Contact/
                              cit:address/cit:CI_Address/
@@ -1077,6 +1070,7 @@
                                 cit:electronicMailAddress/gco:CharacterString"/>
     <xsl:variable name="roleTranslation" select="util:getCodelistTranslation('cit:CI_RoleCode', string($role), string($lang))"/>
     <xsl:variable name="logo" select="cit:logo/mcc:MD_BrowseGraphic/mcc:fileName/gco:CharacterString"/>
+    <xsl:variable name="website" select=".//cit:onlineResource/*/cit:linkage/gco:CharacterString"/>
     <xsl:variable name="phones"
                   select=".//cit:contactInfo/cit:CI_Contact/cit:phone/*/cit:number/gco:CharacterString"/>
     <!--<xsl:variable name="phones"
@@ -1099,11 +1093,18 @@
            index="true"/>
 
     <Field name="{$fieldPrefix}"
-           string="{concat($roleTranslation, '|', $type, '|',
-                              $orgName, '|', $logo, '|',
-                              string-join($email, ','), '|', string-join($individualNames, ','),
-                              '|', string-join($positionName, ','), '|',
-                              $address, '|', string-join($phones, ','))}"
+           string="{concat($roleTranslation, '|',
+                           $type, '|',
+                           $orgName, '|',
+                           $logo, '|',
+                           string-join($email, ','), '|',
+                           string-join($individualNames, ','), '|',
+                           string-join($positionName, ','), '|',
+                           $address, '|',
+                           string-join($phones, ','), '|',
+                           $uuid, '|',
+                           $position, '|',
+                           $website)}"
            store="true" index="false"/>
 
     <xsl:for-each select="$email">

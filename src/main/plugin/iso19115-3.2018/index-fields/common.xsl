@@ -589,17 +589,6 @@
         </xsl:call-template>
       </xsl:for-each>
 
-
-      <!-- FIXME: Additional constraints have been created in the mco schema -->
-      <xsl:for-each select="mri:resourceConstraints">
-        <xsl:for-each select="//mco:otherConstraints">
-          <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('otherConstr', ., $langId)"/>
-        </xsl:for-each>
-        <xsl:for-each select="//mco:useLimitation">
-          <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('conditionApplyingToAccessAndUse', ., $langId)"/>
-        </xsl:for-each>
-      </xsl:for-each>
-
       <xsl:for-each select="mri:resourceConstraints/*">
         <xsl:variable name="fieldPrefix" select="local-name()"/>
 
@@ -609,9 +598,9 @@
                  string="{string(.)}" store="true" index="true"/>
         </xsl:for-each>
 
-        <xsl:for-each select="mco:otherConstraints/gco:CharacterString">
-          <Field name="{$fieldPrefix}OtherConstraints"
-                 string="{string(.)}" store="true" index="true"/>
+        <xsl:for-each select="mco:otherConstraints[gco:CharacterString]">
+          <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field(
+                                  concat($fieldPrefix, 'OtherConstraints'), ., $langId)"/>
         </xsl:for-each>
 
         <xsl:for-each select="mco:otherConstraints/gcx:Anchor">
@@ -619,9 +608,9 @@
                  string="{concat('link|',string(@xlink:href), '|', string(.))}" store="true" index="true"/>
         </xsl:for-each>
 
-        <xsl:for-each select="mco:useLimitation/gco:CharacterString">
-          <Field name="{$fieldPrefix}UseLimitation"
-                 string="{string(.)}" store="true" index="true"/>
+        <xsl:for-each select="mco:useLimitation[gco:CharacterString]">
+          <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field(
+                                  concat($fieldPrefix, 'UseLimitation'), ., $langId)"/>
         </xsl:for-each>
 
         <xsl:for-each select="mco:useLimitation/gcx:Anchor[not(string(@xlink:href))]">
@@ -634,7 +623,6 @@
                  string="{concat('link|',string(@xlink:href), '|', string(.))}" store="true" index="true"/>
         </xsl:for-each>
       </xsl:for-each>
-
 
 
 

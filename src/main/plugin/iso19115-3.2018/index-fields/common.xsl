@@ -1055,7 +1055,12 @@
     <xsl:param name="lang"/>
     <xsl:param name="langId"/>
 
+    <!-- Only used in ISO19139 -->
+    <xsl:variable name="position" select="'0'"/>
+
     <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('orgName', cit:name, $langId)"/>
+
+    <xsl:variable name="uuid" select="@uuid"/>
     <xsl:variable name="role" select="../../cit:role/*/@codeListValue"/>
     <xsl:variable name="email" select="cit:contactInfo/cit:CI_Contact/
                              cit:address/cit:CI_Address/
@@ -1065,6 +1070,7 @@
                                 cit:electronicMailAddress/gco:CharacterString"/>
     <xsl:variable name="roleTranslation" select="util:getCodelistTranslation('cit:CI_RoleCode', string($role), string($lang))"/>
     <xsl:variable name="logo" select="cit:logo/mcc:MD_BrowseGraphic/mcc:fileName/gco:CharacterString"/>
+    <xsl:variable name="website" select=".//cit:onlineResource/*/cit:linkage/gco:CharacterString"/>
     <xsl:variable name="phones"
                   select=".//cit:contactInfo/cit:CI_Contact/cit:phone/*/cit:number/gco:CharacterString"/>
     <!--<xsl:variable name="phones"
@@ -1087,11 +1093,18 @@
            index="true"/>
 
     <Field name="{$fieldPrefix}"
-           string="{concat($roleTranslation, '|', $type, '|',
-                              $orgName, '|', $logo, '|',
-                              string-join($email, ','), '|', string-join($individualNames, ','),
-                              '|', string-join($positionName, ','), '|',
-                              $address, '|', string-join($phones, ','))}"
+           string="{concat($roleTranslation, '|',
+                           $type, '|',
+                           $orgName, '|',
+                           $logo, '|',
+                           string-join($email, ','), '|',
+                           string-join($individualNames, ','), '|',
+                           string-join($positionName, ','), '|',
+                           $address, '|',
+                           string-join($phones, ','), '|',
+                           $uuid, '|',
+                           $position, '|',
+                           $website)}"
            store="true" index="false"/>
 
     <xsl:for-each select="$email">

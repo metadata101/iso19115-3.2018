@@ -146,9 +146,6 @@
       <document>
         <!--<xsl:value-of select="saxon:serialize(., 'default-serialize-mode')"/>-->
       </document>
-      <uuid>
-        <xsl:value-of select="$identifier"/>
-      </uuid>
       <metadataIdentifier>
         <xsl:value-of select="$identifier"/>
       </metadataIdentifier>
@@ -646,7 +643,7 @@
                   <xsl:otherwise>
                     <geom>
                       <xsl:text>{"type": "polygon",</xsl:text>
-                      <xsl:text>"coordinates": [</xsl:text>
+                      <xsl:text>"coordinates": [[</xsl:text>
                       <xsl:value-of select="concat('[', $w, ',', $s, ']')"/>
                       <xsl:text>,</xsl:text>
                       <xsl:value-of select="concat('[', $e, ',', $s, ']')"/>
@@ -656,7 +653,7 @@
                       <xsl:value-of select="concat('[', $w, ',', $n, ']')"/>
                       <xsl:text>,</xsl:text>
                       <xsl:value-of select="concat('[', $w, ',', $s, ']')"/>
-                      <xsl:text>]}</xsl:text>
+                      <xsl:text>]]}</xsl:text>
                     </geom>
 
                     <location><xsl:value-of select="concat(
@@ -889,24 +886,36 @@
 
     <!-- Index more documents for this element -->
     <xsl:apply-templates mode="index-extra-documents" select="."/>
-
   </xsl:template>
+
 
 
   <xsl:template mode="index-contact" match="*[cit:CI_Responsibility]">
     <xsl:param name="fieldSuffix" select="''" as="xs:string"/>
 
-    <!-- Select the first child which should be a CI_ResponsibleParty.
-    Some records contains more than one CI_ResponsibleParty which is
-    not valid and they will be ignored.
-     Same for organisationName eg. de:b86a8604-bf78-480f-a5a8-8edff5586679 -->
     <xsl:variable name="organisationName"
-                  select="*[1]/cit:party/cit:CI_Organisation/cit:name/gco:CharacterString"
+                  select="(.//cit:CI_Organisation/cit:name/gco:CharacterString)[1]"
                   as="xs:string*"/>
+    <xsl:variable name="uuid" select="@uuid"/>
 
+    <xsl:message>==<xsl:value-of select="$organisationName"/> </xsl:message>
     <xsl:variable name="role"
                   select="replace(*[1]/cit:role/*/@codeListValue, ' ', '')"
                   as="xs:string?"/>
+    <xsl:variable name="logo" select="(.//cit:logo/*/mcc:fileName/*)[1]"/>
+    <xsl:message>==<xsl:value-of select="$logo"/> </xsl:message>
+    <xsl:variable name="website" select=".//cit:onlineResource/*/cit:linkage/gco:CharacterString"/>
+    <xsl:variable name="email"
+                  select="(.//cit:contactInfo/*/cit:address/*/cit:electronicMailAddress/gco:CharacterString)[1]"/>
+    <xsl:variable name="phone"
+                  select="(./cit:contactInfo/*/cit:phone/*/cit:number[normalize-space(.) != '']/*/text())[1]"/>
+    <xsl:variable name="individualName"
+                  select="(.//cit:individualName/gco:CharacterString/text())[1]"/>
+    <xsl:variable name="positionName"
+                  select="(.//cit:positionName/gco:CharacterString/text())[1]"/>
+    <xsl:variable name="address" select="string-join(.//cit:contactInfo/*/cit:address/*/(
+                                        cit:deliveryPoint|cit:postalCode|cit:city|
+                                        cit:administrativeArea|cit:country)/gco:CharacterString/text(), ', ')"/>
     <xsl:if test="normalize-space($organisationName) != ''">
       <xsl:element name="Org{$fieldSuffix}">
         <xsl:value-of select="$organisationName"/>
@@ -915,8 +924,20 @@
         <xsl:value-of select="$organisationName"/>
       </xsl:element>
     </xsl:if>
-    <xsl:element name="contact{$fieldSuffix}">{"org":"<xsl:value-of
-      select="replace($organisationName, '&quot;', '\\&quot;')"/>", "role":"<xsl:value-of select="$role"/>"}
+    <xsl:element name="contact{$fieldSuffix}">
+      <!-- TODO: Can be multilingual -->
+      <xsl:attribute name="type" select="'object'"/>{
+      "organisation":"<xsl:value-of
+      select="gn-fn-index:json-escape($organisationName)"/>",
+      "role":"<xsl:value-of select="$role"/>",
+      "email":"<xsl:value-of select="$email"/>",
+      "website":"<xsl:value-of select="$website"/>",
+      "logo":"<xsl:value-of select="$logo"/>",
+      "individual":"<xsl:value-of select="gn-fn-index:json-escape($individualName)"/>",
+      "position":"<xsl:value-of select="gn-fn-index:json-escape($positionName)"/>",
+      "phone":"<xsl:value-of select="gn-fn-index:json-escape($phone)"/>",
+      "address":"<xsl:value-of select="gn-fn-index:json-escape($address)"/>"
+      }
     </xsl:element>
   </xsl:template>
 

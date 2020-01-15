@@ -346,7 +346,7 @@
 
 
       <xsl:for-each select="*/cit:party/(cit:CI_Organisation|cit:CI_Individual)">
-        <!-- Display name is <org name> - <individual name> (<position name> -->
+        <!-- Display name is <org name> - <individual name> (<position name>) -->
         <xsl:variable name="displayName">
           <xsl:choose>
             <xsl:when
@@ -354,18 +354,18 @@
               <!-- Org name may be multilingual -->
               <xsl:apply-templates mode="render-value"
                                    select="cit:name"/>
-              -
-              <xsl:for-each select="cit:individual/*/cit:name">
-                <xsl:value-of select="."/>
-                <xsl:if test="cit:positionName">&#160;
-                  (<xsl:apply-templates mode="render-value"
-                                        select="cit:positionName"/>)
+              <xsl:if test="cit:individual">
+                <xsl:text> - </xsl:text>
+              </xsl:if>
+              <xsl:for-each select="cit:individual">
+                <xsl:apply-templates mode="get-display-name" select="cit:CI_Individual"/>
+                <xsl:if test="position() != last()">
+                  <xsl:text>, </xsl:text>
                 </xsl:if>
-                <xsl:if test="position() != last()">,&#160;</xsl:if>
               </xsl:for-each>
             </xsl:when>
             <xsl:otherwise>
-              <xsl:value-of select="cit:name"/>
+              <xsl:apply-templates mode="get-display-name" select="."/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
@@ -467,6 +467,26 @@
         </div>
       </xsl:for-each>
     </div>
+  </xsl:template>
+
+  <!-- Format CT_Individual element for display -->
+  <!-- Display name is <individual name> (<position name>) -->
+  <xsl:template mode="get-display-name" match="cit:CI_Individual">
+    <xsl:if test="cit:name">
+      <xsl:apply-templates mode="render-value"
+                           select="cit:name"/>
+    </xsl:if>
+    <xsl:if test="cit:positionName">
+      <xsl:if test="cit:name">
+        <xsl:text> (</xsl:text>
+      </xsl:if>
+      <xsl:apply-templates mode="render-value"
+                            select="cit:positionName"/>
+      <xsl:if test="cit:name">
+        <xsl:text>)</xsl:text>
+      </xsl:if>
+    </xsl:if>
+
   </xsl:template>
 
   <!-- Metadata linkage -->

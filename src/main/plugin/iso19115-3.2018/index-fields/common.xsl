@@ -1058,7 +1058,10 @@
     <!-- Only used in ISO19139 -->
     <xsl:variable name="position" select="'0'"/>
 
-    <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('orgName', cit:name, $langId)"/>
+    <!-- Name is optional if logo or identifier is provided -->
+    <xsl:if test="cit:name">
+      <xsl:copy-of select="gn-fn-iso19115-3.2018:index-field('orgName', cit:name, $langId)"/>
+    </xsl:if>
 
     <xsl:variable name="uuid" select="@uuid"/>
     <xsl:variable name="role" select="../../cit:role/*/@codeListValue"/>

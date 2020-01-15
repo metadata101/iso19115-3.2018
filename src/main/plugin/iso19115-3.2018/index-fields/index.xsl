@@ -947,6 +947,21 @@
 
       <!-- Index more fields in this element -->
       <xsl:apply-templates mode="index-extra-fields" select="."/>
+
+      <xsl:variable name="recordLinks"
+                    select="mdb:parentMetadata/@uuidref[. != '']"/>
+      <xsl:choose>
+        <xsl:when test="count($recordLinks) > 0">
+          <xsl:for-each select="$recordLinks">
+            <parentUuid><xsl:value-of select="."/></parentUuid>
+            <recordGroup><xsl:value-of select="."/></recordGroup>
+            <recordLink type="object">{"name": "children", "parent": "<xsl:value-of select="gn-fn-index:json-escape(.)"/>"}</recordLink>
+          </xsl:for-each>
+        </xsl:when>
+        <xsl:otherwise>
+          <recordGroup><xsl:value-of select="$identifier"/></recordGroup>
+        </xsl:otherwise>
+      </xsl:choose>
     </doc>
 
     <!-- Index more documents for this element -->

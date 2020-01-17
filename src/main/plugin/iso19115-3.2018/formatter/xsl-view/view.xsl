@@ -87,38 +87,132 @@
 
   <xsl:template mode="getMetadataAbstract" match="mdb:MD_Metadata">
     <xsl:for-each select="mdb:identificationInfo/*/mri:abstract">
-      <xsl:call-template name="get-iso19115-3.2018-localised">
-        <xsl:with-param name="langId" select="$langId"/>
+      <xsl:variable name="txt">
+        <xsl:call-template name="get-iso19115-3.2018-localised">
+          <xsl:with-param name="langId" select="$langId"/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:call-template name="addLineBreaksAndHyperlinks">
+        <xsl:with-param name="txt" select="$txt"/>
       </xsl:call-template>
     </xsl:for-each>
+  </xsl:template>
+
+
+  <xsl:template mode="getTags" match="mdb:MD_Metadata">
+    <xsl:param name="byThesaurus" select="false()"/>
+
+    <section class="gn-md-side-social">
+      <h2>
+        <i class="fa fa-fw fa-tag"><xsl:comment select="'image'"/></i>
+        <span><xsl:comment select="name()"/>
+          <xsl:value-of select="$schemaStrings/noThesaurusName"/>
+        </span>
+      </h2>
+      <xsl:variable name="tags">
+        <xsl:for-each select="$metadata/mdb:identificationInfo/*/mri:descriptiveKeywords/
+                                          *[
+                                          mri:type/*/@codeListValue = 'theme'
+                                            and string-join(mri:keyword//text(), '') != ''
+                                            and (not(mri:thesaurusName/*/cit:identifier/*/mcc:code)
+                                            or mri:thesaurusName/*/cit:identifier/*/mcc:code/*/
+                                                text() != '')]">
+          <xsl:variable name="thesaurusTitle">
+            <xsl:for-each select="mri:thesaurusName/*/cit:title">
+              <xsl:call-template name="get-iso19115-3.2018-localised">
+                <xsl:with-param name="langId" select="$langId"/>
+              </xsl:call-template>
+            </xsl:for-each>
+          </xsl:variable>
+          <xsl:for-each select="mri:keyword">
+            <tag thesaurus="{$thesaurusTitle}">
+              <xsl:call-template name="get-iso19115-3.2018-localised">
+                <xsl:with-param name="langId" select="$langId"/>
+              </xsl:call-template>
+            </tag>
+          </xsl:for-each>
+        </xsl:for-each>
+      </xsl:variable>
+
+      <xsl:choose>
+        <xsl:when test="$byThesaurus">
+          <xsl:for-each-group select="$tags/tag" group-by="@thesaurus">
+            <xsl:sort select="@thesaurus"/>
+            <xsl:if test="current-grouping-key() != ''">
+              <xsl:value-of select="current-grouping-key()"/><br/>
+            </xsl:if>
+
+            <xsl:for-each select="current-group()">
+              <xsl:sort select="."/>
+              <a href="#/search?keyword={.}">
+                <span class="badge"><xsl:value-of select="."/></span>
+              </a>
+            </xsl:for-each>
+            <xsl:if test="position() != last()">
+              <hr/>
+            </xsl:if>
+          </xsl:for-each-group>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:for-each select="$tags/tag">
+            <xsl:sort select="."/>
+            <a href="#/search?keyword={.}">
+              <span class="badge"><xsl:value-of select="."/></span>
+            </a>
+          </xsl:for-each>
+        </xsl:otherwise>
+      </xsl:choose>
+
+    </section>
   </xsl:template>
 
   <xsl:template mode="getMetadataHierarchyLevel" match="mdb:MD_Metadata">
     <xsl:value-of select="mdb:metadataScope/*/mdb:resourceScope/mcc:MD_ScopeCode/@codeListValue"/>
   </xsl:template>
 
+  <xsl:template mode="getMetadataThumbnail" match="mdb:MD_Metadata">
+    <xsl:value-of select="mdb:identificationInfo/*/mri:graphicOverview[1]/*/mcc:fileName/gco:CharacterString"/>
+  </xsl:template>
+
+  <xsl:template mode="getExtent" match="mdb:MD_Metadata">
+    <section class="gn-md-side-overview">
+      <h2>
+        <i class="fa fa-fw fa-map-marker"><xsl:comment select="'image'"/></i>
+        <span><xsl:comment select="name()"/>
+          <xsl:value-of select="$schemaStrings/extent"/>
+        </span>
+      </h2>
+
+      <xsl:apply-templates mode="render-field"
+                           select=".//gex:EX_GeographicBoundingBox">
+      </xsl:apply-templates>
+    </section>
+  </xsl:template>
+
   <xsl:template mode="getOverviews" match="mdb:MD_Metadata">
-    <h4>
-      <i class="fa fa-fw fa-image">&#160;</i>&#160;
-      <span>
-        <xsl:value-of select="$schemaStrings/overviews"/>
-      </span>
-    </h4>
+    <section class="gn-md-side-overview">
+      <h2>
+        <i class="fa fa-fw fa-image">&#160;</i>&#160;
+        <span>
+          <xsl:value-of select="$schemaStrings/overviews"/>
+        </span>
+      </h2>
 
-    <xsl:for-each select="mdb:identificationInfo/*/mri:graphicOverview/*">
-      <img class="gn-img-thumbnail img-thumbnail center-block"
-           src="{mcc:fileName/*}"/>
+      <xsl:for-each select="mdb:identificationInfo/*/mri:graphicOverview/*">
+        <img data-gn-img-modal="md"
+             class="gn-img-thumbnail center-block"
+             alt="{$schemaStrings/overview}"
+             src="{mcc:fileName/*}"/>
 
-      <xsl:for-each select="mcc:fileDescription">
-        <div class="gn-img-thumbnail-caption">
-          <xsl:call-template name="get-iso19115-3.2018-localised">
-            <xsl:with-param name="langId" select="$langId"/>
-          </xsl:call-template>
-        </div>
+        <xsl:for-each select="mcc:fileDescription">
+          <div class="gn-img-thumbnail-caption">
+            <xsl:call-template name="get-iso19115-3.2018-localised">
+              <xsl:with-param name="langId" select="$langId"/>
+            </xsl:call-template>
+          </div>
+        </xsl:for-each>
       </xsl:for-each>
-      <br/>
-
-    </xsl:for-each>
+    </section>
   </xsl:template>
 
 

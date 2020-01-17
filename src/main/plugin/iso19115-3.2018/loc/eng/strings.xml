@@ -76,4 +76,7 @@
   <add-extent-from-geokeywordsHelp>Analyze each keyword of type place and add
     matching extent.
   </add-extent-from-geokeywordsHelp>
+  <extent>Geographic bounding box</extent>
+  <freeTextKeywords>Other keywords</freeTextKeywords>
+  <noThesaurusName>Keywords</noThesaurusName>
 </strings>

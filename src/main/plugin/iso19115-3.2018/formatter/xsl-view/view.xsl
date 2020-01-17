@@ -57,6 +57,7 @@
   <xsl:include href="../../layout/evaluate.xsl"/>
   <xsl:include href="../../layout/utility-tpl-multilingual.xsl"/>
   <xsl:include href="../../layout/utility-fn.xsl"/>
+  <xsl:include href="../../formatter/jsonld/iso19115-3.2018-to-jsonld.xsl"/>
 
   <!-- The core formatter XSL layout based on the editor configuration -->
   <xsl:include href="sharedFormatterDir/xslt/render-layout.xsl"/>
@@ -147,9 +148,7 @@
   <xsl:template mode="getMetadataCitation" match="mdb:MD_Metadata">
     <xsl:variable name="displayCitation"
                   select="true()"/>
-    <!--
-    count(.//cit:protocol[* = ('WWW:LINK-1.0-http--metadata-URL', 'WWW:LINK-1.0-http--publication-URL', 'DOI')]) > 0
-    -->
+
     <xsl:variable name="doiUrl"
                   select=".//cit:onlineResource/*[cit:protocol/* = ('WWW:LINK-1.0-http--metadata-URL', 'WWW:LINK-1.0-http--publication-URL', 'DOI')]/cit:linkage/*"/>
     <xsl:variable name="landingPageUrl"

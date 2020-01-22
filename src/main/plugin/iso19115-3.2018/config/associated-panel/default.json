@@ -501,6 +501,118 @@
         }
       },
       {
+        "group": "localNetwork",
+        "label": "localNetworkVectorFile",
+        "copyLabel": "name",
+        "sources": {
+          "filestore": true
+        },
+        "icon": "fa gn-icon-onlinesrc",
+        "process": "onlinesrc-add",
+        "fields": {
+          "url": {
+            "isMultilingual": false,
+            "placeholder": "file://shared/geodata/filename.shp"
+          },
+          "protocol": {
+            "value": "FILE:GEO",
+            "hidden": true,
+            "isMultilingual": false
+          },
+          "name": {},
+          "desc": {},
+          "function": {
+            "value": "fileAccess",
+            "hidden": true,
+            "isMultilingual": false
+          }
+        }
+      },
+      {
+        "group": "localNetwork",
+        "label": "localNetworkRasterFile",
+        "copyLabel": "name",
+        "sources": {
+          "filestore": true
+        },
+        "icon": "fa gn-icon-onlinesrc",
+        "process": "onlinesrc-add",
+        "fields": {
+          "url": {
+            "isMultilingual": false,
+            "placeholder": "file://shared/geodata/filename.ecw"
+          },
+          "protocol": {
+            "value": "FILE:RASTER",
+            "hidden": true,
+            "isMultilingual": false
+          },
+          "name": {},
+          "desc": {},
+          "function": {
+            "value": "fileAccess",
+            "hidden": true,
+            "isMultilingual": false
+          }
+        }
+      },
+      {
+        "group": "localNetwork",
+        "label": "localNetworkDBOracle",
+        "copyLabel": "name",
+        "sources": {
+          "filestore": true
+        },
+        "icon": "fa gn-icon-onlinesrc",
+        "process": "onlinesrc-add",
+        "fields": {
+          "url": {
+            "placeholder": "server:1521:db",
+            "isMultilingual": false
+          },
+          "protocol": {
+            "value": "DB:ORACLE",
+            "hidden": true,
+            "isMultilingual": false
+          },
+          "name": {},
+          "desc": {},
+          "function": {
+            "value": "fileAccess",
+            "hidden": true,
+            "isMultilingual": false
+          }
+        }
+      },
+      {
+        "group": "localNetwork",
+        "label": "localNetworkDBPostgis",
+        "copyLabel": "name",
+        "sources": {
+          "filestore": true
+        },
+        "icon": "fa gn-icon-onlinesrc",
+        "process": "onlinesrc-add",
+        "fields": {
+          "url": {
+            "placeholder": "server:5432/db",
+            "isMultilingual": false
+          },
+          "protocol": {
+            "value": "DB:POSTGIS",
+            "hidden": true,
+            "isMultilingual": false
+          },
+          "name": {},
+          "desc": {},
+          "function": {
+            "value": "fileAccess",
+            "hidden": true,
+            "isMultilingual": false
+          }
+        }
+      },
+      {
         "group": "onlineUse",
         "label": "onlineUseFcats",
         "copyLabel": "name",

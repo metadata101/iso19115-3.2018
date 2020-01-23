@@ -762,8 +762,8 @@
 
 
       <xsl:for-each select="mdb:referenceSystemInfo/*">
-        <xsl:for-each select="mrs:referenceSystemIdentifier/mcc:RS_Identifier">
-          <xsl:variable name="crs" select="mcc:code/gco:CharacterString"/>
+        <xsl:for-each select="mrs:referenceSystemIdentifier/*">
+          <xsl:variable name="crs" select="(mcc:description/*/text()|mcc:code/*/text())[1]"/>
 
           <xsl:if test="$crs != ''">
             <coordinateSystem>

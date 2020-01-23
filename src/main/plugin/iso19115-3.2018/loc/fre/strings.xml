@@ -66,4 +66,7 @@
   <add-extent-from-geokeywordsHelp>Analyse les mots clés de type géographique et
     ajoute les emprises correspondantes.
   </add-extent-from-geokeywordsHelp>
+  <noThesaurusName>Mots clés</noThesaurusName>
+  <extent>Étendue spatiale</extent>
+  <freeTextKeywords>Other keywords</freeTextKeywords>
 </strings>

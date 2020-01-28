@@ -506,7 +506,7 @@
                  in="/mdb:MD_Metadata"/>
       </tab>
       <tab id="metadata">
-        <section name="mdb:MD_Metadata">
+        <section name="metadata">
           <field xpath="/mdb:MD_Metadata/mdb:metadataIdentifier"/>
           <field xpath="/mdb:MD_Metadata/mdb:defaultLocale" or="defaultLocale"
                  in="/mdb:MD_Metadata"/>

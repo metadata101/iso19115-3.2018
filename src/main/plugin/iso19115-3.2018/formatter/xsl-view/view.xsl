@@ -23,6 +23,7 @@
                 xmlns:gcx="http://standards.iso.org/iso/19115/-3/gcx/1.0"
                 xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
                 xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:util="java:org.fao.geonet.util.XslUtil"
                 xmlns:tr="java:org.fao.geonet.api.records.formatters.SchemaLocalizations"
                 xmlns:gn-fn-render="http://geonetwork-opensource.org/xsl/functions/render"
@@ -335,7 +336,8 @@
 
   <!-- Most of the elements are ... -->
   <xsl:template mode="render-field"
-                match="*[gco:CharacterString != '']|*[gco:Integer != '']|
+                match="*[gco:CharacterString != '']|*[gcx:Anchor != '']|
+                       *[gco:Integer != '']|
                        *[gco:Decimal != '']|*[gco:Boolean != '']|
                        *[gco:Real != '']|*[gco:Measure != '']|*[gco:Length != '']|
                        *[gco:Distance != '']|*[gco:Angle != '']|*[gco:Scale != '']|
@@ -365,7 +367,7 @@
             <xsl:apply-templates mode="render-value" select="text()"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:apply-templates mode="render-value" select="*"/>
+            <xsl:apply-templates mode="render-value" select="."/>
           </xsl:otherwise>
         </xsl:choose>&#160;
         <xsl:apply-templates mode="render-value" select="@*"/>
@@ -898,6 +900,19 @@
     </xsl:if>
   </xsl:template>
 
+
+  <xsl:template mode="render-value"
+                match="*[gcx:Anchor]">
+    <xsl:variable name="txt">
+      <xsl:apply-templates mode="localised" select=".">
+        <xsl:with-param name="langId" select="$langId"/>
+      </xsl:apply-templates>
+    </xsl:variable>
+
+    <a href="{gcx:Anchor/@xlink:href}">
+      <xsl:value-of select="$txt"/>
+    </a>
+  </xsl:template>
 
   <xsl:template mode="render-value"
                 match="lan:PT_FreeText">

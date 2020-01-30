@@ -1030,6 +1030,20 @@
           <Field name="crs" string="{$crs}" store="true" index="true"/>
           <Field name="crsCode" string="{mcc:code/gco:CharacterString}" store="true" index="true"/>
         </xsl:if>
+        
+        <xsl:variable name="crsDetails">
+          {
+          "code": "<xsl:value-of select="mcc:code/*/text()"/>",
+          "codeSpace": "<xsl:value-of select="mcc:codeSpace/*/text()"/>",
+          "name": "<xsl:value-of select="mcc:description/*/text()"/>",
+          "url": "<xsl:value-of select="mcc:code/*/@xlink:href"/>"
+          }
+        </xsl:variable>
+
+        <Field name="crsDetails"
+               string="{normalize-space($crsDetails)}"
+               store="true"
+               index="false"/>
       </xsl:for-each>
     </xsl:for-each>
 

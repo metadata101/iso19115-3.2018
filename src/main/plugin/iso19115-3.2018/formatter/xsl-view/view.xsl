@@ -285,17 +285,22 @@
                 <xsl:if test="position() != last()">&#160;-&#160;</xsl:if>
               </xsl:for-each>
 
-              <!-- Publication year -->
-              <xsl:variable name="publicationDate"
-                            select="mdb:identificationInfo/*/mri:citation/*/cit:date/*[
-                                    cit:dateType/*/@codeListValue = 'publication']/
-                                      cit:date/gco:*"/>
-
-              <xsl:if test="$publicationDate != ''">
-                (<xsl:value-of select="substring($publicationDate, 1, 4)"/>)
-              </xsl:if>
-
-              <xsl:text>. </xsl:text>
+              <!-- Publication year: use last publication or revision date -->
+              <xsl:variable name="publicationDate">
+                <xsl:perform-sort select="mdb:identificationInfo/*/mri:citation/*/cit:date/*[
+                                    cit:dateType/*/@codeListValue = ('publication', 'revision')]/
+                                      cit:date/gco:*[. != '']">
+                  <xsl:sort select="." order="descending"/>
+                </xsl:perform-sort>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$publicationDate/*[1]">
+                  <xsl:for-each select="$publicationDate/*[1]">
+                    (<xsl:value-of select="substring($publicationDate, 1, 4)"/>).
+                  </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>.&#160;</xsl:otherwise>
+              </xsl:choose>
 
               <!-- Title -->
               <xsl:for-each select="mdb:identificationInfo/*/mri:citation/*/cit:title">

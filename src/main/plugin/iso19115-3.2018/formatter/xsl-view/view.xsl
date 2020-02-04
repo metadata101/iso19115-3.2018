@@ -179,13 +179,20 @@
       <h2>
         <i class="fa fa-fw fa-map-marker"><xsl:comment select="'image'"/></i>
         <span><xsl:comment select="name()"/>
-          <xsl:value-of select="$schemaStrings/extent"/>
+          <xsl:value-of select="$schemaStrings/spatialExtent"/>
         </span>
       </h2>
 
-      <xsl:apply-templates mode="render-field"
-                           select=".//gex:EX_GeographicBoundingBox">
-      </xsl:apply-templates>
+      <xsl:choose>
+        <xsl:when test=".//gex:EX_BoundingPolygon">
+          <xsl:copy-of select="gn-fn-render:extent($metadataUuid)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates mode="render-field"
+                               select=".//gex:EX_GeographicBoundingBox">
+          </xsl:apply-templates>
+        </xsl:otherwise>
+      </xsl:choose>
     </section>
   </xsl:template>
 
@@ -433,6 +440,37 @@
                             xs:double(gex:northBoundLatitude/gco:Decimal))"/>
     <br/>
     <br/>
+  </xsl:template>
+
+
+  <!-- Display spatial extents containing bounding polygons on a map -->
+
+  <xsl:template mode="render-field"
+                match="gex:EX_Extent[gex:geographicElement/*/gex:polygon]"
+                priority="100">
+    <div class="entry name">
+    <h4>
+      <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+      <xsl:apply-templates mode="render-value"
+                           select="@*"/>
+    </h4>
+    <div class="target">
+
+    <xsl:apply-templates mode="render-field" select="gex:description"/>
+
+    <!-- Display all included bounding polygons/boxes on the one map -->
+
+    <xsl:copy-of select="gn-fn-render:extent($metadataUuid)"/>
+
+    <!-- Display any included geographic descriptions separately after map -->
+
+    <xsl:apply-templates mode="render-field" select="gex:geographicElement[gex:EX_GeographicDescription]"/>
+
+    <xsl:apply-templates mode="render-field" select="gex:temporalElement"/>
+    <xsl:apply-templates mode="render-field" select="gex:verticalElement"/>
+
+    </div>
+    </div>
   </xsl:template>
 
 

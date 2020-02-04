@@ -68,5 +68,6 @@
   </add-extent-from-geokeywordsHelp>
   <noThesaurusName>Mots clés</noThesaurusName>
   <extent>Étendue spatiale</extent>
+  <spatialExtent>Étendue spatiale</spatialExtent>
   <freeTextKeywords>Other keywords</freeTextKeywords>
 </strings>

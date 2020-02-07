@@ -820,6 +820,8 @@
     </gts:TM_PeriodDuration>
   </xsl:template>
 
+  <xsl:template match="mrs:referenceSystemType"/>
+
   <xsl:template match="mdb:referenceSystemInfo/*/mrs:referenceSystemIdentifier/mcc:MD_Identifier"
                 priority="2">
     <gmd:RS_Identifier>

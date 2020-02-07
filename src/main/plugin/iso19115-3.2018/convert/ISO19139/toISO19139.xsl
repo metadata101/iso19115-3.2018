@@ -787,7 +787,7 @@
       </gmd:name>
       <gmd:version>
         <xsl:if test="normalize-space(mrd:formatSpecificationCitation/cit:CI_Citation/cit:edition/*) = ''">
-          <xsl:attribute name="nilReason" select="'unknown'"/>
+          <xsl:attribute name="gco:nilReason" select="'unknown'"/>
         </xsl:if>
         <xsl:apply-templates select="mrd:formatSpecificationCitation/cit:CI_Citation/cit:edition/*"/>
       </gmd:version>

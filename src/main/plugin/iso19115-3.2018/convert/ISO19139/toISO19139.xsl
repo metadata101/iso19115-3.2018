@@ -399,6 +399,10 @@
     </gmd:distributionInfo>
   </xsl:template>
 
+  <xsl:template match="mdb:contentInfo[mrc:MD_FeatureCatalogue]" priority="10">
+    <!-- Feature catalogue can not be mapped to ISO19139. It is ISO19110. -->
+  </xsl:template>
+
   <xsl:template match="mdb:contentInfo">
     <gmd:contentInfo>
       <xsl:apply-templates select="*"/>

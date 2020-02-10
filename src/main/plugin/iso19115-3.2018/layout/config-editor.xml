@@ -307,7 +307,6 @@
       <name>mcc:fileName</name>
       <name>mcc:fileType</name>
       <name>mcc:version</name>
-      <name>mco:useLimitation</name>
       <name>mdq:pass</name>
       <name>mex:condition</name>
       <name>mex:domainValue</name>

@@ -92,7 +92,7 @@
   <!-- Max number of coordinate system to add
     to the metadata record. Avoid to have too many CRS when
     OGC server list all epsg database. -->
-  <xsl:variable name="maxCRS">21</xsl:variable>
+  <xsl:variable name="maxCRS">5</xsl:variable>
 
   <xsl:variable name="df">[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]</xsl:variable>
 
@@ -177,7 +177,7 @@
 
   <xsl:template mode="copy"
                 match="mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code/gco:CharacterString"
-  priority="1999">
+                priority="1999">
     <xsl:copy>
       <xsl:value-of select="$uuid"/>
     </xsl:copy>
@@ -711,7 +711,7 @@
           </xsl:for-each>
           <mri:type>
             <mri:MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode"
-                                codeListValue="theme"/>
+                                    codeListValue="theme"/>
           </mri:type>
           <xsl:if test="current-grouping-key() != ''">
             <mri:thesaurusName>
@@ -744,7 +744,7 @@
           </xsl:for-each>
           <mri:type>
             <mri:MD_KeywordTypeCode codeList="./resources/codeList.xml#MD_KeywordTypeCode"
-                                codeListValue="theme"/>
+                                    codeListValue="theme"/>
           </mri:type>
         </mri:MD_Keywords>
       </mri:descriptiveKeywords>
@@ -1246,11 +1246,12 @@
 
 
   <xsl:template mode="copy"
-                match="mdb:referenceSystemInfo"
+                match="mdb:referenceSystemInfo[1]"
                 priority="1999">
     <xsl:for-each
-      select="$getCapabilities//wms:Layer[wms:Name=$Name]/wms:CRS[position() &lt; $maxCRS]|
-              $getCapabilities//Layer[Name=$Name]/SRS[position() &lt; $maxCRS]">
+      select="distinct-values(
+                  $getCapabilities//wms:Layer[wms:Name=$Name]/wms:CRS[position() &lt; $maxCRS]|
+                  $getCapabilities//Layer[Name=$Name]/SRS[position() &lt; $maxCRS])">
       <mdb:referenceSystemInfo>
         <xsl:attribute name="gco:nilReason" select="$nilReasonValue"/>
         <mrs:MD_ReferenceSystem>
@@ -1410,7 +1411,7 @@
                 </cit:description>
                 <cit:function>
                   <cit:CI_OnLineFunctionCode codeList="./resources/codeList.xml#CI_OnLineFunctionCode"
-                                         codeListValue="information"/>
+                                             codeListValue="information"/>
                 </cit:function>
               </cit:CI_OnlineResource>
             </srv:connectPoint>
@@ -1435,7 +1436,7 @@
                 </cit:protocol>
                 <cit:function>
                   <cit:CI_OnLineFunctionCode codeList="./resources/codeList.xml#CI_OnLineFunctionCode"
-                                         codeListValue="information"/>
+                                             codeListValue="information"/>
                 </cit:function>
               </cit:CI_OnlineResource>
             </srv:connectPoint>

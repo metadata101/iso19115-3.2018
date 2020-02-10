@@ -240,7 +240,7 @@
     <xsl:if test="$withJsonLd = 'true'">
       <script type="application/ld+json">
         <xsl:apply-templates mode="getJsonLD"
-                             select="$metadata"/>
+                             select="$metadata"/>&#160;
       </script>
     </xsl:if>
   </xsl:template>

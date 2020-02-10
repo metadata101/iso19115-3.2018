@@ -71,32 +71,29 @@
     </xsl:choose>
   </xsl:template>
 
-
-  <!-- Template used to return a gco:CharacterString element
-        in default metadata language or in a specific locale
-        if exist.
+  <!-- Template used to return a translation if one found, 
+       or the text in default metadata language 
+       or the first non empty text element.
     -->
   <xsl:template name="get-iso19115-3.2018-localised"
                 mode="localised"
                 match="*[lan:PT_FreeText or gco:CharacterString or gcx:Anchor]">
     <xsl:param name="langId"/>
 
-    <xsl:choose>
-      <xsl:when
-          test="lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString[@locale = $langId] and
-          lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString[@locale = $langId] != ''">
-        <xsl:value-of
-            select="lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString[@locale = $langId]"/>
-      </xsl:when>
-      <xsl:when test="not(gco:CharacterString) and not(gcx:Anchor)">
-        <!-- If no CharacterString, try to use the first textGroup available -->
-        <xsl:value-of
-            select="lan:PT_FreeText/lan:textGroup[position()=1]/lan:LocalisedCharacterString"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="gco:CharacterString|gcx:Anchor"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:variable name="translation"
+                  select="lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString[@locale=$langId]"/>
+
+    <xsl:variable name="mainValue"
+                  select="(gco:CharacterString|gcx:Anchor)[1]"/>
+
+    <xsl:variable name="firstNonEmptyValue"
+                  select="((gco:CharacterString|gcx:Anchor|lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString)[. != ''])[1]"/>
+
+    <xsl:value-of select="if($translation != '')
+                          then $translation
+                          else (if($mainValue != '')
+                                then $mainValue
+                                else $firstNonEmptyValue)"/>
   </xsl:template>
 
   <xsl:template mode="localised" match="*">

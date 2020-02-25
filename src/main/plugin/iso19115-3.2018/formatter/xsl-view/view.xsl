@@ -414,11 +414,11 @@
                        *[$isFlatMode = false() and not(gco:CharacterString)]"
                 priority="100">
     <div class="entry name">
-      <h4>
+      <h2>
         <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
         <xsl:apply-templates mode="render-value"
                              select="@*"/>&#160;
-      </h4>
+      </h2>
       <div class="target">&#160;
         <xsl:choose>
           <xsl:when test="count(*) > 0">

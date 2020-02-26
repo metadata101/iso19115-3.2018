@@ -175,7 +175,7 @@
       <xsl:apply-templates select="mdb:otherLocale"/>
       <xsl:apply-templates select="mdb:metadataLinkage"/>
 
-      <xsl:variable name="pointOfTruthUrl" select="concat($url, '/metadata/', $uuid)"/>
+      <xsl:variable name="pointOfTruthUrl" select="concat(/root/env/nodeURL, 'api/records/', $uuid)"/>
 
       <!-- Create metadata linkage only if it does not exist already. -->
       <xsl:if test="$createMetadataLinkage">

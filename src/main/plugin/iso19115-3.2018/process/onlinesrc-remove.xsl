@@ -41,6 +41,9 @@
                 */cit:onlineResource/*/cit:linkage/*/text() = $url]|
     mrc:featureCatalogueCitation[
                 */cit:onlineResource/*/cit:linkage/*/text() = $url]|
+    mdb:portrayalCatalogueInfo[
+                count(*/*) = 1
+                and */mpc:portrayalCatalogueCitation/*/cit:onlineResource/*/cit:linkage/*/text() = $url]|
     mpc:portrayalCatalogueCitation[
                 */cit:onlineResource/*/cit:linkage/*/text() = $url]"
     priority="2"/>

@@ -23,6 +23,7 @@
                 xmlns:gcx="http://standards.iso.org/iso/19115/-3/gcx/1.0"
                 xmlns:gex="http://standards.iso.org/iso/19115/-3/gex/1.0"
                 xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
                 xmlns:util="java:org.fao.geonet.util.XslUtil"
                 xmlns:tr="java:org.fao.geonet.api.records.formatters.SchemaLocalizations"
                 xmlns:gn-fn-render="http://geonetwork-opensource.org/xsl/functions/render"
@@ -31,17 +32,16 @@
                 xmlns:saxon="http://saxon.sf.net/"
                 extension-element-prefixes="saxon"
                 exclude-result-prefixes="#all">
-  <!-- This formatter render an ISO19139 record based on the
+  <!-- This formatter render an ISO19115-3 record based on the
   editor configuration file.
-
 
   The layout is made in 2 modes:
   * render-field taking care of elements (eg. sections, label)
   * render-value taking care of element values (eg. characterString, URL)
 
   3 levels of priority are defined: 100, 50, none
-
   -->
+
 
 
   <!-- Load the editor configuration to be able
@@ -179,13 +179,20 @@
       <h2>
         <i class="fa fa-fw fa-map-marker"><xsl:comment select="'image'"/></i>
         <span><xsl:comment select="name()"/>
-          <xsl:value-of select="$schemaStrings/extent"/>
+          <xsl:value-of select="$schemaStrings/spatialExtent"/>
         </span>
       </h2>
 
-      <xsl:apply-templates mode="render-field"
-                           select=".//gex:EX_GeographicBoundingBox">
-      </xsl:apply-templates>
+      <xsl:choose>
+        <xsl:when test=".//gex:EX_BoundingPolygon">
+          <xsl:copy-of select="gn-fn-render:extent($metadataUuid)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:apply-templates mode="render-field"
+                               select=".//gex:EX_GeographicBoundingBox">
+          </xsl:apply-templates>
+        </xsl:otherwise>
+      </xsl:choose>
     </section>
   </xsl:template>
 
@@ -233,7 +240,7 @@
     <xsl:if test="$withJsonLd = 'true'">
       <script type="application/ld+json">
         <xsl:apply-templates mode="getJsonLD"
-                             select="$metadata"/>
+                             select="$metadata"/>&#160;
       </script>
     </xsl:if>
   </xsl:template>
@@ -278,17 +285,22 @@
                 <xsl:if test="position() != last()">&#160;-&#160;</xsl:if>
               </xsl:for-each>
 
-              <!-- Publication year -->
-              <xsl:variable name="publicationDate"
-                            select="mdb:identificationInfo/*/mri:citation/*/cit:date/*[
-                                    cit:dateType/*/@codeListValue = 'publication']/
-                                      cit:date/gco:*"/>
-
-              <xsl:if test="$publicationDate != ''">
-                (<xsl:value-of select="substring($publicationDate, 1, 4)"/>)
-              </xsl:if>
-
-              <xsl:text>. </xsl:text>
+              <!-- Publication year: use last publication or revision date -->
+              <xsl:variable name="publicationDate">
+                <xsl:perform-sort select="mdb:identificationInfo/*/mri:citation/*/cit:date/*[
+                                    cit:dateType/*/@codeListValue = ('publication', 'revision')]/
+                                      cit:date/gco:*[. != '']">
+                  <xsl:sort select="." order="descending"/>
+                </xsl:perform-sort>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="$publicationDate/*[1]">
+                  <xsl:for-each select="$publicationDate/*[1]">
+                    (<xsl:value-of select="substring($publicationDate, 1, 4)"/>).
+                  </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>.&#160;</xsl:otherwise>
+              </xsl:choose>
 
               <!-- Title -->
               <xsl:for-each select="mdb:identificationInfo/*/mri:citation/*/cit:title">
@@ -336,7 +348,8 @@
 
   <!-- Most of the elements are ... -->
   <xsl:template mode="render-field"
-                match="*[gco:CharacterString != '']|*[gco:Integer != '']|
+                match="*[gco:CharacterString != '']|*[gcx:Anchor != '']|
+                       *[gco:Integer != '']|
                        *[gco:Decimal != '']|*[gco:Boolean != '']|
                        *[gco:Real != '']|*[gco:Measure != '']|*[gco:Length != '']|
                        *[gco:Distance != '']|*[gco:Angle != '']|*[gco:Scale != '']|
@@ -366,7 +379,7 @@
             <xsl:apply-templates mode="render-value" select="text()"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:apply-templates mode="render-value" select="*"/>
+            <xsl:apply-templates mode="render-value" select="."/>
           </xsl:otherwise>
         </xsl:choose>&#160;
         <xsl:apply-templates mode="render-value" select="@*"/>
@@ -376,7 +389,8 @@
 
 
 
-  <!-- Some elements are only containers so bypass them -->
+  <!-- Some elements are only containers so bypass them
+  unless they are flat mode exceptions -->
   <xsl:template mode="render-field"
                 match="*[
                           count(*[name() != 'lan:PT_FreeText']) = 1 and
@@ -394,17 +408,18 @@
 
   <!-- Some major sections are boxed -->
   <xsl:template mode="render-field"
-                match="*[name() = $configuration/editor/fieldsWithFieldset/name or
-                         @gco:isoType = $configuration/editor/fieldsWithFieldset/name]|
-                       *[$isFlatMode = false() and not(gco:CharacterString)]">
-
+                match="*[not(gco:CharacterString) and (
+                          name() = $configuration/editor/fieldsWithFieldset/name or
+                          @gco:isoType = $configuration/editor/fieldsWithFieldset/name)]|
+                       *[$isFlatMode = false() and not(gco:CharacterString)]"
+                priority="100">
     <div class="entry name">
-      <h4>
+      <h2>
         <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
         <xsl:apply-templates mode="render-value"
-                             select="@*"/>
-      </h4>
-      <div class="target">
+                             select="@*"/>&#160;
+      </h2>
+      <div class="target">&#160;
         <xsl:choose>
           <xsl:when test="count(*) > 0">
             <xsl:apply-templates mode="render-field" select="*"/>
@@ -422,7 +437,7 @@
   and the coordinates displayed around -->
   <xsl:template mode="render-field"
                 match="gex:EX_GeographicBoundingBox[
-                            gex:westBoundLongitude/gco:Decimal != '']">
+                            gex:westBoundLongitude/gco:Decimal != '']" priority="100">
     <xsl:copy-of select="gn-fn-render:bbox(
                             xs:double(gex:westBoundLongitude/gco:Decimal),
                             xs:double(gex:southBoundLatitude/gco:Decimal),
@@ -430,6 +445,37 @@
                             xs:double(gex:northBoundLatitude/gco:Decimal))"/>
     <br/>
     <br/>
+  </xsl:template>
+
+
+  <!-- Display spatial extents containing bounding polygons on a map -->
+
+  <xsl:template mode="render-field"
+                match="gex:EX_Extent[gex:geographicElement/*/gex:polygon]"
+                priority="100">
+    <div class="entry name">
+    <h4>
+      <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+      <xsl:apply-templates mode="render-value"
+                           select="@*"/>
+    </h4>
+    <div class="target">
+
+    <xsl:apply-templates mode="render-field" select="gex:description"/>
+
+    <!-- Display all included bounding polygons/boxes on the one map -->
+
+    <xsl:copy-of select="gn-fn-render:extent($metadataUuid)"/>
+
+    <!-- Display any included geographic descriptions separately after map -->
+
+    <xsl:apply-templates mode="render-field" select="gex:geographicElement[gex:EX_GeographicDescription]"/>
+
+    <xsl:apply-templates mode="render-field" select="gex:temporalElement"/>
+    <xsl:apply-templates mode="render-field" select="gex:verticalElement"/>
+
+    </div>
+    </div>
   </xsl:template>
 
 
@@ -482,9 +528,7 @@
         <div class="row">
           <div class="col-md-6">
             <!-- Needs improvements as contact/org are more flexible in iso19115-3.2018 -->
-            <address itemprop="author"
-                     itemscope="itemscope"
-                     itemtype="http://schema.org/Organization">
+            <address>
               <strong>
                 <xsl:choose>
                   <xsl:when test="normalize-space($email) != ''">
@@ -501,9 +545,7 @@
                 <xsl:for-each select="cit:address/*/(
                                             cit:deliveryPoint|cit:city|
                                             cit:administrativeArea|cit:postalCode|cit:country)">
-                  <div itemprop="address"
-                        itemscope="itemscope"
-                        itemtype="http://schema.org/PostalAddress">
+                  <div>
                     <xsl:if test="normalize-space(.) != ''">
                       <xsl:apply-templates mode="render-value" select="."/><br/>
                     </xsl:if>
@@ -516,11 +558,7 @@
             <xsl:for-each select=".//cit:contactInfo/*">
               <address>
                 <xsl:for-each select="cit:phone/*[cit:numberType/*/@codeListValue = 'voice']/cit:number[normalize-space(.) != '']">
-                  <div itemprop="contactPoint"
-                        itemscope="itemscope"
-                        itemtype="http://schema.org/ContactPoint">
-                    <meta itemprop="contactType"
-                          content="{ancestor::cit:Responsibility/*/cit:role/*/@codeListValue}"/>
+                  <div>
                     <xsl:variable name="phoneNumber">
                       <xsl:apply-templates mode="render-value" select="."/>
                     </xsl:variable>
@@ -553,9 +591,7 @@
                   </a>
                 </xsl:for-each>
                 <xsl:for-each select="cit:hoursOfService">
-                  <span itemprop="hoursAvailable"
-                        itemscope="itemscope"
-                        itemtype="http://schema.org/OpeningHoursSpecification">
+                  <span>
                     <xsl:apply-templates mode="render-field"
                                          select="."/>
                   </span>
@@ -594,10 +630,7 @@
   <xsl:template mode="render-field"
                 match="mdb:metadataIdentifier/mcc:MD_Identifier/mcc:code"
                 priority="100">
-    <dl class="gn-link"
-        itemprop="distribution"
-        itemscope="itemscope"
-        itemtype="http://schema.org/DataDownload">
+    <dl class="gn-link">
       <dt>
         <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
       </dt>
@@ -692,10 +725,12 @@
       <dd>
         <div>
           <ul>
-            <li>
-              <xsl:apply-templates mode="render-value"
-                                   select="*/mri:keyword/*"/>
-            </li>
+            <xsl:for-each select="*/mri:keyword">
+              <li>
+                <xsl:apply-templates mode="render-value"
+                                     select="."/>
+              </li>
+            </xsl:for-each>
           </ul>
         </div>
       </dd>
@@ -710,19 +745,22 @@
       <dt>
         <xsl:value-of select="$schemaStrings/noThesaurusName"/>
         <xsl:if test="*/mri:type/*[@codeListValue != '']">
-          (<xsl:apply-templates mode="render-value"
-                                select="*/mri:type/*/@codeListValue"/>)
+          <xsl:variable name="thesaurusType">
+            <xsl:apply-templates mode="render-value"
+                                 select="*/mri:type/*/@codeListValue"/>
+          </xsl:variable>
+          (<xsl:value-of select="normalize-space($thesaurusType)"/>)
         </xsl:if>
       </dt>
       <dd>
         <div>
           <ul>
-            <li>
-              <xsl:for-each select="*/mri:keyword">
+            <xsl:for-each select="*/mri:keyword">
+              <li>
                 <xsl:apply-templates mode="render-value"
-                                     select="."/><xsl:if test="position() != last()">, </xsl:if>
-              </xsl:for-each>
-            </li>
+                                     select="."/>
+              </li>
+            </xsl:for-each>
           </ul>
         </div>
       </dd>
@@ -770,8 +808,11 @@
       <dt>
         <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
         <xsl:if test="*/cit:dateType/*[@codeListValue != '']">
-          (<xsl:apply-templates mode="render-value"
-                                select="*/cit:dateType/*/@codeListValue"/>)
+          <xsl:variable name="dateType">
+            <xsl:apply-templates mode="render-value"
+                                 select="*/cit:dateType/*/@codeListValue"/>
+          </xsl:variable>
+          (<xsl:value-of select="normalize-space($dateType)"/>)
         </xsl:if>
       </dt>
       <dd>
@@ -902,6 +943,33 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template mode="render-value"
+                match="*[gcx:Anchor]">
+    <xsl:apply-templates mode="render-value"
+                         select="gcx:Anchor"/>
+  </xsl:template>
+
+  <xsl:template mode="render-value"
+                match="gcx:Anchor">
+    <xsl:variable name="link"
+                  select="@xlink:href"/>
+    <xsl:variable name="txt">
+      <xsl:apply-templates mode="localised" select="..">
+        <xsl:with-param name="langId" select="$langId"/>
+      </xsl:apply-templates>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="$link != ''">
+        <a href="{$link}">
+          <xsl:value-of select="$txt"/>
+        </a>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$txt"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <xsl:template mode="render-value"
                 match="lan:PT_FreeText">

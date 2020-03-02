@@ -56,7 +56,7 @@
 
     <xsl:variable name="geoKeywords"
                   select="$root//mri:descriptiveKeywords/mri:MD_Keywords/mri:keyword[
-                      not(gco:CharacterString/@gco:nilReason) 
+                      not(gco:CharacterString/@gco:nilReason)
                       and (not(contains($extentDescription, gco:CharacterString))
                       or not(contains($extentDescription, gmx:Anchor)))
                       and ../mri:type/mri:MD_KeywordTypeCode/@codeListValue='place']"/>
@@ -66,9 +66,9 @@
         <name><xsl:value-of select="geonet:i18n($add-extent-loc, 'a', $guiLang)"/><xsl:value-of select="string-join($geoKeywords/gco:CharacterString, ', ')"/>
           <xsl:value-of select="geonet:i18n($add-extent-loc, 'b', $guiLang)"/></name>
         <operational>true</operational>
-        <params>{gurl:{type:'string', defaultValue:'<xsl:value-of select="$gurl"/>'},
-          lang:{type:'string', defaultValue:'<xsl:value-of select="$lang"/>'},
-          replace:{type:'boolean', defaultValue:'<xsl:value-of select="$replace"/>'}}</params>
+        <params>{"gurl":{"type":"string", "defaultValue":"<xsl:value-of select="$gurl"/>"},
+          "lang":{"type":"string", "defaultValue":"<xsl:value-of select="$lang"/>"},
+          "replace":{"type":"boolean", "defaultValue":"<xsl:value-of select="$replace"/>"}}</params>
       </suggestion>
     </xsl:if>
 
@@ -115,11 +115,11 @@
       <!-- Keep existing extent and compute
             from keywords -->
 
-      <!-- replace or add extent. Default mode is add. 
+      <!-- replace or add extent. Default mode is add.
             All extent element are processed and if a geographicElement is found,
-            it will be removed. Description, verticalElement and temporalElement 
+            it will be removed. Description, verticalElement and temporalElement
             are preserved.
-            
+
             GeographicElement element having BoundingPolygon are preserved.
             -->
       <xsl:choose>

@@ -42,8 +42,8 @@
 
   <!-- i18n information -->
   <xsl:variable name="add-featureCat-loc">
-    <msg id="a" xml:lang="eng">Create feature catalogue from download service (WFS): </msg>
-    <msg id="a" xml:lang="fre">Ajouter le catalogue d'attribut à partir du service de téléchargement (WFS) : </msg>
+    <msg id="a" xml:lang="eng">Create feature catalogue from download service (WFS or ESRI:REST): </msg>
+    <msg id="a" xml:lang="fre">Ajouter le catalogue d'attribut à partir du service de téléchargement (WFS ou ESRI:REST) : </msg>
   </xsl:variable>
 
 
@@ -64,7 +64,7 @@
 
 
     <xsl:variable name="wfsServices"
-                  select="$root//mdb:distributionInfo//mrd:onLine/*[contains(cit:protocol/*, 'WFS')]/concat(
+                  select="$root[count(.//srv:SV_ServiceIdentification) = 0]//mdb:distributionInfo//mrd:onLine/*[contains(cit:protocol/*, 'WFS') or contains(cit:protocol/*, 'ESRI:REST')]/concat(
                           cit:linkage/*/text(), '#', cit:name/*/text())"/>
 
     <xsl:variable name="id"
@@ -77,12 +77,11 @@
                   target="metadata">
         <name><xsl:value-of select="geonet:i18n($add-featureCat-loc, 'a', $guiLang)"/><xsl:value-of select="."/></name>
         <operational>true</operational>
-        <params>{featureCatWfsUrl:{type:'text', defaultValue:'<xsl:value-of select="substring-before(., '#')"/>'},
-          featureCatWfsFeatureType:{type:'text', defaultValue:'<xsl:value-of select="substring-after(., '#')"/>'},
-          featureCatReplace:{type:'boolean', defaultValue:'<xsl:value-of select="$featureCatReplace"/>'}}</params>
+        <params>{"featureCatWfsUrl":{"type":"text", "defaultValue":"<xsl:value-of select="substring-before(., '#')"/>"},
+          "featureCatWfsFeatureType":{"type":"text", "defaultValue":"<xsl:value-of select="substring-after(., '#')"/>"},
+          "featureCatReplace":{"type":"boolean", "defaultValue":"<xsl:value-of select="$featureCatReplace"/>"}}</params>
       </suggestion>
     </xsl:for-each>
-
   </xsl:template>
 
 
@@ -144,21 +143,36 @@
 
 
 
-  <!-- Get WFS DescribeFeatureType
-   eg. http://visi-sextant.ifremer.fr/cgi-bin/sextant/wfs/bgmb?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&TYPENAME=SISMER_mesures
+  <!-- eg.
+   * Get WFS DescribeFeatureType for WFS
+   http://visi-sextant.ifremer.fr/cgi-bin/sextant/wfs/bgmb?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&TYPENAME=SISMER_mesures
+   * Feature type description for ESRI:REST
+   https://geoservices.wallonie.be/arcgis/rest/services/INDUSTRIES_SERVICES/ESRS/MapServer/0?f=json
    -->
   <xsl:function name="geonet:make-iso19115-3.2018-featurecatalogue-from-wfs" as="node()?">
     <xsl:param name="featureCatWfsUrl" as="xs:string"/>
 
+    <xsl:variable name="isEsri"
+                  select="contains($featureCatWfsUrl, '/rest/services/')"/>
+    <xsl:variable name="featureTypeNameNoNamespace"
+                  select="if (contains($featureCatWfsFeatureType, ':')) then tokenize($featureCatWfsFeatureType, ':')[2] else $featureCatWfsFeatureType"/>
+
     <xsl:message><xsl:value-of select="$featureCatWfsUrl"/> </xsl:message>
     <xsl:message><xsl:value-of select="$featureCatWfsFeatureType"/> </xsl:message>
+    <xsl:message><xsl:value-of select="$featureTypeNameNoNamespace"/> </xsl:message>
 
     <xsl:variable name="sep"
                   select="if (contains($featureCatWfsUrl, '?')) then '&amp;' else '?'"/>
+    <!-- TODO: Improve which layer to analyze
+    By default collect the first layer if not set-->
     <xsl:variable name="url"
-                  select="concat($featureCatWfsUrl, $sep, 'SERVICE=WFS&amp;VERSION=1.0.0&amp;REQUEST=DescribeFeatureType&amp;TYPENAME=', $featureCatWfsFeatureType)"/>
+                  select="if ($isEsri)
+                          then concat($featureCatWfsUrl, if (ends-with($featureCatWfsUrl, '/MapServer')) then '/0' else '', '?f=json')
+                          else concat($featureCatWfsUrl, $sep, 'SERVICE=WFS&amp;VERSION=1.0.0&amp;REQUEST=DescribeFeatureType&amp;TYPENAME=', $featureCatWfsFeatureType)"/>
     <xsl:variable name="describeFeatureType"
-                  select="document($url)"/>
+                  select="if ($isEsri)
+                          then util:downloadJsonAsXML($url)
+                          else document($url)"/>
 
     <xsl:message><xsl:copy-of select="$describeFeatureType"/> </xsl:message>
     <xsl:choose>
@@ -168,44 +182,92 @@
             <mrc:featureCatalogue>
               <gfc:FC_FeatureCatalogue>
                 <gfc:producer/>
-                <xsl:for-each select="$describeFeatureType//xs:complexType[starts-with(@name , $featureCatWfsFeatureType)]">
-                  <gfc:featureType>
-                    <gfc:FC_FeatureType>
-                      <gfc:typeName><xsl:value-of select="$featureCatWfsFeatureType"/> </gfc:typeName>
-                      <gfc:isAbstract>
-                        <gco:Boolean>false</gco:Boolean>
-                      </gfc:isAbstract>
-                      <xsl:for-each select=".//xs:element">
-                        <gfc:carrierOfCharacteristics>
-                          <gfc:FC_FeatureAttribute>
-                            <gfc:memberName></gfc:memberName>
-                            <gfc:definition>
-                              <gco:CharacterString></gco:CharacterString>
-                            </gfc:definition>
-                            <gfc:cardinality>
-                              <gco:CharacterString>
-                                <xsl:value-of select="if (@minOccurs) then @minOccurs else '1'"/>..<xsl:value-of select="if (@maxOccurs) then @maxOccurs else '1'"/>
-                              </gco:CharacterString>
-                            </gfc:cardinality>
-                            <gfc:code>
-                              <gco:CharacterString><xsl:value-of select="@name"/></gco:CharacterString>
-                            </gfc:code>
-                            <gfc:valueType>
-                              <gco:TypeName>
-                                <gco:aName>
+                <xsl:choose>
+                  <xsl:when test="$isEsri">
+                    <gfc:featureType>
+                      <gfc:FC_FeatureType>
+                        <gfc:typeName><xsl:value-of select="$describeFeatureType/root/name"/> </gfc:typeName>
+                        <gfc:isAbstract>
+                          <gco:Boolean>false</gco:Boolean>
+                        </gfc:isAbstract>
+                        <xsl:for-each select="$describeFeatureType/root/fields">
+                          <gfc:carrierOfCharacteristics>
+                            <gfc:FC_FeatureAttribute>
+                              <gfc:memberName><xsl:value-of select="alias"/></gfc:memberName>
+                              <gfc:definition>
+                                <gco:CharacterString></gco:CharacterString>
+                              </gfc:definition>
+                              <gfc:cardinality>
+                                <gco:CharacterString>
+                                  <xsl:value-of select="if (type = 'esriFieldTypeOID') then '1..1' else '0..1'"/>
+                                </gco:CharacterString>
+                              </gfc:cardinality>
+                              <gfc:code>
+                                <gco:CharacterString><xsl:value-of select="name"/></gco:CharacterString>
+                              </gfc:code>
+                              <gfc:valueType>
+                                <gco:TypeName>
+                                  <gco:aName>
+                                    <gco:CharacterString>
+                                      <xsl:value-of select="replace(type, 'esriFieldType', '')"/>
+                                      <xsl:if test="length">
+                                        <xsl:value-of select="concat(' (', length, ')')"/>
+                                      </xsl:if>
+                                    </gco:CharacterString>
+                                  </gco:aName>
+                                </gco:TypeName>
+                              </gfc:valueType>
+                            </gfc:FC_FeatureAttribute>
+                          </gfc:carrierOfCharacteristics>
+
+                          <!-- TODO: may contains domain information with list of value. -->
+                        </xsl:for-each>
+                        <gfc:featureCatalogue/>
+                      </gfc:FC_FeatureType>
+                    </gfc:featureType>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:for-each select="$describeFeatureType//xs:complexType[ends-with(@name, $featureTypeNameNoNamespace) or @name = concat($featureTypeNameNoNamespace, 'Type')]">
+                      <gfc:featureType>
+                        <gfc:FC_FeatureType>
+                          <gfc:typeName><xsl:value-of select="$featureCatWfsFeatureType"/> </gfc:typeName>
+                          <gfc:isAbstract>
+                            <gco:Boolean>false</gco:Boolean>
+                          </gfc:isAbstract>
+                          <xsl:for-each select=".//xs:element">
+                            <gfc:carrierOfCharacteristics>
+                              <gfc:FC_FeatureAttribute>
+                                <gfc:memberName></gfc:memberName>
+                                <gfc:definition>
+                                  <gco:CharacterString></gco:CharacterString>
+                                </gfc:definition>
+                                <gfc:cardinality>
                                   <gco:CharacterString>
-                                    <xsl:value-of select="@type"/>
+                                    <xsl:value-of select="if (@minOccurs) then @minOccurs else '1'"/>..<xsl:value-of select="if (@maxOccurs) then @maxOccurs else '1'"/>
                                   </gco:CharacterString>
-                                </gco:aName>
-                              </gco:TypeName>
-                            </gfc:valueType>
-                          </gfc:FC_FeatureAttribute>
-                        </gfc:carrierOfCharacteristics>
-                      </xsl:for-each>
-                      <gfc:featureCatalogue/>
-                    </gfc:FC_FeatureType>
-                  </gfc:featureType>
-                </xsl:for-each>
+                                </gfc:cardinality>
+                                <gfc:code>
+                                  <gco:CharacterString><xsl:value-of select="@name"/></gco:CharacterString>
+                                </gfc:code>
+                                <gfc:valueType>
+                                  <gco:TypeName>
+                                    <gco:aName>
+                                      <gco:CharacterString>
+                                        <xsl:value-of select="@type"/>
+                                      </gco:CharacterString>
+                                    </gco:aName>
+                                  </gco:TypeName>
+                                </gfc:valueType>
+                              </gfc:FC_FeatureAttribute>
+                            </gfc:carrierOfCharacteristics>
+                          </xsl:for-each>
+                          <gfc:featureCatalogue/>
+                        </gfc:FC_FeatureType>
+                      </gfc:featureType>
+                    </xsl:for-each>
+                  </xsl:otherwise>
+                </xsl:choose>
+
               </gfc:FC_FeatureCatalogue>
             </mrc:featureCatalogue>
           </mrc:MD_FeatureCatalogue>

@@ -13,6 +13,18 @@ The main changes with the previous ISO19115-3 plugin are:
 * http://www.iso.org/iso/catalogue_detail.htm?csnumber=32579
 * https://github.com/ISO-TC211/XML/
  
+## Talks 
+
+* [Using the latest ISO Standard for
+Geographic Information (ISO19115-1)
+for an INSPIRE
+Discovery Service](http://cnig.gouv.fr/wp-content/uploads/2015/06/titellus_fx_prunayre_iso19115-3_inspire2015.pdf) (INSPIRE conference 2015)
+
+## Catalogue using ISO19115-3
+
+* SPW / Metawal http://metawal.wallonie.be/
+* Ifremer / Sextant https://sextant.ifremer.fr/ (only some projects - EMODnet Checkpoint, CERSAT)
+
 
 ## Description:
 
@@ -188,3 +200,4 @@ Comments and questions to geonetwork-developers or geonetwork-users mailing list
 * François Prunayre (titellus)
 * Arnaud De Groof (Spacebel)
 * Ted Habermann (hdfgroup)
+* Craig Jones

@@ -28,6 +28,7 @@
                 xmlns:mrc="http://standards.iso.org/iso/19115/-3/mrc/2.0"
                 xmlns:mdb="http://standards.iso.org/iso/19115/-3/mdb/2.0"
                 xmlns:cat="http://standards.iso.org/iso/19115/-3/cat/1.0"
+                xmlns:srv="http://standards.iso.org/iso/19115/-3/srv/2.1"
                 xmlns:geonet="http://www.fao.org/geonetwork"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -63,42 +64,44 @@
   <xsl:template name="analyze-add-columns-from-csv">
     <xsl:param name="root"/>
 
-    <xsl:choose>
-      <!-- Add column to existing feature type declared -->
-      <xsl:when test="$root//mdb:contentInfo//gfc:featureType/*">
-        <xsl:for-each select="$root//mdb:contentInfo//gfc:featureType/*">
+    <xsl:if test="count($root//srv:SV_ServiceIdentification) = 0">
+      <xsl:choose>
+        <!-- Add column to existing feature type declared -->
+        <xsl:when test="$root//mdb:contentInfo//gfc:featureType/*">
+          <xsl:for-each select="$root//mdb:contentInfo//gfc:featureType/*">
+            <suggestion process="add-columns-from-csv" id="{generate-id()}"
+                        category="fcat" target="gfc:FC_FeatureType">
+              <name>
+                <xsl:value-of select="concat(geonet:i18n($csv-info-loc, 'b', $guiLang), gfc:typeName)"/>
+              </name>
+              <operational>true</operational>
+              <params>{
+                "table":{"type":"string", "defaultValue":"<xsl:value-of select="gfc:typeName"/>"},
+                "replaceColumns":{"type":"boolean", "defaultValue":"1"},
+                "columnListSeparator":{"type":"string", "defaultValue":"<xsl:value-of select="$columnListSeparator"/>"},
+                "columnListAsCsv":{"type":"textarea", "defaultValue":"SHORT_NAME;DESCRIPTION;TYPE;CARDINALITY_MIN..CARDINALITY_MAX"}
+                }</params>
+            </suggestion>
+          </xsl:for-each>
+        </xsl:when>
+        <!-- or create a new feature catalogue with a new feature type -->
+        <xsl:otherwise>
           <suggestion process="add-columns-from-csv" id="{generate-id()}"
                       category="fcat" target="gfc:FC_FeatureType">
             <name>
-              <xsl:value-of select="concat(geonet:i18n($csv-info-loc, 'b', $guiLang), gfc:typeName)"/>
+              <xsl:value-of select="geonet:i18n($csv-info-loc, 'a', $guiLang)"/>
             </name>
             <operational>true</operational>
             <params>{
-              "table":{"type":"string", "defaultValue":"<xsl:value-of select="gfc:typeName"/>"},
+              "table":{"type":"string", "defaultValue":""},
               "replaceColumns":{"type":"boolean", "defaultValue":"1"},
               "columnListSeparator":{"type":"string", "defaultValue":"<xsl:value-of select="$columnListSeparator"/>"},
               "columnListAsCsv":{"type":"textarea", "defaultValue":"SHORT_NAME;DESCRIPTION;TYPE;CARDINALITY_MIN..CARDINALITY_MAX"}
               }</params>
           </suggestion>
-        </xsl:for-each>
-      </xsl:when>
-      <!-- or create a new feature catalogue with a new feature type -->
-      <xsl:otherwise>
-        <suggestion process="add-columns-from-csv" id="{generate-id()}"
-                    category="fcat" target="gfc:FC_FeatureType">
-          <name>
-            <xsl:value-of select="geonet:i18n($csv-info-loc, 'a', $guiLang)"/>
-          </name>
-          <operational>true</operational>
-          <params>{
-            "table":{"type":"string", "defaultValue":""},
-            "replaceColumns":{"type":"boolean", "defaultValue":"1"},
-            "columnListSeparator":{"type":"string", "defaultValue":"<xsl:value-of select="$columnListSeparator"/>"},
-            "columnListAsCsv":{"type":"textarea", "defaultValue":"SHORT_NAME;DESCRIPTION;TYPE;CARDINALITY_MIN..CARDINALITY_MAX"}
-            }</params>
-        </suggestion>
-      </xsl:otherwise>
-    </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
   </xsl:template>
 
 
@@ -121,6 +124,7 @@
   <!-- When a feature catalogue exists and the feature type does not,
    insert the table description in the first feature catalogue. -->
   <xsl:variable name="tableExist" select="count(//gfc:FC_FeatureType[gfc:typeName = $table]) > 0"/>
+
   <xsl:template match="mdb:contentInfo[not($tableExist) and position() = 1]/*/mrc:featureCatalogue[1]/*">
     <xsl:copy>
       <xsl:apply-templates select="@*|*[local-name() = 'name' or local-name() = 'scope' or local-name() = 'versionNumber' or local-name() = 'fieldOfApplication' or local-name() = 'characterSet' or local-name() = 'producer' or local-name() = 'locale' or local-name() = 'versionDate' or local-name() = 'functionalLanguage' or local-name() = 'identifier' or local-name() = 'featureType']"/>

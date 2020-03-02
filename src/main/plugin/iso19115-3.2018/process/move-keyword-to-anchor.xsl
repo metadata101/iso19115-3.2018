@@ -42,16 +42,16 @@
              select="'httpinspireeceuropaeutheme-theme'"/>
 
   <xsl:variable name="thesaurus"
-                select="document(concat('file:///', $thesauriDir, '/external/thesauri/theme/', $thesaurusFileName, '.rdf'))"/>
+                select="document(concat('file:///', replace($thesauriDir, '\\', '/'), '/external/thesauri/theme/', $thesaurusFileName, '.rdf'))"/>
 
   <xsl:variable name="thesaurusTitle"
-                select="$thesaurus//skos:ConceptScheme/dc:title/text()"/>
+                select="$thesaurus//(skos:ConceptScheme|rdf:Description)/dc:title/text()"/>
 
   <xsl:template match="mri:keyword[gco:CharacterString and ../mri:thesaurusName/*/cit:title/* = $thesaurusTitle]">
     <xsl:variable name="keywordValue"
                   select="gco:CharacterString"/>
     <xsl:variable name="keywordInThesaurus"
-                  select="$thesaurus//skos:Concept[skos:prefLabel = $keywordValue]"/>
+                  select="$thesaurus//*[skos:prefLabel = $keywordValue]"/>
     <xsl:choose>
       <xsl:when test="$keywordValue != '' and
                       $keywordInThesaurus">

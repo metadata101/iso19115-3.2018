@@ -399,6 +399,10 @@
     </gmd:distributionInfo>
   </xsl:template>
 
+  <xsl:template match="mdb:contentInfo[mrc:MD_FeatureCatalogue]" priority="10">
+    <!-- Feature catalogue can not be mapped to ISO19139. It is ISO19110. -->
+  </xsl:template>
+
   <xsl:template match="mdb:contentInfo">
     <gmd:contentInfo>
       <xsl:apply-templates select="*"/>
@@ -787,7 +791,7 @@
       </gmd:name>
       <gmd:version>
         <xsl:if test="normalize-space(mrd:formatSpecificationCitation/cit:CI_Citation/cit:edition/*) = ''">
-          <xsl:attribute name="nilReason" select="'unknown'"/>
+          <xsl:attribute name="gco:nilReason" select="'unknown'"/>
         </xsl:if>
         <xsl:apply-templates select="mrd:formatSpecificationCitation/cit:CI_Citation/cit:edition/*"/>
       </gmd:version>
@@ -815,6 +819,8 @@
       <xsl:apply-templates select="@*|*"/>
     </gts:TM_PeriodDuration>
   </xsl:template>
+
+  <xsl:template match="mrs:referenceSystemType"/>
 
   <xsl:template match="mdb:referenceSystemInfo/*/mrs:referenceSystemIdentifier/mcc:MD_Identifier"
                 priority="2">

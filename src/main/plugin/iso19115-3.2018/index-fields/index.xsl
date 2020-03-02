@@ -417,6 +417,11 @@
                   <xsl:value-of
                     select="index:analyzeField('synInspireAnnexes', $inspireTheme)"/>
                 </inspireAnnexForFirstTheme>
+                <xsl:variable name="inspireThemeUri" as="xs:string"
+                              select="index:analyzeField('synInspireThemeUris', $inspireTheme)"/>
+                <inspireThemeUri>
+                  <xsl:value-of select="$inspireThemeUri"/>
+                </inspireThemeUri>
               </xsl:if>
             </xsl:if>
             <inspireAnnex>
@@ -770,6 +775,13 @@
               <xsl:value-of select="$crs"/>
             </coordinateSystem>
           </xsl:if>
+
+          <crsDetails type="object">{
+            "code": "<xsl:value-of select="gn-fn-index:json-escape(mcc:code/*/text())"/>",
+            "codeSpace": "<xsl:value-of select="gn-fn-index:json-escape(mcc:codeSpace/*/text())"/>",
+            "name": "<xsl:value-of select="gn-fn-index:json-escape(mcc:description/*/text())"/>",
+            "url": "<xsl:value-of select="gn-fn-index:json-escape(mcc:code/*/@xlink:href)"/>"
+            }</crsDetails>
         </xsl:for-each>
       </xsl:for-each>
 

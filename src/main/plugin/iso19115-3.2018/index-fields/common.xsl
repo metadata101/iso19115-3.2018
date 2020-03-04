@@ -358,6 +358,10 @@
         </xsl:for-each>
       </xsl:for-each>
 
+      <xsl:if test="*/gex:EX_Extent/*/gex:EX_BoundingPolygon">
+        <Field name="boundingPolygon" string="y" store="true" index="false"/>
+      </xsl:if>
+
 
       <xsl:for-each select="//mri:MD_Keywords">
         <xsl:variable name="thesaurusTitle"

@@ -331,10 +331,7 @@
         </xsl:apply-templates>
 
 
-        <xsl:for-each select="mri:credit[* != '']">
-          <xsl:copy-of select="gn-fn-index:add-multilingual-field('resourceCredit', ., $allLanguages)"/>
-        </xsl:for-each>
-
+        <xsl:copy-of select="gn-fn-index:add-multilingual-field('resourceCredit', mri:credit[* != ''], $allLanguages)"/>
 
         <xsl:variable name="overviews"
                       select="mri:graphicOverview/mcc:MD_BrowseGraphic/
@@ -348,6 +345,7 @@
           <overview type="object">{
             "url": "<xsl:value-of select="."/>"
             <xsl:if test="count(../../mcc:fileDescription) > 0">,</xsl:if>
+            "text":
             <xsl:value-of select="gn-fn-index:add-multilingual-field('name', ../../mcc:fileDescription, $allLanguages, true())"/>
             }</overview>
         </xsl:for-each>
@@ -642,9 +640,9 @@
         <xsl:for-each select="mri:resourceConstraints/*">
           <xsl:variable name="fieldPrefix" select="local-name()"/>
 
-          <xsl:copy-of select="gn-fn-index:add-multilingual-field(concat($fieldPrefix, 'OtherConstraints'), mco:otherConstraints, $allLanguages)"/>
+          <xsl:copy-of select="gn-fn-index:add-multilingual-field(concat($fieldPrefix, 'OtherConstraints'), mco:otherConstraints , $allLanguages)"/>
+
           <xsl:copy-of select="gn-fn-index:add-multilingual-field(concat($fieldPrefix, 'UseLimitation'), mco:useLimitation, $allLanguages)"/>
-          <!-- TODOES: Add Anchor -->
         </xsl:for-each>
 
 

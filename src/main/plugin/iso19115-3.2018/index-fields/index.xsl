@@ -649,7 +649,7 @@
 
 
         <xsl:if test="*/gex:EX_Extent/*/gex:EX_BoundingPolygon">
-          <boundingPolygon>true</boundingPolygon>
+          <hasBoundingPolygon>true</hasBoundingPolygon>
         </xsl:if>
 
         <xsl:for-each select="*/gex:EX_Extent">

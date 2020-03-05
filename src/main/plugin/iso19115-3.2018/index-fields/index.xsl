@@ -648,6 +648,10 @@
         </xsl:for-each>
 
 
+        <xsl:if test="*/gex:EX_Extent/*/gex:EX_BoundingPolygon">
+          <boundingPolygon>true</boundingPolygon>
+        </xsl:if>
+
         <xsl:for-each select="*/gex:EX_Extent">
 
           <xsl:for-each select="gex:geographicElement/gex:EX_GeographicDescription/

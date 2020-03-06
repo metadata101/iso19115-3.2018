@@ -598,11 +598,12 @@
     </xsl:choose>
   </xsl:template>
 
-  <!-- Remove empty DQ elements. -->
+
+  <!-- Remove empty DQ elements, empty transfer options. -->
   <xsl:template match="mdb:dataQualityInfo[count(*) = 0]"/>
+  <xsl:template match="mrd:transferOptions[mrd:MD_DigitalTransferOptions/count(*) = 0]"/>
 
   <!-- copy everything else as is -->
-
   <xsl:template match="@*|node()">
     <xsl:copy copy-namespaces="no">
       <xsl:apply-templates select="@*|node()"/>

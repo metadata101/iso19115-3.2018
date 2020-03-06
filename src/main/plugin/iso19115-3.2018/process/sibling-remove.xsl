@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--  
+<!--
 Stylesheet used to remove a reference to a parent record.
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -10,9 +10,9 @@ Stylesheet used to remove a reference to a parent record.
                 xmlns:gn="http://www.fao.org/geonetwork"
                 exclude-result-prefixes="#all" version="2.0">
 
-	
+
 	<xsl:param name="uuidref"/>
-	
+
 	<!-- Do a copy of every nodes and attributes -->
 	<xsl:template match="@*|node()">
 		<xsl:copy>
@@ -21,5 +21,5 @@ Stylesheet used to remove a reference to a parent record.
 	</xsl:template>
 
 	<!-- Remove geonet:* elements. -->
-	<xsl:template match="gn:*|mri:associatedResource/mri:MD_AssociatedResource[mri:metadataReference/@uuidref = $uuidref]" priority="2"/>
+	<xsl:template match="gn:*|mri:associatedResource[mri:MD_AssociatedResource/mri:metadataReference/@uuidref = $uuidref]" priority="2"/>
 </xsl:stylesheet>

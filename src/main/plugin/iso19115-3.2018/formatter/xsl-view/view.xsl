@@ -348,6 +348,16 @@
 
   <!-- Most of the elements are ... -->
   <xsl:template mode="render-field"
+                match="*[gco:CharacterString = '']|*[gco:Integer = '']|
+                       *[gco:Decimal = '']|*[gco:Boolean = '']|
+                       *[gco:Real = '']|*[gco:Measure = '']|*[gco:Length = '']|
+                       *[gco:Distance = '']|*[gco:Angle = '']|*[gco:Scale = '']|
+                       *[gco:Record = '']|*[gco:RecordType = '']|
+                       *[gco:LocalName = '']|*[lan:PT_FreeText = '']|
+                       *[gml:beginPosition = '']|*[gml:endPosition = '']|
+                       *[gco:Date = '']|*[gco:DateTime = '']"
+                priority="500"/>
+  <xsl:template mode="render-field"
                 match="*[gco:CharacterString != '']|*[gcx:Anchor != '']|
                        *[gco:Integer != '']|
                        *[gco:Decimal != '']|*[gco:Boolean != '']|
@@ -413,23 +423,18 @@
                           @gco:isoType = $configuration/editor/fieldsWithFieldset/name)]|
                        *[$isFlatMode = false() and not(gco:CharacterString)]"
                 priority="100">
-    <div class="entry name">
-      <h2>
-        <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
-        <xsl:apply-templates mode="render-value"
-                             select="@*"/>&#160;
-      </h2>
-      <div class="target">&#160;
-        <xsl:choose>
-          <xsl:when test="count(*) > 0">
-            <xsl:apply-templates mode="render-field" select="*"/>
-          </xsl:when>
-          <xsl:otherwise>
-            No information provided.
-          </xsl:otherwise>
-        </xsl:choose>
+    <xsl:if test="count(*) > 0">
+      <div class="entry name">
+        <h2>
+          <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
+          <xsl:apply-templates mode="render-value"
+                               select="@*"/>&#160;
+        </h2>
+        <div class="target">&#160;
+          <xsl:apply-templates mode="render-field" select="*"/>
+        </div>
       </div>
-    </div>
+    </xsl:if>
   </xsl:template>
 
 
@@ -661,7 +666,7 @@
         </xsl:variable>
         <a href="{*/cit:linkage/*}" target="_blank">
           <xsl:apply-templates mode="render-value"
-                               select="*/cit:name"/>&#160;
+                               select="if (*/cit:name != '') then */cit:name else */cit:linkage"/>&#160;
         </a>
         <p>
           <xsl:value-of select="normalize-space($linkDescription)"/>

@@ -109,7 +109,7 @@
               <gco:DateTime><xsl:value-of select="/root/env/changeDate"/></gco:DateTime>
             </cit:date>
             <cit:dateType>
-              <cit:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="creation"/>
+              <cit:CI_DateTypeCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_DateTypeCode" codeListValue="creation"/>
             </cit:dateType>
           </cit:CI_Date>
         </mdb:dateInfo>
@@ -121,7 +121,7 @@
               <gco:DateTime><xsl:value-of select="/root/env/changeDate"/></gco:DateTime>
             </cit:date>
             <cit:dateType>
-              <cit:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision"/>
+              <cit:CI_DateTypeCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_DateTypeCode" codeListValue="revision"/>
             </cit:dateType>
           </cit:CI_Date>
         </mdb:dateInfo>
@@ -141,7 +141,7 @@
                   <gco:DateTime><xsl:value-of select="/root/env/changeDate"/></gco:DateTime>
                 </cit:date>
                 <cit:dateType>
-                  <cit:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision"/>
+                  <cit:CI_DateTypeCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_DateTypeCode" codeListValue="revision"/>
                 </cit:dateType>
               </cit:CI_Date>
             </mdb:dateInfo>
@@ -175,7 +175,7 @@
       <xsl:apply-templates select="mdb:otherLocale"/>
       <xsl:apply-templates select="mdb:metadataLinkage"/>
 
-      <xsl:variable name="pointOfTruthUrl" select="concat($url, '/metadata/', $uuid)"/>
+      <xsl:variable name="pointOfTruthUrl" select="concat(/root/env/nodeURL, 'api/records/', $uuid)"/>
 
       <!-- Create metadata linkage only if it does not exist already. -->
       <xsl:if test="$createMetadataLinkage">
@@ -191,7 +191,7 @@
             point of truth for the metadata linkage but this
             needs to be language dependant. -->
             <cit:function>
-              <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_OnLineFunctionCode"
+              <cit:CI_OnLineFunctionCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_OnLineFunctionCode"
                                          codeListValue="completeMetadata"/>
             </cit:function>
           </cit:CI_OnlineResource>
@@ -225,7 +225,7 @@
               <gco:DateTime><xsl:value-of select="/root/env/changeDate"/></gco:DateTime>
             </cit:date>
             <cit:dateType>
-              <cit:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="lastUpdate"/>
+              <cit:CI_DateTypeCode codeList="http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#CI_DateTypeCode" codeListValue="lastUpdate"/>
             </cit:dateType>
           </cit:CI_Date>
         </xsl:when>
@@ -427,7 +427,7 @@
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:attribute name="codeList">
-        <xsl:value-of select="concat('http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19157_Schemas/resources/codelist/ML_gmxCodelists.xml#',local-name(.))"/>
+        <xsl:value-of select="concat('http://standards.iso.org/iso/19157/resources/Codelists/cat/codelists.xml#',local-name(.))"/>
       </xsl:attribute>
     </xsl:copy>
   </xsl:template>
@@ -436,7 +436,7 @@
     <xsl:copy>
       <xsl:apply-templates select="@*"/>
       <xsl:attribute name="codeList">
-        <xsl:value-of select="concat('http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#',local-name(.))"/>
+        <xsl:value-of select="concat('http://standards.iso.org/iso/19115/resources/Codelists/cat/codelists.xml#',local-name(.))"/>
       </xsl:attribute>
     </xsl:copy>
   </xsl:template>

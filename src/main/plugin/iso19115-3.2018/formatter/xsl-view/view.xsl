@@ -355,7 +355,7 @@
                        *[gco:Record = '']|*[gco:RecordType = '']|
                        *[gco:LocalName = '']|*[lan:PT_FreeText = '']|
                        *[gml:beginPosition = '']|*[gml:endPosition = '']|
-                       *[gco:Date = '']|*[gco:DateTime = '']"
+                       *[gco:Date = '']|*[gco:DateTime = '']|*[gco:TM_PeriodDuration = '']"
                 priority="500"/>
   <xsl:template mode="render-field"
                 match="*[gco:CharacterString != '']|*[gcx:Anchor != '']|
@@ -366,7 +366,8 @@
                        *[gco:Record != '']|*[gco:RecordType != '']|
                        *[gco:LocalName != '']|*[lan:PT_FreeText != '']|
                        *[gml:beginPosition != '']|*[gml:endPosition != '']|
-                       *[gco:Date != '']|*[gco:DateTime != '']|*[*/@codeListValue]|*[@codeListValue]|
+                       *[gco:Date != '']|*[gco:DateTime != '']|*[gco:TM_PeriodDuration != '']|
+                       *[*/@codeListValue]|*[@codeListValue]|
                        gml:beginPosition[. != '']|gml:endPosition[. != '']"
                 priority="500">
     <xsl:param name="fieldName" select="''" as="xs:string"/>
@@ -988,6 +989,12 @@
   <xsl:template mode="render-value"
                 match="gco:Distance|gco:Measure">
     <span><xsl:value-of select="."/>&#10;<xsl:value-of select="@uom"/></span>
+  </xsl:template>
+
+  <xsl:template mode="render-value"
+                match="*[gco:TM_PeriodDuration]"
+                priority="99">
+    <div data-gn-field-duration-div="{gco:TM_PeriodDuration}"><xsl:value-of select="gco:TM_PeriodDuration"/></div>
   </xsl:template>
 
 

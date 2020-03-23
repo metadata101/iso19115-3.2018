@@ -442,6 +442,12 @@
     </xsl:copy>
   </xsl:template>
 
+  <xsl:template match="mdb:dataQualityInfo/mdq:DQ_DataQuality/mdq:scope/*/mcc:level/*/@codeListValue[. = '']">
+    <xsl:attribute name="codeListValue">
+      <xsl:value-of select="/root/*/mdb:metadataScope/*/mdb:resourceScope/*/@codeListValue"/>
+    </xsl:attribute>
+  </xsl:template>
+
 
   <!-- Do not allow to expand operatesOn sub-elements
     and constrain users to use uuidref attribute to link

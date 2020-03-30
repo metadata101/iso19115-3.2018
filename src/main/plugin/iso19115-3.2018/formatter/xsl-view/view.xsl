@@ -992,7 +992,7 @@
   </xsl:template>
 
   <xsl:template mode="render-value"
-                match="*[gco:TM_PeriodDuration]"
+                match="*[gco:TM_PeriodDuration != '']"
                 priority="99">
     <div data-gn-field-duration-div="{gco:TM_PeriodDuration}"><xsl:value-of select="gco:TM_PeriodDuration"/></div>
   </xsl:template>

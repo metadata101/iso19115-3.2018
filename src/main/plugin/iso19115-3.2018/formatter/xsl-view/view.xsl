@@ -347,6 +347,7 @@
 
 
   <!-- Most of the elements are ... -->
+  <!-- Most of the elements are ... -->
   <xsl:template mode="render-field"
                 match="*[gco:CharacterString = '']|*[gco:Integer = '']|
                        *[gco:Decimal = '']|*[gco:Boolean = '']|
@@ -355,6 +356,7 @@
                        *[gco:Record = '']|*[gco:RecordType = '']|
                        *[gco:LocalName = '']|*[lan:PT_FreeText = '']|
                        *[gml:beginPosition = '']|*[gml:endPosition = '']|
+                       gml:description[. != '']|gml:timePosition[. != '']|
                        *[gco:Date = '']|*[gco:DateTime = '']|*[gco:TM_PeriodDuration = '']"
                 priority="500"/>
   <xsl:template mode="render-field"
@@ -368,6 +370,7 @@
                        *[gml:beginPosition != '']|*[gml:endPosition != '']|
                        *[gco:Date != '']|*[gco:DateTime != '']|*[gco:TM_PeriodDuration != '']|
                        *[*/@codeListValue]|*[@codeListValue]|
+                       gml:description[. != '']|gml:timePosition[. != '']|
                        gml:beginPosition[. != '']|gml:endPosition[. != '']"
                 priority="500">
     <xsl:param name="fieldName" select="''" as="xs:string"/>

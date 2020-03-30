@@ -134,6 +134,7 @@
         </xsl:for-each>
       </xsl:variable>
 
+      
       <xsl:choose>
         <xsl:when test="$byThesaurus">
           <xsl:for-each-group select="$tags/tag" group-by="@thesaurus">
@@ -144,9 +145,16 @@
 
             <xsl:for-each select="current-group()">
               <xsl:sort select="."/>
-              <a href="#/search?keyword={.}">
-                <span class="badge"><xsl:value-of select="."/></span>
-              </a>
+              <xsl:choose>
+                <xsl:when test="$portalLink != ''">
+                  <span class="badge"><xsl:value-of select="."/></span>
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="#/search?keyword={.}">
+                    <span class="badge"><xsl:value-of select="."/></span>
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:for-each>
             <xsl:if test="position() != last()">
               <hr/>
@@ -156,9 +164,17 @@
         <xsl:otherwise>
           <xsl:for-each select="$tags/tag">
             <xsl:sort select="."/>
-            <a href="#/search?keyword={.}">
-              <span class="badge"><xsl:value-of select="."/></span>
-            </a>
+
+            <xsl:choose>
+              <xsl:when test="$portalLink != ''">
+                <span class="badge"><xsl:value-of select="."/></span>
+              </xsl:when>
+              <xsl:otherwise>
+                <a href="#/search?keyword={.}">
+                  <span class="badge"><xsl:value-of select="."/></span>
+                </a>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:for-each>
         </xsl:otherwise>
       </xsl:choose>

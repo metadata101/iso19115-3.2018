@@ -420,14 +420,27 @@
   </xsl:template>
 
 
-  <!-- Some major sections are boxed -->
+
+  <!-- Some major sections are boxed but 
+  * if part of fieldsWithFieldset exception
+  * has content
+  * only if more than one child to be displayed (non flat mode only) bypass container elements
+  . -->
   <xsl:template mode="render-field"
-                match="*[not(gco:CharacterString) and (
-                          name() = $configuration/editor/fieldsWithFieldset/name or
-                          @gco:isoType = $configuration/editor/fieldsWithFieldset/name)]|
-                       *[$isFlatMode = false() and not(gco:CharacterString)]"
+                match="*[$isFlatMode = true() and not(gco:CharacterString) and (
+                            name() = $configuration/editor/fieldsWithFieldset/name
+                            or @gco:isoType = $configuration/editor/fieldsWithFieldset/name)]|
+                       *[$isFlatMode = false() and not(gco:CharacterString) and (
+                            name() = $configuration/editor/fieldsWithFieldset/name
+                            or @gco:isoType = $configuration/editor/fieldsWithFieldset/name
+                            or count(*) > 1)]"
                 priority="100">
-    <xsl:if test="count(*) > 0">
+
+    <xsl:variable name="content">
+      <xsl:apply-templates mode="render-field" select="*"/>
+    </xsl:variable>
+
+    <xsl:if test="count($content/*) > 0">
       <div class="entry name">
         <h2>
           <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
@@ -440,6 +453,7 @@
       </div>
     </xsl:if>
   </xsl:template>
+
 
 
   <!-- Bbox is displayed with an overview and the geom displayed on it

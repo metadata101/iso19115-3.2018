@@ -76,7 +76,7 @@ public class ISO19115_3_2018SchemaPlugin
     public Set<AssociatedResource> getAssociatedResourcesUUIDs(Element metadata) {
         String XPATH_FOR_AGGRGATIONINFO = "*//mri:associatedResource/*" +
                 "[mri:metadataReference/@uuidref " +
-                "and mri:initiativeType/mri:DS_InitiativeTypeCode/@codeListValue != '']";
+                "and mri:associationType/mri:DS_AssociationTypeCode/@codeListValue != '']";
         Set<AssociatedResource> listOfResources = new HashSet<AssociatedResource>();
         List<?> sibs = null;
         try {

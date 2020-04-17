@@ -719,11 +719,12 @@
         <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
       </dt>
       <dd>
-
         <xsl:if test="*/mcc:codeSpace">
-        <xsl:apply-templates mode="render-value"
-                             select="*/mcc:codeSpace"/>
-        /
+          <xsl:variable name="prefix">
+            <xsl:apply-templates mode="render-value"
+                                 select="*/mcc:codeSpace"/>
+          </xsl:variable>
+          <xsl:value-of select="if(ends-with($prefix, '/')) then $prefix else concat($prefix, '/')"/>
         </xsl:if>
         <xsl:apply-templates mode="render-value"
                                select="*/mcc:code"/>

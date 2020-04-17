@@ -191,7 +191,7 @@
   </xsl:template>
 
   <xsl:template mode="getExtent" match="mdb:MD_Metadata">
-    <section class="gn-md-side-overview">
+    <section class="gn-md-side-extent">
       <h2>
         <i class="fa fa-fw fa-map-marker"><xsl:comment select="'image'"/></i>
         <span><xsl:comment select="name()"/>

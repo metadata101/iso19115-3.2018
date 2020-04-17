@@ -43,6 +43,10 @@
   <!-- Enable INSPIRE or not -->
   <xsl:param name="inspire">false</xsl:param>
 
+  <!-- Parent may be encoded using an associatedResource.
+  Define which association type should be considered as parent. -->
+  <xsl:variable name="parentAssociatedResourceType" select="'partOfSeamlessDatabase'"/>
+
   <xsl:variable name="df">[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]</xsl:variable>
 
   <!-- If identification citation dates
@@ -539,6 +543,11 @@
                               else mri:metadataReference/cit:CI_Citation/cit:identifier/mcc:MD_Identifier/mcc:code/gco:CharacterString"/>
         <xsl:if test="$code != ''">
           <xsl:variable name="associationType" select="mri:associationType/mri:DS_AssociationTypeCode/@codeListValue"/>
+
+          <xsl:if test="$associationType = $parentAssociatedResourceType">
+            <Field name="parentUuid" string="{string($code)}" store="true" index="true"/>
+          </xsl:if>
+
           <xsl:variable name="initiativeType" select="mri:initiativeType/mri:DS_InitiativeTypeCode/@codeListValue"/>
           <Field name="agg_{$associationType}_{$initiativeType}" string="{$code}" store="false" index="true"/>
           <Field name="agg_{$associationType}_with_initiative" string="{$initiativeType}" store="false" index="true"/>
@@ -1034,7 +1043,7 @@
           <Field name="crs" string="{$crs}" store="true" index="true"/>
           <Field name="crsCode" string="{mcc:code/gco:CharacterString}" store="true" index="true"/>
         </xsl:if>
-        
+
         <xsl:variable name="crsDetails">
           {
           "code": "<xsl:value-of select="mcc:code/*/text()"/>",

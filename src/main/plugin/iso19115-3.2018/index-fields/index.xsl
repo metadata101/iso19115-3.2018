@@ -38,6 +38,7 @@
                 xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0"
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
                 xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:util="java:org.fao.geonet.util.XslUtil"
                 xmlns:index="java:org.fao.geonet.kernel.search.EsSearchManager"
                 xmlns:gn-fn-index="http://geonetwork-opensource.org/xsl/functions/index"
@@ -61,6 +62,13 @@
               omit-xml-declaration="yes"
               encoding="utf-8"
               escape-uri-attributes="yes"/>
+
+
+  <!-- If identification creation, publication and revision date
+    should be indexed as a temporal extent information (eg. in INSPIRE
+    metadata implementing rules, those elements are defined as part
+    of the description of the temporal extent). -->
+  <xsl:variable name="useDateAsTemporalExtent" select="true()"/>
 
   <!-- Define if operatesOn type should be defined
   by analysis of protocol in all transfers options.
@@ -306,6 +314,18 @@
               <xsl:value-of select="substring($date, 0, 8)"/>
             </xsl:element>
           </xsl:for-each>
+
+          <xsl:if test="$useDateAsTemporalExtent">
+            <xsl:for-each-group select="cit:date/cit:CI_Date[cit:date/*/text() != '' and
+                                  matches(cit:date/*/text(), '[0-9]{4}.*')]/cit:date/*/text()"
+                                group-by=".">
+
+              <resourceTemporalDateRange type="object">{
+                "gte": "<xsl:value-of select="."/>",
+                "lte": "<xsl:value-of select="."/>"
+                }</resourceTemporalDateRange>
+            </xsl:for-each-group>
+          </xsl:if>
 
           <!-- TODO: Add support for Anchor, can be a DOI -->
           <xsl:for-each select="cit:identifier/*/mcc:code/(gco:CharacterString|gcx:Anchor)">
@@ -751,11 +771,23 @@
               </xsl:when>
               <xsl:otherwise></xsl:otherwise>
             </xsl:choose>
-
-
             <!--<xsl:value-of select="($e + $w) div 2"/>,<xsl:value-of select="($n + $s) div 2"/></field>-->
           </xsl:for-each>
+
+
+          <xsl:for-each select=".//gex:temporalElement/*/gex:extent/gml:TimePeriod">
+            <xsl:variable name="end"
+                          select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition"/>
+
+            <resourceTemporalDateRange type="object">{
+              "gte": "<xsl:value-of select="normalize-space(gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition)"/>"
+              <xsl:if test="not($end/@indeterminatePosition = 'now')">
+                ,"lte": "<xsl:value-of select="normalize-space($end)"/>"
+              </xsl:if>
+              }</resourceTemporalDateRange>
+          </xsl:for-each>
         </xsl:for-each>
+
 
 
         <!-- Service information -->

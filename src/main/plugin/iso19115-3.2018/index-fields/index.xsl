@@ -776,15 +776,18 @@
 
 
           <xsl:for-each select=".//gex:temporalElement/*/gex:extent/gml:TimePeriod">
+            <xsl:variable name="start"
+                          select="gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition"/>
             <xsl:variable name="end"
                           select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition"/>
-
-            <resourceTemporalDateRange type="object">{
-              "gte": "<xsl:value-of select="normalize-space(gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition)"/>"
-              <xsl:if test="not($end/@indeterminatePosition = 'now')">
-                ,"lte": "<xsl:value-of select="normalize-space($end)"/>"
-              </xsl:if>
-              }</resourceTemporalDateRange>
+            <xsl:if test="normalize-space($start) != ''">
+              <resourceTemporalDateRange type="object">{
+                "gte": "<xsl:value-of select="normalize-space($start)"/>"
+                <xsl:if test="not($end/@indeterminatePosition = 'now')">
+                  ,"lte": "<xsl:value-of select="normalize-space($end)"/>"
+                </xsl:if>
+                }</resourceTemporalDateRange>
+            </xsl:if>
           </xsl:for-each>
         </xsl:for-each>
 
@@ -1016,7 +1019,9 @@
           <xsl:for-each select="$recordLinks">
             <parentUuid><xsl:value-of select="."/></parentUuid>
             <recordGroup><xsl:value-of select="."/></recordGroup>
-            <recordLink type="object">{"name": "children", "parent": "<xsl:value-of select="gn-fn-index:json-escape(.)"/>"}</recordLink>
+            <!--
+            TODOES - Need more work with routing
+            <recordLink type="object">{"name": "children", "parent": "<xsl:value-of select="gn-fn-index:json-escape(.)"/>"}</recordLink>-->
           </xsl:for-each>
         </xsl:when>
         <xsl:otherwise>

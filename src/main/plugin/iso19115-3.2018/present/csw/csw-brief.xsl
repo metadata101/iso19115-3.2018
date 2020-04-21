@@ -17,7 +17,6 @@
   xmlns:geonet="http://www.fao.org/geonetwork"
   exclude-result-prefixes="#all">
 
-  <xsl:param name="displayInfo"/>
   <xsl:param name="lang"/>
 
   <xsl:variable name="metadata"
@@ -88,12 +87,6 @@
           </ows:UpperCorner>
         </ows:BoundingBox>
       </xsl:for-each>
-
-      <!-- GeoNetwork elements added when resultType is equal to results_with_summary -->
-      <xsl:if test="$displayInfo = 'true'">
-        <xsl:copy-of select="$info"/>
-      </xsl:if>
-
     </csw:BriefRecord>
   </xsl:template>
 

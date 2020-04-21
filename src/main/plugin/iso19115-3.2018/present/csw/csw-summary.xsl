@@ -16,7 +16,6 @@
   xmlns:geonet="http://www.fao.org/geonetwork"
   exclude-result-prefixes="#all">
 
-  <xsl:param name="displayInfo"/>
   <xsl:param name="lang"/>
 
   <xsl:variable name="metadata"
@@ -118,12 +117,6 @@
         <xsl:for-each select="../../mdb:dataQualityInfo/dqm:DQ_DataQuality/dqm:lineage/dqm:LI_Lineage/dqm:statement/gco:CharacterString">
         <dc:source><xsl:value-of select="."/></dc:source>
         </xsl:for-each>-->
-
-
-      <!-- GeoNetwork elements added when resultType is equal to results_with_summary -->
-      <xsl:if test="$displayInfo = 'true'">
-        <xsl:copy-of select="$info"/>
-      </xsl:if>
 
     </csw:SummaryRecord>
   </xsl:template>

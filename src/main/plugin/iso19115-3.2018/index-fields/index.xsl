@@ -380,86 +380,90 @@
         </xsl:for-each>
 
 
-        <!-- TODO: create specific INSPIRE template or mode -->
-        <!-- INSPIRE themes
+        <xsl:variable name="inspireEnable" select="util:getSettingValue('system/inspire/enable')" />
 
-        Select the first thesaurus title because some records
-        may contains many even if invalid.
 
-        Also get the first title at it may happen that a record
-        have more than one.
+        <xsl:if test="$inspireEnable = 'true'">
+          <!-- TODO: create specific INSPIRE template or mode -->
+          <!-- INSPIRE themes
 
-        Select any thesaurus having the title containing "INSPIRE themes".
-        Some records have "GEMET-INSPIRE themes" eg. sk:ee041534-b8f3-4683-b9dd-9544111a0712
-        Some other "GEMET - INSPIRE themes"
+          Select the first thesaurus title because some records
+          may contains many even if invalid.
 
-        Take in account gmd:descriptiveKeywords or srv:keywords
-        -->
-        <xsl:variable name="inspireKeywords"
-                      select="*/mri:MD_Keywords[
-                      contains(lower-case(
-                       mri:thesaurusName[1]/*/cit:title[1]/*/text()
-                       ), 'gemet') and
-                       contains(lower-case(
-                       mri:thesaurusName[1]/*/cit:title[1]/*/text()
-                       ), 'inspire')]
-                  /mri:keyword"/>
-        <xsl:for-each
-          select="$inspireKeywords">
-          <xsl:variable name="position" select="position()"/>
-          <xsl:for-each select="gco:CharacterString[. != '']|
-                                gcx:Anchor[. != '']">
+          Also get the first title at it may happen that a record
+          have more than one.
 
-            <xsl:variable name="inspireTheme" as="xs:string"
-                          select="index:analyzeField('synInspireThemes', text())"/>
+          Select any thesaurus having the title containing "INSPIRE themes".
+          Some records have "GEMET-INSPIRE themes" eg. sk:ee041534-b8f3-4683-b9dd-9544111a0712
+          Some other "GEMET - INSPIRE themes"
 
-            <inspireTheme_syn>
-              <xsl:value-of select="text()"/>
-            </inspireTheme_syn>
-            <inspireTheme>
-              <xsl:value-of select="$inspireTheme"/>
-            </inspireTheme>
+          Take in account gmd:descriptiveKeywords or srv:keywords
+          -->
+          <xsl:variable name="inspireKeywords"
+                        select="*/mri:MD_Keywords[
+                        contains(lower-case(
+                         mri:thesaurusName[1]/*/cit:title[1]/*/text()
+                         ), 'gemet') and
+                         contains(lower-case(
+                         mri:thesaurusName[1]/*/cit:title[1]/*/text()
+                         ), 'inspire')]
+                    /mri:keyword"/>
+          <xsl:for-each
+            select="$inspireKeywords">
+            <xsl:variable name="position" select="position()"/>
+            <xsl:for-each select="gco:CharacterString[. != '']|
+                                  gcx:Anchor[. != '']">
 
-            <!--
-            WARNING: Here we only index the first keyword in order
-            to properly compute one INSPIRE annex.
-            -->
-            <xsl:if test="position() = 1">
-              <inspireThemeFirst_syn>
+              <xsl:variable name="inspireTheme" as="xs:string"
+                            select="index:analyzeField('synInspireThemes', text())"/>
+
+              <inspireTheme_syn>
                 <xsl:value-of select="text()"/>
-              </inspireThemeFirst_syn>
-              <inspireThemeFirst>
+              </inspireTheme_syn>
+              <inspireTheme>
                 <xsl:value-of select="$inspireTheme"/>
-              </inspireThemeFirst>
-              <xsl:if test="$inspireTheme != ''">
-                <inspireAnnexForFirstTheme>
-                  <xsl:value-of
-                    select="index:analyzeField('synInspireAnnexes', $inspireTheme)"/>
-                </inspireAnnexForFirstTheme>
-                <xsl:variable name="inspireThemeUri" as="xs:string"
-                              select="index:analyzeField('synInspireThemeUris', $inspireTheme)"/>
-                <inspireThemeUri>
-                  <xsl:value-of select="$inspireThemeUri"/>
-                </inspireThemeUri>
+              </inspireTheme>
+
+              <!--
+              WARNING: Here we only index the first keyword in order
+              to properly compute one INSPIRE annex.
+              -->
+              <xsl:if test="position() = 1">
+                <inspireThemeFirst_syn>
+                  <xsl:value-of select="text()"/>
+                </inspireThemeFirst_syn>
+                <inspireThemeFirst>
+                  <xsl:value-of select="$inspireTheme"/>
+                </inspireThemeFirst>
+                <xsl:if test="$inspireTheme != ''">
+                  <inspireAnnexForFirstTheme>
+                    <xsl:value-of
+                      select="index:analyzeField('synInspireAnnexes', $inspireTheme)"/>
+                  </inspireAnnexForFirstTheme>
+                  <xsl:variable name="inspireThemeUri" as="xs:string"
+                                select="index:analyzeField('synInspireThemeUris', $inspireTheme)"/>
+                  <inspireThemeUri>
+                    <xsl:value-of select="$inspireThemeUri"/>
+                  </inspireThemeUri>
+                </xsl:if>
               </xsl:if>
-            </xsl:if>
-            <inspireAnnex>
-              <xsl:value-of
-                select="index:analyzeField('synInspireAnnexes', $inspireTheme)"/>
-            </inspireAnnex>
+              <inspireAnnex>
+                <xsl:value-of
+                  select="index:analyzeField('synInspireAnnexes', $inspireTheme)"/>
+              </inspireAnnex>
+            </xsl:for-each>
           </xsl:for-each>
-        </xsl:for-each>
 
-        <inspireThemeNumber>
-          <xsl:value-of
-            select="count($inspireKeywords)"/>
-        </inspireThemeNumber>
+          <inspireThemeNumber>
+            <xsl:value-of
+              select="count($inspireKeywords)"/>
+          </inspireThemeNumber>
 
-        <hasInspireTheme>
-          <xsl:value-of
-            select="if (count($inspireKeywords) > 0) then 'true' else 'false'"/>
-        </hasInspireTheme>
-
+          <hasInspireTheme>
+            <xsl:value-of
+              select="if (count($inspireKeywords) > 0) then 'true' else 'false'"/>
+          </hasInspireTheme>
+        </xsl:if>
 
         <!-- Index all keywords -->
         <xsl:variable name="keywords"
@@ -798,13 +802,15 @@
           <serviceType>
             <xsl:value-of select="text()"/>
           </serviceType>
-          <xsl:variable name="inspireServiceType" as="xs:string"
-                        select="index:analyzeField(
-                                  'keepInspireServiceTypes', text())"/>
-          <xsl:if test="$inspireServiceType != ''">
-            <inspireServiceType>
-              <xsl:value-of select="lower-case($inspireServiceType)"/>
-            </inspireServiceType>
+          <xsl:if test="$inspireEnable = 'true'">
+            <xsl:variable name="inspireServiceType" as="xs:string"
+                          select="index:analyzeField(
+                                    'keepInspireServiceTypes', text())"/>
+            <xsl:if test="$inspireServiceType != ''">
+              <inspireServiceType>
+                <xsl:value-of select="lower-case($inspireServiceType)"/>
+              </inspireServiceType>
+            </xsl:if>
           </xsl:if>
           <xsl:if test="following-sibling::srv:serviceTypeVersion">
             <serviceTypeAndVersion>

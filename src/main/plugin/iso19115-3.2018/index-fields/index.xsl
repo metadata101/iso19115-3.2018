@@ -84,9 +84,6 @@
   <xsl:variable name="openDataKeywords"
                 select="'opendata|open data|donnees ouvertes'"/>
 
-  <xsl:variable name="dateFormat" as="xs:string"
-                select="'[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]'"/>
-
   <xsl:variable name="separator" as="xs:string"
                 select="'|'"/>
 
@@ -121,7 +118,7 @@
     <xsl:variable name="lastRevisionDate" as="xs:string?"
                   select="mdb:dateInfo/*[
                               cit:dateType/*/@codeListValue = 'revision'
-                            ]/cit:date/gco:DateTime[. != '']"/>
+                            ]/cit:date/gco:DateTime[gn-fn-index:is-isoDate(.)]"/>
 
     <xsl:variable name="mainLanguage" as="xs:string?"
                   select="mdb:defaultLocale/lan:PT_Locale/
@@ -180,9 +177,9 @@
       </xsl:for-each>
 
 
-      <harvestedDate>
+      <indexingDate>
         <xsl:value-of select="format-dateTime(current-dateTime(), $dateFormat)"/>
-      </harvestedDate>
+      </indexingDate>
 
 
       <!-- Indexing record information -->
@@ -191,27 +188,10 @@
       Select first one because some records have 2 dates !
       eg. fr-784237539-bdref20100101-0105
       -->
-      <xsl:for-each select="mdb:dateInfo/
+      <xsl:for-each select="(mdb:dateInfo/
                               cit:CI_Date[cit:dateType/cit:CI_DateTypeCode/@codeListValue = 'revision']/
-                                cit:date/*[text() != '' and position() = 1]">
-        <dateStamp>
-          <xsl:variable name="date"
-                        select="if (name() = 'gco:Date' and string-length(.) = 4)
-                                then concat(., '-01-01T00:00:00')
-                                else if (name() = 'gco:Date' and string-length(.) = 7)
-                                then concat(., '-01T00:00:00')
-                                else if (name() = 'gco:Date' or string-length(.) = 10)
-                                then concat(., 'T00:00:00')
-                                else if (contains(., '.'))
-                                then tokenize(., '\.')[1]
-                                else ."/>
-
-          <xsl:value-of select="translate(string(
-                                   adjust-dateTime-to-timezone(
-                                      xs:dateTime($date),
-                                      xs:dayTimeDuration('PT0H'))
-                                     ), 'Z', '')"/>
-        </dateStamp>
+                                cit:date/*[gn-fn-index:is-isoDate(.)])[1]">
+        <dateStamp><xsl:value-of select="."/></dateStamp>
       </xsl:for-each>
 
 
@@ -297,8 +277,7 @@
           <xsl:copy-of select="gn-fn-index:add-multilingual-field('resourceTitle', cit:title, $allLanguages)"/>
           <xsl:copy-of select="gn-fn-index:add-multilingual-field('resourceAltTitle', cit:alternateTitle, $allLanguages)"/>
 
-          <xsl:for-each select="cit:date/cit:CI_Date[cit:date/*/text() != '' and
-                                  matches(cit:date/*/text(), '[0-9]{4}.*')]">
+          <xsl:for-each select="cit:date/cit:CI_Date[gn-fn-index:is-isoDate(cit:date/*/text())]">
             <xsl:variable name="dateType"
                           select="cit:dateType/cit:CI_DateTypeCode/@codeListValue"
                           as="xs:string?"/>
@@ -316,8 +295,7 @@
           </xsl:for-each>
 
           <xsl:if test="$useDateAsTemporalExtent">
-            <xsl:for-each-group select="cit:date/cit:CI_Date[cit:date/*/text() != '' and
-                                  matches(cit:date/*/text(), '[0-9]{4}.*')]/cit:date/*/text()"
+            <xsl:for-each-group select="cit:date/cit:CI_Date[gn-fn-index:is-isoDate(cit:date/*/text())]/cit:date/*/text()"
                                 group-by=".">
 
               <resourceTemporalDateRange type="object">{
@@ -784,13 +762,19 @@
                           select="gml:beginPosition|gml:begin/gml:TimeInstant/gml:timePosition"/>
             <xsl:variable name="end"
                           select="gml:endPosition|gml:end/gml:TimeInstant/gml:timePosition"/>
-            <xsl:if test="normalize-space($start) != ''">
+            <xsl:if test="gn-fn-index:is-isoDate($start)">
               <resourceTemporalDateRange type="object">{
                 "gte": "<xsl:value-of select="normalize-space($start)"/>"
-                <xsl:if test="not($end/@indeterminatePosition = 'now')">
+                <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
                   ,"lte": "<xsl:value-of select="normalize-space($end)"/>"
                 </xsl:if>
                 }</resourceTemporalDateRange>
+              <xsl:if test="$start &gt; $end">
+                <indexingErrorMsg>Warning / Field resourceTemporalDateRange /
+                  Lower range bound '<xsl:value-of select="."/>' can not be
+                  greater than upper bound '<xsl:value-of select="$end"/>'.
+                  Date range not indexed.</indexingErrorMsg>
+              </xsl:if>
             </xsl:if>
           </xsl:for-each>
         </xsl:for-each>

@@ -235,11 +235,12 @@
         Exclude some useless codelist like
         Contact role, Date type.
       -->
-      <xsl:for-each select=".//*[@codeListValue != '' and
+      <xsl:for-each-group select=".//*[@codeListValue != '' and
                             name() != 'cit:CI_RoleCode' and
                             name() != 'cit:CI_DateTypeCode' and
                             name() != 'lan:LanguageCode'
-                            ]">
+                            ]"
+                          group-by="@codeListValue">
         <xsl:variable name="parentName"
                       select="local-name(..)"/>
         <xsl:variable name="name"
@@ -262,7 +263,7 @@
             <xsl:value-of select="$translation"/>
           </xsl:element>
         </xsl:for-each>
-      </xsl:for-each>
+      </xsl:for-each-group>
 
 
       <!-- Indexing resource information
@@ -380,10 +381,10 @@
           <xsl:variable name="inspireKeywords"
                         select="*/mri:MD_Keywords[
                         contains(lower-case(
-                         mri:thesaurusName[1]/*/cit:title[1]/*/text()
+                         (mri:thesaurusName/*/cit:title/*/text())[1]
                          ), 'gemet') and
                          contains(lower-case(
-                         mri:thesaurusName[1]/*/cit:title[1]/*/text()
+                         (mri:thesaurusName/*/cit:title/*/text())[1]
                          ), 'inspire')]
                     /mri:keyword"/>
           <xsl:for-each
@@ -1033,6 +1034,7 @@
                   select="(.//cit:CI_Organisation/cit:name/gco:CharacterString)[1]"
                   as="xs:string*"/>
     <xsl:variable name="uuid" select="@uuid"/>
+    <xsl:variable name="elementName" select="name()"/>
 
     <xsl:variable name="role"
                   select="replace(*[1]/cit:role/*/@codeListValue, ' ', '')"
@@ -1050,13 +1052,22 @@
     <xsl:variable name="address" select="string-join(.//cit:contactInfo/*/cit:address/*/(
                                         cit:deliveryPoint|cit:postalCode|cit:city|
                                         cit:administrativeArea|cit:country)/gco:CharacterString/text(), ', ')"/>
+
     <xsl:if test="normalize-space($organisationName) != ''">
-      <xsl:element name="Org{$fieldSuffix}">
-        <xsl:value-of select="$organisationName"/>
-      </xsl:element>
-      <xsl:element name="{$role}Org{$fieldSuffix}">
-        <xsl:value-of select="$organisationName"/>
-      </xsl:element>
+      <xsl:if test="count(preceding-sibling::*[name() = $elementName
+                        and .//cit:CI_Organisation/cit:name/gco:CharacterString = $organisationName]) = 0">
+        <xsl:element name="Org{$fieldSuffix}">
+          <xsl:value-of select="$organisationName"/>
+        </xsl:element>
+      </xsl:if>
+
+      <xsl:if test="count(preceding-sibling::*[name() = $elementName
+                      and .//cit:CI_Organisation/cit:name/gco:CharacterString = $organisationName
+                      and .//cit:role/*/@codeListValue = $role]) = 0">
+        <xsl:element name="{$role}Org{$fieldSuffix}">
+          <xsl:value-of select="$organisationName"/>
+        </xsl:element>
+      </xsl:if>
     </xsl:if>
     <xsl:element name="contact{$fieldSuffix}">
       <!-- TODO: Can be multilingual -->

@@ -2153,7 +2153,7 @@
     <label>Classification system</label>
     <description>Name of the classification system</description>
   </element>
-  <element name="mri:cloudCoverPercentage" id="248.0">
+  <element name="mrc:cloudCoverPercentage" id="248.0">
     <label>Cloud cover percentage</label>
     <description>Area of the dataset obscured by clouds, expressed as a
       percentage of the

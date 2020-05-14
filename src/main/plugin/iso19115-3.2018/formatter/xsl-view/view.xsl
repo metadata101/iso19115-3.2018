@@ -191,7 +191,7 @@
   </xsl:template>
 
   <xsl:template mode="getExtent" match="mdb:MD_Metadata">
-    <section class="gn-md-side-overview">
+    <section class="gn-md-side-extent">
       <h2>
         <i class="fa fa-fw fa-map-marker"><xsl:comment select="'image'"/></i>
         <span><xsl:comment select="name()"/>
@@ -719,11 +719,12 @@
         <xsl:value-of select="tr:node-label(tr:create($schema), name(), null)"/>
       </dt>
       <dd>
-
         <xsl:if test="*/mcc:codeSpace">
-        <xsl:apply-templates mode="render-value"
-                             select="*/mcc:codeSpace"/>
-        /
+          <xsl:variable name="prefix">
+            <xsl:apply-templates mode="render-value"
+                                 select="*/mcc:codeSpace"/>
+          </xsl:variable>
+          <xsl:value-of select="if(ends-with($prefix, '/')) then $prefix else concat($prefix, '/')"/>
         </xsl:if>
         <xsl:apply-templates mode="render-value"
                                select="*/mcc:code"/>

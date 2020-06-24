@@ -132,6 +132,7 @@
     </xsl:if>
   </xsl:template>
 
+  <xsl:template match="gml:LinearRing/@srsName"/>
 
   <xsl:template match="@*|node()">
     <xsl:copy>

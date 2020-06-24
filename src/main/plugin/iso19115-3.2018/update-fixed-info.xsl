@@ -276,10 +276,10 @@
                        gml:LineString[not(@gml:id) or not(@srsName)]">
     <xsl:copy>
       <xsl:attribute name="gml:id">
-        <xsl:value-of select="generate-id(.)"/>
+        <xsl:value-of select="if (@gml:id != '') then @gml:id else generate-id(.)"/>
       </xsl:attribute>
       <xsl:attribute name="srsName">
-        <xsl:text>urn:ogc:def:crs:EPSG:6.6:4326</xsl:text>
+        <xsl:value-of select="if (@srsName != '') then @srsName else 'urn:ogc:def:crs:EPSG:6.6:4326'"/>
       </xsl:attribute>
       <xsl:copy-of select="@*"/>
       <xsl:apply-templates select="*"/>

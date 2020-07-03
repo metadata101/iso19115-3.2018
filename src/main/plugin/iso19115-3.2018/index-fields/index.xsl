@@ -132,10 +132,12 @@
                               @codeListValue[normalize-space(.) != '']"/>
 
     <xsl:variable name="allLanguages">
-      <lang id="default" value="{$mainLanguage}"/>
-      <xsl:for-each select="$otherLanguages">
-        <lang id="{../../../@id}" value="{.}"/>
-      </xsl:for-each>
+      <xsl:if test="$mainLanguage != ''">
+        <lang id="default" value="{$mainLanguage}"/>
+        <xsl:for-each select="$otherLanguages">
+          <lang id="{../../../@id}" value="{.}"/>
+        </xsl:for-each>
+      </xsl:if>
     </xsl:variable>
 
     <!-- Record is dataset if no hierarchyLevel -->

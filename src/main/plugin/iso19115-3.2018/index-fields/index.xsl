@@ -772,6 +772,12 @@
                   ,"lte": "<xsl:value-of select="normalize-space($end)"/>"
                 </xsl:if>
                 }</resourceTemporalDateRange>
+              <resourceTemporalExtentDateRange type="object">{
+                "gte": "<xsl:value-of select="normalize-space($start)"/>"
+                <xsl:if test="$start &lt; $end and not($end/@indeterminatePosition = 'now')">
+                  ,"lte": "<xsl:value-of select="normalize-space($end)"/>"
+                </xsl:if>
+                }</resourceTemporalExtentDateRange>
               <xsl:if test="$start &gt; $end">
                 <indexingErrorMsg>Warning / Field resourceTemporalDateRange /
                   Lower range bound '<xsl:value-of select="."/>' can not be

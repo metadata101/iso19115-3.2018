@@ -598,11 +598,13 @@
               "link": "<xsl:value-of select="gn-fn-index:json-escape(@xlink:href)"/>",
               "keywords": [
               <xsl:for-each select="mri:keyword/(*[normalize-space() != '']|
-                                    */@xlink:href[normalize-space() != '']|
                                     lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString[normalize-space() != ''])">
                 <!-- TODOES: Index translations -->
-                {"value": "<xsl:value-of select="gn-fn-index:json-escape(.)"/>",
-                "link": "<xsl:value-of select="gn-fn-index:json-escape(@xlink:href)"/>"}
+                {"value": "<xsl:value-of select="gn-fn-index:json-escape(.)"/>"
+                <xsl:if test="@xlink:href">,
+                "link": "<xsl:value-of select="gn-fn-index:json-escape(@xlink:href)"/>"
+                </xsl:if>
+                }
                 <xsl:if test="position() != last()">,</xsl:if>
               </xsl:for-each>
               ]}

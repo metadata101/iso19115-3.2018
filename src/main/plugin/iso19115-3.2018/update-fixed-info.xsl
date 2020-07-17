@@ -457,7 +457,7 @@
   <xsl:template match="srv:operatesOn">
     <xsl:copy>
       <xsl:copy-of select="@uuidref"/>
-      <xsl:if test="@uuidref">
+      <xsl:if test="@uuidref or @xlink:href">
         <xsl:choose>
           <xsl:when test="not(string(@xlink:href)) or starts-with(@xlink:href, /root/env/siteURL)">
             <xsl:attribute name="xlink:href">

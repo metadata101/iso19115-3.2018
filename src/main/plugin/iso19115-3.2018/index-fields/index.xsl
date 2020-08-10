@@ -39,6 +39,7 @@
                 xmlns:mrs="http://standards.iso.org/iso/19115/-3/mrs/1.0"
                 xmlns:mdq="http://standards.iso.org/iso/19157/-2/mdq/1.0"
                 xmlns:gco="http://standards.iso.org/iso/19115/-3/gco/1.0"
+                xmlns:gfc="http://standards.iso.org/iso/19110/gfc/1.1"
                 xmlns:gml="http://www.opengis.net/gml/3.2"
                 xmlns:util="java:org.fao.geonet.util.XslUtil"
                 xmlns:index="java:org.fao.geonet.kernel.search.EsSearchManager"
@@ -801,7 +802,7 @@
 
 
         <!-- Service information -->
-        <xsl:for-each select="srv:serviceType/gco:LocalName">
+        <xsl:for-each select="srv:serviceType/gco:ScopedName">
           <serviceType>
             <xsl:value-of select="text()"/>
           </serviceType>
@@ -908,6 +909,54 @@
       </xsl:for-each-group>
 
 
+      <xsl:variable name="jsonFeatureTypes">[
+        <xsl:for-each select="mdb:contentInfo//gfc:FC_FeatureCatalogue/gfc:featureType">{
+
+          "typeName" : "<xsl:value-of select="gn-fn-index:json-escape(gfc:FC_FeatureType/gfc:typeName/*/text())"/>",
+          "definition" :"<xsl:value-of select="gn-fn-index:json-escape(gfc:FC_FeatureType/gfc:definition/*/text())"/>",
+          "code" :"<xsl:value-of select="gn-fn-index:json-escape(gfc:FC_FeatureType/gfc:code/*/text())"/>",
+          "isAbstract" :"<xsl:value-of select="gfc:FC_FeatureType/gfc:isAbstract/*/text()"/>",
+          "aliases" : "<xsl:value-of select="gn-fn-index:json-escape(gfc:FC_FeatureType/gfc:aliases/*/text())"/>",
+          <!--"inheritsFrom" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:inheritsFrom/*/text()"/>",
+          "inheritsTo" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:inheritsTo/*/text()"/>",
+          "constrainedBy" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:constrainedBy/*/text()"/>",
+          "definitionReference" : "<xsl:value-of select="gfc:FC_FeatureType/gfc:definitionReference/*/text()"/>",-->
+          <!-- Index attribute table as JSON object -->
+          <xsl:variable name="attributes"
+                        select="*/gfc:carrierOfCharacteristics"/>
+          <xsl:if test="count($attributes) > 0">
+            "attributeTable" : [
+            <xsl:for-each select="$attributes">
+              {"name": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:memberName/*/text())"/>",
+              "definition": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:definition/*/text())"/>",
+              "code": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:code/*/text())"/>",
+              "link": "<xsl:value-of select="*/gfc:code/*/@xlink:href"/>",
+              "type": "<xsl:value-of select="*/gfc:valueType/gco:TypeName/gco:aName/*/text()"/>"
+              <xsl:if test="*/gfc:listedValue">
+                ,"values": [
+                <xsl:for-each select="*/gfc:listedValue">{
+                  "label": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:label/*/text())"/>",
+                  "code": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:code/*/text())"/>",
+                  "definition": "<xsl:value-of select="gn-fn-index:json-escape(*/gfc:definition/*/text())"/>"}
+                  <xsl:if test="position() != last()">,</xsl:if>
+                </xsl:for-each>
+                ]
+              </xsl:if>
+              }
+              <xsl:if test="position() != last()">,</xsl:if>
+            </xsl:for-each>
+            ]
+          </xsl:if>
+          }
+          <xsl:if test="position() != last()">,</xsl:if>
+        </xsl:for-each>
+        ]
+      </xsl:variable>
+
+      <featureTypes type="object">
+        <xsl:value-of select="$jsonFeatureTypes"/>
+      </featureTypes>
+
       <xsl:for-each select="mdb:contentInfo/*/mrc:featureCatalogueCitation[@uuidref != '']">
         <xsl:variable name="xlink"
                       select="@xlink:href"/>
@@ -934,6 +983,7 @@
             <xsl:value-of select="."/>
           </lineage>
         </xsl:for-each>
+
         <xsl:for-each select=".//mrl:source[@uuidref != '']">
           <xsl:variable name="xlink"
                         select="@xlink:href"/>

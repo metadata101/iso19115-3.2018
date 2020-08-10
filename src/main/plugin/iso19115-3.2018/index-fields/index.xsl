@@ -633,18 +633,26 @@
 
           <xsl:if test="$hasKeywordWithThesaurus and $keywordWithNoThesaurus">,</xsl:if>
 
-          <xsl:for-each-group select="$keywordWithNoThesaurus"
-                              group-by="mri:type/*/@codeListValue">
-            <xsl:variable name="thesaurusType"
-                          select="current-grouping-key()"/>
+          <xsl:variable name="types">
+            <xsl:for-each select="distinct-values($keywordWithNoThesaurus//mri:type/*/@codeListValue[. != ''])">
+              <type><xsl:value-of select="."/></type>
+            </xsl:for-each>
+            <xsl:if test="count($keywordWithNoThesaurus[not(mri:type) or mri:type/*/@codeListValue = '']) > 0">
+              <type></type>
+            </xsl:if>
+          </xsl:variable>
 
+          <xsl:for-each select="$types/*">
+            <xsl:variable name="thesaurusType"
+                          select="."/>
             <xsl:variable name="thesaurusField"
                           select="concat('otherKeywords-', $thesaurusType)"/>
             "<xsl:value-of select="$thesaurusField"/>": {
             "keywords": [
-            <xsl:for-each select="../../*/mri:MD_Keywords[mri:type/*/@codeListValue = $thesaurusType]
-                                      /mri:keyword/(*[normalize-space() != '']|
-                                  ../../*/mri:MD_Keywords[mri:type/*/@codeListValue = $thesaurusType]
+            <xsl:for-each select="$keywordWithNoThesaurus
+                                    [if ($thesaurusType = '') then not(mri:type) or mri:type/*/@codeListValue = '' else mri:type/*/@codeListValue = $thesaurusType]
+                                    /mri:keyword/(
+                                      *[normalize-space() != '']|
                                       /lan:PT_FreeText/lan:textGroup/lan:LocalisedCharacterString[normalize-space() != ''])">
               <!-- TODOES: Index translations -->
               {"value": "<xsl:value-of select="gn-fn-index:json-escape(.)"/>"
@@ -656,7 +664,7 @@
             </xsl:for-each>
             ]}
             <xsl:if test="position() != last()">,</xsl:if>
-          </xsl:for-each-group>
+          </xsl:for-each>
           }</allKeywords>
 
 
